@@ -69,4 +69,8 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
 
     implementation(libs.voyager.nav)
+    implementation(libs.voyager.transitions)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
 }
