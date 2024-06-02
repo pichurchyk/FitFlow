@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "FitFlow"
 include(":app")
-include(":fitnessdatabase")
+include(":nutritiondatabase")
