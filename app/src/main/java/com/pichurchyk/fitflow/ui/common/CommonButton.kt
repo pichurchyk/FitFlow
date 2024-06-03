@@ -1,8 +1,8 @@
 package com.pichurchyk.fitflow.ui.common
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,14 +13,16 @@ import androidx.compose.ui.unit.sp
 import com.pichurchyk.fitflow.ui.theme.AppTheme
 
 @Composable
-fun RoundedButton(
+fun CommonButton(
     modifier: Modifier = Modifier,
     text: String,
     doOnClick: () -> Unit
 ) {
     Button(
-        modifier = modifier
-            .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp)),
+        shape = RoundedCornerShape(10.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary
+        ),
         onClick = doOnClick
     ) {
         Text(
@@ -35,6 +37,6 @@ fun RoundedButton(
 @Preview
 private fun RoundedButtonPreview() {
     AppTheme {
-        RoundedButton(text = "Text") {}
+        CommonButton(text = "Text") {}
     }
 }

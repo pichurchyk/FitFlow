@@ -41,7 +41,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -69,4 +69,15 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
 
     implementation(libs.voyager.nav)
+    implementation(libs.voyager.transitions)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
+
+    implementation(libs.kermit)
+
+    implementation(project(":nutritiondatabase"))
 }

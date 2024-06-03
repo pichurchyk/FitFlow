@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "5616167626",
+    "project_id": "fitflow-9c8f5",
+    "storage_bucket": "fitflow-9c8f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5616167626:android:8696c31ab8fbbaaf22e233",
+        "android_client_info": {
+          "package_name": "com.pichurchyk.fitflow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5616167626-m2qj9kj8p3fakufnb316bpgql57ro3mk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pichurchyk.fitflow",
+            "certificate_hash": "7e0d1d7df940cce192d873bcdde72fb2bdc5ba56"
+          }
+        },
+        {
+          "client_id": "5616167626-489nlmeav7omngbbecgtd7g0svccldmh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgStUfevDXyxCEZrzyHePvuT1BaAaGsFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5616167626-489nlmeav7omngbbecgtd7g0svccldmh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
