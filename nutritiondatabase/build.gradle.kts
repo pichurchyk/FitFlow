@@ -35,8 +35,18 @@ android {
 
 dependencies {
 
-    implementation(libs.core.ktx)
-
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.serialization.kotlinx.json)
+
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
 }

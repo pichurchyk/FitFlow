@@ -18,8 +18,8 @@ abstract class NutritionDatabase : RoomDatabase() {
     abstract fun dao(): NutritionDao
 }
 
-fun NutritionDatabase(applicationContext: Context) {
-    val db = Room.databaseBuilder(
+fun NutritionDatabase(applicationContext: Context): NutritionDatabase {
+    return Room.databaseBuilder(
         applicationContext,
         NutritionDatabase::class.java,
         "NutritionDatabase"

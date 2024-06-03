@@ -41,7 +41,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -77,11 +77,7 @@ dependencies {
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
 
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.okhttp)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.client.logging)
-    implementation(libs.ktor.serialization.kotlinx.json)
-
     implementation(libs.kermit)
+
+    implementation(project(":nutritiondatabase"))
 }

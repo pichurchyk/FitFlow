@@ -6,8 +6,6 @@ import org.koin.core.module.Module
 fun initKoin(vararg modules: Module) {
     startKoin {
         modules(
-            mainModule,
-            fitnessModule,
             *modules
         )
     }
