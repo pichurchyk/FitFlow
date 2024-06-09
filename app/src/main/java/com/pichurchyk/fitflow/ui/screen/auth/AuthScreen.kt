@@ -44,10 +44,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.pichurchyk.fitflow.R
 import com.pichurchyk.fitflow.ui.common.CustomSnackbar
 import com.pichurchyk.fitflow.ui.common.Error
 import com.pichurchyk.fitflow.ui.common.Loader
+import com.pichurchyk.fitflow.ui.screen.dashboard.DashboardScreen
 import com.pichurchyk.fitflow.ui.theme.AppTheme
 import com.pichurchyk.fitflow.viewmodel.auth.AuthIntent
 import com.pichurchyk.fitflow.viewmodel.auth.AuthViewModel
@@ -59,6 +62,8 @@ object AuthScreen : Screen {
 
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+
         val viewModel: AuthViewModel = getScreenModel()
         val viewState by viewModel.state.collectAsState()
 
@@ -77,10 +82,18 @@ object AuthScreen : Screen {
             mutableStateOf(true)
         }
 
+        var readyToNavigateToDashboard by remember {
+            mutableStateOf(false)
+        }
+
         LaunchedEffect(signedInUser) {
             signedInUser?.let { account ->
                 viewModel.handleIntent(AuthIntent.Auth(account))
             }
+        }
+
+        LaunchedEffect(readyToNavigateToDashboard) {
+            if (readyToNavigateToDashboard) navigator.replace(DashboardScreen)
         }
 
         Scaffold(
@@ -95,7 +108,10 @@ object AuthScreen : Screen {
                 ) {
                     Logo(
                         modifier = Modifier.weight(1f),
-                        isExpanded = expandedLogo
+                        isExpanded = expandedLogo,
+                        onLogoTransitionFinished = {
+                            readyToNavigateToDashboard = true
+                        }
                     )
 
                     Box(
@@ -137,20 +153,30 @@ object AuthScreen : Screen {
 }
 
 @Composable
-fun Logo(modifier: Modifier = Modifier, isExpanded: Boolean) {
+fun Logo(modifier: Modifier = Modifier, isExpanded: Boolean, onLogoTransitionFinished: () -> Unit) {
+    var isReadyToAnimateText by remember {
+        mutableStateOf(false)
+    }
+
     val fontSize by animateFloatAsState(
-        targetValue = if (isExpanded) 70f else 30f,
-        animationSpec = tween(durationMillis = 1000)
+        targetValue = if (!isReadyToAnimateText) 70f else 30f,
+        animationSpec = tween(durationMillis = 100),
+        finishedListener = {
+            onLogoTransitionFinished()
+        }
     )
 
     val offsetX by animateFloatAsState(
         targetValue = if (isExpanded) 78f else 10f,
-        animationSpec = tween(durationMillis = 1000)
+        animationSpec = tween(durationMillis = 300)
     )
 
     val offsetY by animateFloatAsState(
         targetValue = if (isExpanded) 320f else 6f,
-        animationSpec = tween(durationMillis = 1000)
+        animationSpec = tween(durationMillis = 300),
+        finishedListener = {
+            isReadyToAnimateText = true
+        }
     )
 
     val density = LocalDensity.current
@@ -162,8 +188,16 @@ fun Logo(modifier: Modifier = Modifier, isExpanded: Boolean) {
             .wrapContentHeight()
             .offset {
                 IntOffset(
-                    x = with(density) { offsetX.dp.toPx().toInt() },
-                    y = with(density) { offsetY.dp.toPx().toInt() }
+                    x = with(density) {
+                        offsetX.dp
+                            .toPx()
+                            .toInt()
+                    },
+                    y = with(density) {
+                        offsetY.dp
+                            .toPx()
+                            .toInt()
+                    }
                 )
             },
         contentAlignment = Alignment.TopStart
