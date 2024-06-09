@@ -1,7 +1,11 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -22,6 +26,12 @@ android {
     }
 
     buildTypes {
+        val googleWebClientId: String = gradleLocalProperties(rootDir).getProperty("GOOGLE_WEB_CLIENT_ID")
+
+        getByName("debug") {
+            buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"$googleWebClientId\"")
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -39,6 +49,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
@@ -70,9 +81,16 @@ dependencies {
 
     implementation(libs.voyager.nav)
     implementation(libs.voyager.transitions)
+    implementation(libs.voyager.screenModel)
+    implementation(libs.voyager.koin)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.auth)
+
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services)
+    implementation(libs.google.id)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
@@ -80,4 +98,5 @@ dependencies {
     implementation(libs.kermit)
 
     implementation(project(":nutritiondatabase"))
+    implementation(project(":auth"))
 }
