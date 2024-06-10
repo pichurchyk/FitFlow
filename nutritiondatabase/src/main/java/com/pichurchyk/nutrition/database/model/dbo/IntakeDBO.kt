@@ -10,5 +10,6 @@ data class IntakeDBO(
     @PrimaryKey(autoGenerate = false)
     val date: Date,
     val value: Double,
+    val calories: Int,
     val type: IntakeType
 )

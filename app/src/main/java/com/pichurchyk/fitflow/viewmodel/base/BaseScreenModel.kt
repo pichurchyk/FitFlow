@@ -1,4 +1,4 @@
-package com.pichurchyk.fitflow.viewmodel
+package com.pichurchyk.fitflow.viewmodel.base
 
 import cafe.adriel.voyager.core.model.ScreenModel
 

@@ -97,6 +97,7 @@ dependencies {
 
     implementation(libs.kermit)
 
+    implementation(project(":common"))
     implementation(project(":nutritiondatabase"))
     implementation(project(":auth"))
 }

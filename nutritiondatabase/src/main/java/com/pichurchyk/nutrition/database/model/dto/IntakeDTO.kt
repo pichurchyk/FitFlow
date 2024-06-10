@@ -6,9 +6,14 @@ import java.util.Date
 data class IntakeDTO(
     val date: Date,
     val value: Double,
+    val calories: Int,
     val type: IntakeType
 )
 
 fun List<IntakeDTO>.getIntakesSum(): Double {
     return this.sumOf { intake -> intake.value }
+}
+
+fun List<IntakeDTO>.getCaloriesSum(): Int {
+    return this.sumOf { intake -> intake.calories }
 }

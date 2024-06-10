@@ -5,7 +5,7 @@ import com.google.firebase.auth.AuthCredential
 import com.pichurchyk.fitflow.auth.model.SignInResult
 import com.pichurchyk.fitflow.auth.usecase.CheckIsUserAuthenticatedUseCase
 import com.pichurchyk.fitflow.auth.usecase.SignInUseCase
-import com.pichurchyk.fitflow.viewmodel.BaseScreenModel
+import com.pichurchyk.fitflow.viewmodel.base.BaseScreenModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch

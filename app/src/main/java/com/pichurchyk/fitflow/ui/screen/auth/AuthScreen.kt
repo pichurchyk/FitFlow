@@ -48,7 +48,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.pichurchyk.fitflow.R
 import com.pichurchyk.fitflow.ui.common.CustomSnackbar
-import com.pichurchyk.fitflow.ui.common.Error
+import com.pichurchyk.fitflow.ui.common.ErrorBottomSheet
 import com.pichurchyk.fitflow.ui.common.Loader
 import com.pichurchyk.fitflow.ui.screen.dashboard.DashboardScreen
 import com.pichurchyk.fitflow.ui.theme.AppTheme
@@ -139,7 +139,7 @@ object AuthScreen : Screen {
 
                             is AuthViewState.Error -> {
                                 val errorMessage = (viewState as AuthViewState.Error).message
-                                Error(
+                                ErrorBottomSheet(
                                     errorMessage = errorMessage,
                                     onDismiss = { viewModel.handleIntent(AuthIntent.Clear) }
                                 )

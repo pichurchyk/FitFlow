@@ -2,4 +2,9 @@
     <string name="app_name">FitFlow</string>
 
     <string name="google_sign_in">Sign In with Google</string>
+
+    <string name="add_intake">Add Intake</string>
+
+    <string name="got_it">Got It</string>
+    <string name="try_again">Try Again</string>
 </resources>
