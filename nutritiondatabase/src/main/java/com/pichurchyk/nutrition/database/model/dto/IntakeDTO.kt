@@ -8,12 +8,13 @@ data class IntakeDTO(
     val value: Double,
     val calories: Int,
     val type: IntakeType
-)
-
-fun List<IntakeDTO>.getIntakesSum(): Double {
-    return this.sumOf { intake -> intake.value }
-}
-
-fun List<IntakeDTO>.getCaloriesSum(): Int {
-    return this.sumOf { intake -> intake.calories }
+) {
+    companion object {
+        fun empty(date: Date, type: IntakeType) = IntakeDTO(
+            date = date,
+            value = 0.0,
+            calories = 0,
+            type = type
+        )
+    }
 }

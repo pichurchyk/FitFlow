@@ -12,8 +12,6 @@ sealed class DashboardViewState() {
 
         data object Loading: ShowData()
 
-        data object Empty: ShowData()
-
         data class Loaded(val data: DailyInfoDTO): ShowData()
 
     }

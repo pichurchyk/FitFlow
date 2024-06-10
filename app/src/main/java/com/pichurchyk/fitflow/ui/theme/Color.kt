@@ -247,3 +247,7 @@ val onCustomColorDarkHighContrast = Color(0xFF000000)
 val customColorContainerDarkHighContrast = Color(0xFFABCDFF)
 val onCustomColorContainerDarkHighContrast = Color(0xFF000000)
 
+val color_fat = Color(0xFFC5910C)
+val color_protein = Color(0xFF0C8F08)
+val color_carbs = Color(0xFFBD0B26)
+val color_water = Color(0xFF3880DA)

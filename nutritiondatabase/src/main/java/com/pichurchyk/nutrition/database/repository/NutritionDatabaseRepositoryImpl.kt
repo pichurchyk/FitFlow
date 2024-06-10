@@ -7,12 +7,10 @@ import com.pichurchyk.nutrition.database.mapper.IntakeMapper
 import com.pichurchyk.nutrition.database.model.IntakeType
 import com.pichurchyk.nutrition.database.model.dto.DailyInfoDTO
 import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
-import com.pichurchyk.nutrition.database.model.dto.getCaloriesSum
-import com.pichurchyk.nutrition.database.model.dto.getIntakesSum
+import com.pichurchyk.nutrition.database.model.ext.getCaloriesSum
+import com.pichurchyk.nutrition.database.model.ext.getIntakesSum
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import java.util.Date
 
 internal class NutritionDatabaseRepositoryImpl(private val dao: NutritionDao) :

@@ -1,8 +1,10 @@
 package com.pichurchyk.fitflow.ui.screen.dashboard
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -30,14 +33,15 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.common.ext.toDateString
 import com.pichurchyk.fitflow.ui.common.CustomSnackbar
 import com.pichurchyk.fitflow.ui.common.ErrorBottomSheet
-import com.pichurchyk.fitflow.viewmodel.auth.AuthIntent
-import com.pichurchyk.fitflow.viewmodel.auth.AuthViewState
+import com.pichurchyk.fitflow.ui.common.Loader
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardIntent
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardViewModel
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardViewState
+import com.pichurchyk.nutrition.database.model.ext.getCarbs
+import com.pichurchyk.nutrition.database.model.ext.getFat
+import com.pichurchyk.nutrition.database.model.ext.getProtein
 import java.util.Date
 
 object DashboardScreen : Screen {
@@ -67,13 +71,13 @@ object DashboardScreen : Screen {
                         .padding(paddingValues)
                 ) {
                     Header(
-                        modifier = Modifier,
+                        modifier = Modifier.fillMaxWidth(),
                         date = selectedDate
                     )
 
-                    when(viewState) {
+                    when (viewState) {
                         is DashboardViewState.Error -> {
-                            val errorMessage = (viewState as AuthViewState.Error).message
+                            val errorMessage = (viewState as DashboardViewState.Error).message
                             ErrorBottomSheet(
                                 errorMessage = errorMessage,
                                 dismissButtonText = stringResource(id = R.string.try_again),
@@ -86,7 +90,11 @@ object DashboardScreen : Screen {
                         is DashboardViewState.Init -> {}
 
                         is DashboardViewState.ShowData -> {
-
+                            val showDataState = viewState as DashboardViewState.ShowData
+                            MainContent(
+                                modifier = Modifier,
+                                state = showDataState
+                            )
                         }
                     }
                 }
@@ -108,11 +116,48 @@ object DashboardScreen : Screen {
     }
 
     @Composable
+    private fun MainContent(
+        modifier: Modifier = Modifier,
+        state: DashboardViewState.ShowData
+    ) {
+        Column(
+            modifier = modifier,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            when (state) {
+                is DashboardViewState.ShowData.Loading -> {
+                    Loader()
+                }
+
+                is DashboardViewState.ShowData.Loaded -> {
+                    CaloriesTotal(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 30.dp),
+                        value = state.data.caloriesSum
+                    )
+
+                    IntakesRate(
+                        modifier = Modifier.fillMaxWidth(),
+                        fat = state.data.getFat(),
+                        carbs = state.data.getCarbs(),
+                        protein = state.data.getProtein(),
+                    )
+                }
+            }
+        }
+    }
+
+    @Composable
     private fun Header(
         modifier: Modifier = Modifier,
         date: Date
     ) {
-        Row {
+        Row(
+            modifier = modifier,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Top
+        ) {
             Text(
                 modifier = Modifier.offset(x = 10f.dp, y = 6f.dp),
                 text = stringResource(id = R.string.app_name),
@@ -122,21 +167,9 @@ object DashboardScreen : Screen {
             )
 
             Date(
+                modifier = Modifier.padding(top = 10.dp, end = 12.dp),
                 date = date
             )
         }
-    }
-
-    @Composable
-    private fun Date(
-        modifier: Modifier = Modifier,
-        date: Date,
-    ) {
-        Text(
-            modifier = modifier,
-            text = date.toDateString(),
-            fontSize = 25.sp,
-            color = MaterialTheme.colorScheme.onBackground
-        )
     }
 }
