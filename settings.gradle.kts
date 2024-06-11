@@ -16,3 +16,6 @@ dependencyResolutionManagement {
 rootProject.name = "FitFlow"
 include(":app")
 include(":nutritiondatabase")
+include(":nutritiondatabase:api")
+include(":app:auth")
+include(":auth")

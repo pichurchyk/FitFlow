@@ -14,11 +14,11 @@ import com.pichurchyk.nutrition.database.model.dbo.IntakeDBO
     version = 1
 )
 @TypeConverters(TypeConverter::class)
-abstract class NutritionDatabase : RoomDatabase() {
+internal abstract class NutritionDatabase : RoomDatabase() {
     abstract fun dao(): NutritionDao
 }
 
-fun NutritionDatabase(applicationContext: Context): NutritionDatabase {
+internal fun NutritionDatabase(applicationContext: Context): NutritionDatabase {
     return Room.databaseBuilder(
         applicationContext,
         NutritionDatabase::class.java,

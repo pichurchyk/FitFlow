@@ -10,7 +10,7 @@ import com.pichurchyk.nutrition.database.model.IntakeType
 import java.util.Date
 
 @Dao
-interface NutritionDao {
+internal interface NutritionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveIntake(intake: IntakeDBO)
