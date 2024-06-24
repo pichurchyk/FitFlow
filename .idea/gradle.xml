@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/app/auth" />
             <option value="$PROJECT_DIR$/auth" />
+            <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/nutritiondatabase" />
             <option value="$PROJECT_DIR$/nutritiondatabase/api" />
           </set>

@@ -7,6 +7,11 @@
 
     <string name="got_it">Got It</string>
     <string name="try_again">Try Again</string>
+    <string name="submit">Submit</string>
+    <string name="success">Success</string>
+
+    <string name="zero">0</string>
+    <string name="zero_grams">0 grams</string>
 
     <string name="total">Total</string>
     <string name="kcal">kcal</string>
@@ -14,4 +19,8 @@
     <string name="fat">Fat</string>
     <string name="carbs">Carbs</string>
     <string name="protein">Protein</string>
+    <string name="calories">Calories</string>
+
+    <string name="validation_empty_calories">Calories can not be zero</string>
+    <string name="validation_intake_empty_fields">You need fill at least one field</string>
 </resources>

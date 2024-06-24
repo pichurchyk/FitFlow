@@ -22,26 +22,24 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.pichurchyk.fitflow.R
 import com.pichurchyk.fitflow.ui.common.CustomSnackbar
 import com.pichurchyk.fitflow.ui.common.ErrorBottomSheet
 import com.pichurchyk.fitflow.ui.common.Loader
+import com.pichurchyk.fitflow.ui.screen.addintake.AddIntakeScreen
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardIntent
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardViewModel
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardViewState
-import com.pichurchyk.nutrition.database.model.ext.getCarbs
-import com.pichurchyk.nutrition.database.model.ext.getFat
-import com.pichurchyk.nutrition.database.model.ext.getProtein
 import java.util.Date
 
 object DashboardScreen : Screen {
@@ -49,14 +47,13 @@ object DashboardScreen : Screen {
 
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+
         val viewModel: DashboardViewModel = getScreenModel()
         val viewState by viewModel.state.collectAsState()
         val selectedDate by viewModel.selectedDate.collectAsState()
 
         val snackbarHostState = remember { SnackbarHostState() }
-
-        val coroutineScope = rememberCoroutineScope()
-        val context = LocalContext.current
 
         LaunchedEffect(Unit) {
             viewModel.handleIntent(DashboardIntent.LoadData)
@@ -75,9 +72,9 @@ object DashboardScreen : Screen {
                         date = selectedDate
                     )
 
-                    when (viewState) {
+                    when (val state = viewState) {
                         is DashboardViewState.Error -> {
-                            val errorMessage = (viewState as DashboardViewState.Error).message
+                            val errorMessage = state.message
                             ErrorBottomSheet(
                                 errorMessage = errorMessage,
                                 dismissButtonText = stringResource(id = R.string.try_again),
@@ -90,10 +87,9 @@ object DashboardScreen : Screen {
                         is DashboardViewState.Init -> {}
 
                         is DashboardViewState.ShowData -> {
-                            val showDataState = viewState as DashboardViewState.ShowData
                             MainContent(
                                 modifier = Modifier,
-                                state = showDataState
+                                state = state
                             )
                         }
                     }
@@ -101,7 +97,9 @@ object DashboardScreen : Screen {
             },
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = {},
+                    onClick = {
+                        navigator.push(AddIntakeScreen)
+                    },
                     shape = RoundedCornerShape(10.dp),
                     containerColor = MaterialTheme.colorScheme.primary
                 ) {
@@ -139,9 +137,9 @@ object DashboardScreen : Screen {
 
                     IntakesRate(
                         modifier = Modifier.fillMaxWidth(),
-                        fat = state.data.getFat(),
-                        carbs = state.data.getCarbs(),
-                        protein = state.data.getProtein(),
+                        fat = state.getSummaryFat(),
+                        carbs = state.getSummaryCarbs(),
+                        protein = state.getSummaryProtein(),
                     )
                 }
             }

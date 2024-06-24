@@ -6,5 +6,5 @@ import java.util.Date
 class GetDailyInfoUseCase(
     private val repository: NutritionDatabaseRepository
 ) {
-    suspend fun invoke(date: Date) = repository.getDailyInfoNew(date)
+    suspend fun invoke(date: Date) = repository.getDailyInfo(date)
 }

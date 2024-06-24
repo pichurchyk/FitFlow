@@ -29,32 +29,31 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pichurchyk.fitflow.ui.ext.getColor
 import com.pichurchyk.fitflow.ui.ext.getTitle
-import com.pichurchyk.fitflow.ui.theme.AppTheme
 import com.pichurchyk.nutrition.database.model.IntakeType
-import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
-import java.util.Date
 
 @Composable
 fun IntakesRate(
     modifier: Modifier = Modifier,
-    fat: IntakeDTO,
-    protein: IntakeDTO,
-    carbs: IntakeDTO
+    fat: Int,
+    protein: Int,
+    carbs: Int
 ) {
+    val carbsRate = IntakeRate(type = IntakeType.CARBS, value = carbs)
+    val fatRate = IntakeRate(type = IntakeType.FAT, value = fat)
+    val proteinRate = IntakeRate(type = IntakeType.PROTEIN, value = protein)
     Column(modifier = modifier) {
-        IntakeRateItem(modifier = Modifier.fillMaxWidth(), intake = carbs, limit = 120.0)
-        IntakeRateItem(modifier = Modifier.fillMaxWidth(), intake = protein, limit = 186.0)
-        IntakeRateItem(modifier = Modifier.fillMaxWidth(), intake = fat, limit = 65.0)
+        IntakeRateItem(modifier = Modifier.fillMaxWidth(), intake = carbsRate, limit = 120.0)
+        IntakeRateItem(modifier = Modifier.fillMaxWidth(), intake = proteinRate, limit = 186.0)
+        IntakeRateItem(modifier = Modifier.fillMaxWidth(), intake = fatRate, limit = 65.0)
     }
 }
 
 @Composable
-private fun IntakeRateItem(modifier: Modifier, intake: IntakeDTO, limit: Double) {
+private fun IntakeRateItem(modifier: Modifier, intake: IntakeRate, limit: Double) {
     Box(modifier = modifier.height(34.dp), contentAlignment = Alignment.Center) {
         AnimatedProgressIndicator(
             modifier = Modifier
@@ -103,7 +102,7 @@ private fun IntakeRateItem(modifier: Modifier, intake: IntakeDTO, limit: Double)
 @Composable
 private fun AnimatedProgressIndicator(
     modifier: Modifier,
-    intake: IntakeDTO,
+    intake: IntakeRate,
     limit: Double
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -125,18 +124,7 @@ private fun AnimatedProgressIndicator(
     )
 }
 
-@Composable
-@Preview(showSystemUi = true)
-private fun Preview() {
-    val intakeFat = IntakeDTO(Date(), 10.0, 100, IntakeType.FAT)
-    val intakeCarbs = IntakeDTO(Date(), 120.0, 100, IntakeType.CARBS)
-    val intakeProtein = IntakeDTO(Date(), 65.0, 100, IntakeType.PROTEIN)
-    AppTheme {
-        IntakesRate(
-            modifier = Modifier.fillMaxWidth(),
-            fat = intakeFat,
-            carbs = intakeCarbs,
-            protein = intakeProtein
-        )
-    }
-}
+private data class IntakeRate(
+    val value: Int,
+    val type: IntakeType
+)

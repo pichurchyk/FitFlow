@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.pichurchyk.fitflow.R
 import com.pichurchyk.fitflow.ui.theme.AppFont
 import com.pichurchyk.fitflow.ui.theme.AppTheme
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,9 +37,10 @@ fun ErrorBottomSheet(
     onDismiss: () -> Unit = {},
     dismissButtonText: String = stringResource(id = R.string.got_it)
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val bottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
-    val sheetState = rememberModalBottomSheetState(true)
+    val sheetState = rememberModalBottomSheetState(false)
 
     ModalBottomSheet(
         sheetState = sheetState,
@@ -51,7 +53,12 @@ fun ErrorBottomSheet(
         BottomSheetContent(
             errorMessage = errorMessage,
             okButtonText = dismissButtonText,
-            onDismiss = onDismiss
+            onDismiss = {
+                coroutineScope.launch {
+                    sheetState.hide()
+                    onDismiss.invoke()
+                }
+            }
         )
     }
 }
@@ -67,10 +74,12 @@ private fun BottomSheetContent(
             .wrapContentHeight()
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.error)
-            .padding(16.dp),
+            .padding(16.dp)
+            .padding(bottom = 50.dp),
         horizontalAlignment = Alignment.End
     ) {
         Text(
+            modifier = Modifier.fillMaxWidth(),
             text = errorMessage,
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.onError
@@ -108,7 +117,7 @@ private fun DismissButton(modifier: Modifier = Modifier, text: String, onDismiss
 private fun Preview() {
     AppTheme {
         BottomSheetContent(
-            errorMessage = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lo",
+            errorMessage = "Lorem Ipsum i",
             okButtonText = "Got it",
             onDismiss = {}
         )

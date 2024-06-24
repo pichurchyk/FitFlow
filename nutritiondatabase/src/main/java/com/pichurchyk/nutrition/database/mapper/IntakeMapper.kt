@@ -9,13 +9,12 @@ object IntakeMapper {
         date = dto.date,
         value = dto.value,
         type = dto.type,
-        calories = dto.calories
     )
 
     fun fromDbo(dbo: IntakeDBO): IntakeDTO = IntakeDTO(
         date = dbo.date,
         value = dbo.value,
         type = dbo.type,
-        calories = dbo.calories
+        id = dbo.id
     )
 }

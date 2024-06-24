@@ -7,14 +7,12 @@ import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 interface NutritionDatabaseRepository {
-    suspend fun saveIntake(intake: IntakeDTO)
+    suspend fun saveIntake(intake: IntakeDTO): Flow<Unit>
 
     suspend fun removeIntake(intake: IntakeDTO)
 
     suspend fun getAllIntakesByDateAndType(date: Date, type: IntakeType): List<IntakeDTO>
 
-    suspend fun getDailyInfo(date: Date): DailyInfoDTO
-
-    suspend fun getDailyInfoNew(date: Date): Flow<DailyInfoDTO>
+    suspend fun getDailyInfo(date: Date): Flow<DailyInfoDTO>
 
 }

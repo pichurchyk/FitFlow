@@ -67,7 +67,9 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
-    implementation(libs.ui)
+    implementation(libs.androidx.animation) // For animations
+    implementation(libs.androidx.foundation) // For foundation components
+    implementation(libs.androidx.material) // For material components (like buttons)    implementation(libs.ui)
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
