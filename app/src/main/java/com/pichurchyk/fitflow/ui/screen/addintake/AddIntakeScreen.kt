@@ -57,15 +57,21 @@ import com.pichurchyk.fitflow.viewmodel.addintake.AddIntakeViewModel
 import com.pichurchyk.fitflow.viewmodel.addintake.AddIntakeViewState
 import com.pichurchyk.nutrition.database.model.IntakeType
 import kotlinx.coroutines.delay
+import org.koin.core.parameter.parametersOf
+import java.util.Date
 
-object AddIntakeScreen : Screen {
-    private fun readResolve(): Any = AddIntakeScreen
+class AddIntakeScreen(
+    private val selectedDate: Date? = Date()
+) : Screen {
+    private fun readResolve(): Any = AddIntakeScreen()
 
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
 
-        val viewModel: AddIntakeViewModel = getScreenModel()
+        val viewModel: AddIntakeViewModel = getScreenModel(
+            parameters = { parametersOf(selectedDate) }
+        )
         val viewState by viewModel.state.collectAsState()
 
         val snackbarHostState = remember { SnackbarHostState() }

@@ -21,7 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -33,6 +35,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.pichurchyk.fitflow.R
+import com.pichurchyk.fitflow.ui.common.Calendar
 import com.pichurchyk.fitflow.ui.common.CustomSnackbar
 import com.pichurchyk.fitflow.ui.common.ErrorBottomSheet
 import com.pichurchyk.fitflow.ui.common.Loader
@@ -55,6 +58,10 @@ object DashboardScreen : Screen {
 
         val snackbarHostState = remember { SnackbarHostState() }
 
+        var isCalendarVisible by remember {
+            mutableStateOf(false)
+        }
+
         LaunchedEffect(Unit) {
             viewModel.handleIntent(DashboardIntent.LoadData)
         }
@@ -69,7 +76,10 @@ object DashboardScreen : Screen {
                 ) {
                     Header(
                         modifier = Modifier.fillMaxWidth(),
-                        date = selectedDate
+                        date = selectedDate,
+                        onDateClick = { isCalendarVisible = true },
+                        onNextDateClick = { viewModel.handleIntent(DashboardIntent.SelectNextDate) },
+                        onPreviousDateClick = { viewModel.handleIntent(DashboardIntent.SelectPreviousDate) }
                     )
 
                     when (val state = viewState) {
@@ -89,7 +99,18 @@ object DashboardScreen : Screen {
                         is DashboardViewState.ShowData -> {
                             MainContent(
                                 modifier = Modifier,
-                                state = state
+                                state = state,
+                                isCalendarVisible = isCalendarVisible,
+                                onDateSelected = {
+                                    viewModel.handleIntent(
+                                        DashboardIntent.ChangeDate(
+                                            it
+                                        )
+                                    )
+
+                                    isCalendarVisible = false
+                                },
+                                onCalendarClosed = { isCalendarVisible = false }
                             )
                         }
                     }
@@ -98,7 +119,7 @@ object DashboardScreen : Screen {
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
-                        navigator.push(AddIntakeScreen)
+                        navigator.push(AddIntakeScreen(selectedDate))
                     },
                     shape = RoundedCornerShape(10.dp),
                     containerColor = MaterialTheme.colorScheme.primary
@@ -116,6 +137,9 @@ object DashboardScreen : Screen {
     @Composable
     private fun MainContent(
         modifier: Modifier = Modifier,
+        isCalendarVisible: Boolean,
+        onDateSelected: (Date) -> Unit,
+        onCalendarClosed: () -> Unit,
         state: DashboardViewState.ShowData
     ) {
         Column(
@@ -141,6 +165,15 @@ object DashboardScreen : Screen {
                         carbs = state.getSummaryCarbs(),
                         protein = state.getSummaryProtein(),
                     )
+
+                    if (isCalendarVisible) {
+                        Calendar(
+                            modifier = Modifier,
+                            onDateSelected = onDateSelected,
+                            onDismiss = onCalendarClosed,
+                            selectedDate = state.data.date
+                        )
+                    }
                 }
             }
         }
@@ -149,7 +182,10 @@ object DashboardScreen : Screen {
     @Composable
     private fun Header(
         modifier: Modifier = Modifier,
-        date: Date
+        date: Date,
+        onDateClick: () -> Unit,
+        onNextDateClick: () -> Unit,
+        onPreviousDateClick: () -> Unit
     ) {
         Row(
             modifier = modifier,
@@ -165,8 +201,12 @@ object DashboardScreen : Screen {
             )
 
             Date(
-                modifier = Modifier.padding(top = 10.dp, end = 12.dp),
-                date = date
+                modifier = Modifier
+                    .padding(top = 10.dp, end = 12.dp),
+                date = date,
+                onDateClick = onDateClick,
+                onNextClick = onNextDateClick,
+                onPreviousClick = onPreviousDateClick
             )
         }
     }
