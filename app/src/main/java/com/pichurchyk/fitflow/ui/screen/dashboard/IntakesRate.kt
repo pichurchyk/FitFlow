@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
@@ -27,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -46,14 +49,14 @@ fun IntakesRate(
     val fatRate = IntakeRate(type = IntakeType.FAT, value = fat)
     val proteinRate = IntakeRate(type = IntakeType.PROTEIN, value = protein)
     Column(modifier = modifier) {
-        IntakeRateItem(modifier = Modifier.fillMaxWidth(), intake = carbsRate, limit = 120.0)
-        IntakeRateItem(modifier = Modifier.fillMaxWidth(), intake = proteinRate, limit = 186.0)
-        IntakeRateItem(modifier = Modifier.fillMaxWidth(), intake = fatRate, limit = 65.0)
+        IntakeRateItem(modifier = Modifier.fillMaxWidth(), intake = carbsRate, limit = 120)
+        IntakeRateItem(modifier = Modifier.fillMaxWidth(), intake = proteinRate, limit = 186)
+        IntakeRateItem(modifier = Modifier.fillMaxWidth(), intake = fatRate, limit = 65)
     }
 }
 
 @Composable
-private fun IntakeRateItem(modifier: Modifier, intake: IntakeRate, limit: Double) {
+private fun IntakeRateItem(modifier: Modifier, intake: IntakeRate, limit: Int) {
     Box(modifier = modifier.height(34.dp), contentAlignment = Alignment.Center) {
         AnimatedProgressIndicator(
             modifier = Modifier
@@ -66,13 +69,17 @@ private fun IntakeRateItem(modifier: Modifier, intake: IntakeRate, limit: Double
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).wrapContentSize(align = Alignment.CenterStart, unbounded = true),
                 text = intake.value.toString(),
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Medium
+                color = MaterialTheme.colorScheme.background,
+                fontSize = 48.sp,
+                letterSpacing = (-4).sp,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Start,
             )
             Box(
                 modifier = Modifier
@@ -89,10 +96,12 @@ private fun IntakeRateItem(modifier: Modifier, intake: IntakeRate, limit: Double
                 )
             }
             Text(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).wrapContentSize(align = Alignment.CenterEnd, unbounded = true),
                 text = limit.toString(),
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.background,
+                fontSize = 48.sp,
+                letterSpacing = (-4).sp,
+                fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.End
             )
         }
@@ -103,7 +112,7 @@ private fun IntakeRateItem(modifier: Modifier, intake: IntakeRate, limit: Double
 private fun AnimatedProgressIndicator(
     modifier: Modifier,
     intake: IntakeRate,
-    limit: Double
+    limit: Int
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     var progress by remember { mutableStateOf(0F) }
