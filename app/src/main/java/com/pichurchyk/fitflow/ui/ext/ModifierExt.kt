@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 
@@ -26,5 +27,18 @@ fun Modifier.clearFocusOnClick(): Modifier {
         keyboardController?.hide()
         focusManager.clearFocus()
 
+    }
+}
+
+fun Modifier.doOnClick(
+    onClick: () -> Unit
+) = composed {
+    val interactionSource = remember { MutableInteractionSource() }
+
+    this.clickable(
+        interactionSource = interactionSource,
+        indication = null
+    ) {
+        onClick()
     }
 }

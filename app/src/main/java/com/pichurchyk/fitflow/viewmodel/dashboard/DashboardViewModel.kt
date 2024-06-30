@@ -1,6 +1,8 @@
 package com.pichurchyk.fitflow.viewmodel.dashboard
 
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.pichurchyk.fitflow.common.ext.getNextDay
+import com.pichurchyk.fitflow.common.ext.getPreviousDay
 import com.pichurchyk.fitflow.common.ext.toStartOfDay
 import com.pichurchyk.fitflow.viewmodel.base.BaseScreenModel
 import com.pichurchyk.nutrition.database.usecase.GetDailyInfoUseCase
@@ -19,6 +21,14 @@ class DashboardViewModel(
     private val _selectedDate = MutableStateFlow(Date().toStartOfDay())
     val selectedDate = _selectedDate.asStateFlow()
 
+    init {
+        screenModelScope.launch {
+            selectedDate.collect {
+                loadData()
+            }
+        }
+    }
+
     fun handleIntent(intent: DashboardIntent) {
         when (intent) {
             is DashboardIntent.LoadData -> {
@@ -28,7 +38,23 @@ class DashboardViewModel(
             is DashboardIntent.ChangeDate -> {
                 changeDate(intent.date).also { loadData() }
             }
+
+            is DashboardIntent.SelectNextDate -> {
+                selectNextDate()
+            }
+
+            is DashboardIntent.SelectPreviousDate -> {
+                selectPreviousDate()
+            }
         }
+    }
+
+    private fun selectNextDate() {
+        _selectedDate.value = _selectedDate.value.getNextDay()
+    }
+
+    private fun selectPreviousDate() {
+        _selectedDate.value = _selectedDate.value.getPreviousDay()
     }
 
     private fun changeDate(date: Date) {

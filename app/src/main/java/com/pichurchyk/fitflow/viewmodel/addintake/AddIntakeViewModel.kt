@@ -16,7 +16,8 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 class AddIntakeViewModel(
-    private val addIntakeUseCase: SaveIntakeUseCase
+    private val addIntakeUseCase: SaveIntakeUseCase,
+    private val date: Date
 ) : ScreenModel {
 
     private val _state = MutableStateFlow<AddIntakeViewState>(
@@ -128,7 +129,7 @@ class AddIntakeViewModel(
         val inputState = (state.value as AddIntakeViewState.Init)
         val updatedIntakes = inputState.intakes.map { intake ->
             if (intake.type == intakeType) {
-                intake.copy(value = value)
+                intake.copy(value = value, date = date)
             } else {
                 intake
             }
