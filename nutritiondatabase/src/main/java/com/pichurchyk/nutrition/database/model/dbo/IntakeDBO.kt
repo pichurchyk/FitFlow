@@ -7,8 +7,9 @@ import java.util.Date
 
 @Entity(tableName = "Intake")
 data class IntakeDBO(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
     val date: Date,
-    val value: Double,
+    val value: Int,
     val type: IntakeType
 )

@@ -5,20 +5,24 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.pichurchyk.nutrition.database.model.dbo.DailyIntakeSummary
 import com.pichurchyk.nutrition.database.model.dbo.IntakeDBO
 
 @Database(
     entities = [
         IntakeDBO::class
                ],
+    views = [
+        DailyIntakeSummary::class
+            ],
     version = 1
 )
 @TypeConverters(TypeConverter::class)
-abstract class NutritionDatabase : RoomDatabase() {
+internal abstract class NutritionDatabase : RoomDatabase() {
     abstract fun dao(): NutritionDao
 }
 
-fun NutritionDatabase(applicationContext: Context): NutritionDatabase {
+internal fun NutritionDatabase(applicationContext: Context): NutritionDatabase {
     return Room.databaseBuilder(
         applicationContext,
         NutritionDatabase::class.java,

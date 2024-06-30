@@ -3,7 +3,7 @@ package com.pichurchyk.nutrition.database
 import androidx.room.TypeConverter
 import java.util.Date
 
-class TypeConverter {
+internal class TypeConverter {
 
     @TypeConverter
     fun fromDate(date: Date): Long = date.time
