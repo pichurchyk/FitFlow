@@ -4,6 +4,7 @@ import com.pichurchyk.nutrition.database.model.dto.DailyInfoDTO
 import com.pichurchyk.nutrition.database.model.ext.getCarbs
 import com.pichurchyk.nutrition.database.model.ext.getFat
 import com.pichurchyk.nutrition.database.model.ext.getProtein
+import com.pichurchyk.nutrition.database.model.ext.getWater
 
 sealed class DashboardViewState() {
 
@@ -19,6 +20,7 @@ sealed class DashboardViewState() {
             fun getSummaryFat(): Int = data.getFat().sumOf { it.value }
             fun getSummaryProtein(): Int = data.getProtein().sumOf { it.value }
             fun getSummaryCarbs(): Int = data.getCarbs().sumOf { it.value }
+            fun getSummaryWater(): Int = data.getWater().sumOf { it.value }
         }
 
     }

@@ -15,3 +15,7 @@ fun DailyInfoDTO.getCarbs(): List<IntakeDTO> {
 fun DailyInfoDTO.getProtein(): List<IntakeDTO> {
     return this.intakes.filter { it.type == IntakeType.PROTEIN }
 }
+
+fun DailyInfoDTO.getWater(): List<IntakeDTO> {
+    return this.intakes.filter { it.type == IntakeType.WATER }
+}
