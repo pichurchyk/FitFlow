@@ -40,10 +40,16 @@ import com.pichurchyk.fitflow.ui.common.Calendar
 import com.pichurchyk.fitflow.ui.common.CustomSnackbar
 import com.pichurchyk.fitflow.ui.common.ErrorBottomSheet
 import com.pichurchyk.fitflow.ui.common.Loader
+import com.pichurchyk.fitflow.ui.common.RadialProgress
+import com.pichurchyk.fitflow.ui.ext.getColor
 import com.pichurchyk.fitflow.ui.screen.addintake.AddIntakeScreen
+import com.pichurchyk.fitflow.ui.screen.dashboard.components.DashboardItemWrapper
+import com.pichurchyk.fitflow.ui.screen.dashboard.components.DashboardItemWrapperType
+import com.pichurchyk.fitflow.ui.screen.dashboard.components.IntakesBlock
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardIntent
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardViewModel
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardViewState
+import com.pichurchyk.nutrition.database.model.IntakeType
 import java.util.Date
 
 object DashboardScreen : Screen {
@@ -154,30 +160,33 @@ object DashboardScreen : Screen {
                 }
 
                 is DashboardViewState.ShowData.Loaded -> {
-                    CaloriesTotal(
+                    IntakesBlock(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 30.dp),
-                        value = state.data.caloriesSum
-                    )
-
-                    IntakesRate(
-                        modifier = Modifier.fillMaxWidth(),
-                        fat = state.getSummaryFat(),
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 40.dp),
+                        calories = state.data.caloriesSum, fat = state.getSummaryFat(),
                         carbs = state.getSummaryCarbs(),
                         protein = state.getSummaryProtein(),
                     )
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        WaterIntakeRate(
-                            modifier = Modifier,
-                            value = state.getSummaryWater(),
-                            limit = 3000
-                        )
-                    }
+                    DashboardItemWrapper(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 40.dp),
+                        type = DashboardItemWrapperType.FULL,
+                        title = R.string.water,
+                        subtitle = R.string.total,
+                        mainText = stringResource(id = R.string.ml_value, state.getSummaryWater()),
+                        needBottomRadius = true,
+                        content = {
+                            RadialProgress(
+                                modifier = Modifier,
+                                color = IntakeType.WATER.getColor(),
+                                value = state.getSummaryWater(),
+                                limit = 100
+                            )
+                        }
+                    )
 
                     if (isCalendarVisible) {
                         Calendar(
