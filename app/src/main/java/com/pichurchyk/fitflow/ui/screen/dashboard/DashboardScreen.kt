@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -67,6 +68,7 @@ object DashboardScreen : Screen {
         }
 
         Scaffold(
+            modifier = Modifier.safeContentPadding(),
             snackbarHost = { SnackbarHost(snackbarHostState) { data -> CustomSnackbar(data) } },
             content = { paddingValues ->
                 Column(
@@ -165,6 +167,17 @@ object DashboardScreen : Screen {
                         carbs = state.getSummaryCarbs(),
                         protein = state.getSummaryProtein(),
                     )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        WaterIntakeRate(
+                            modifier = Modifier,
+                            value = state.getSummaryWater(),
+                            limit = 3000
+                        )
+                    }
 
                     if (isCalendarVisible) {
                         Calendar(

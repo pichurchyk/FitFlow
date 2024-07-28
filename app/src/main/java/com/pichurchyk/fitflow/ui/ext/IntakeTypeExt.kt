@@ -5,6 +5,7 @@ import com.pichurchyk.fitflow.ui.theme.color_calories
 import com.pichurchyk.fitflow.ui.theme.color_carbs
 import com.pichurchyk.fitflow.ui.theme.color_fat
 import com.pichurchyk.fitflow.ui.theme.color_protein
+import com.pichurchyk.fitflow.ui.theme.color_water
 import com.pichurchyk.nutrition.database.model.IntakeType
 
 fun IntakeType.getColor() = when (this) {
@@ -12,6 +13,7 @@ fun IntakeType.getColor() = when (this) {
     IntakeType.CARBS -> color_carbs
     IntakeType.PROTEIN -> color_protein
     IntakeType.CALORIES -> color_calories
+    IntakeType.WATER -> color_water
 }
 
 fun IntakeType.getTitle() = when (this) {
@@ -19,4 +21,5 @@ fun IntakeType.getTitle() = when (this) {
     IntakeType.CARBS -> R.string.carbs
     IntakeType.PROTEIN -> R.string.protein
     IntakeType.CALORIES -> R.string.calories
+    IntakeType.WATER -> R.string.water
 }

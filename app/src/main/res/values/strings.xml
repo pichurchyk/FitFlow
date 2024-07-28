@@ -22,6 +22,7 @@
     <string name="carbs">Carbs</string>
     <string name="protein">Protein</string>
     <string name="calories">Calories</string>
+    <string name="water">Water</string>
 
     <string name="validation_empty_calories">Calories can not be zero</string>
     <string name="validation_intake_empty_fields">You need fill at least one field</string>
