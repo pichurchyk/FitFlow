@@ -28,9 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -40,16 +38,12 @@ import com.pichurchyk.fitflow.ui.common.Calendar
 import com.pichurchyk.fitflow.ui.common.CustomSnackbar
 import com.pichurchyk.fitflow.ui.common.ErrorBottomSheet
 import com.pichurchyk.fitflow.ui.common.Loader
-import com.pichurchyk.fitflow.ui.common.RadialProgress
-import com.pichurchyk.fitflow.ui.ext.getColor
 import com.pichurchyk.fitflow.ui.screen.addintake.AddIntakeScreen
-import com.pichurchyk.fitflow.ui.screen.dashboard.components.DashboardItemWrapper
-import com.pichurchyk.fitflow.ui.screen.dashboard.components.DashboardItemWrapperType
 import com.pichurchyk.fitflow.ui.screen.dashboard.components.IntakesBlock
+import com.pichurchyk.fitflow.ui.screen.dashboard.components.WaterBlock
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardIntent
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardViewModel
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardViewState
-import com.pichurchyk.nutrition.database.model.IntakeType
 import java.util.Date
 
 object DashboardScreen : Screen {
@@ -169,23 +163,9 @@ object DashboardScreen : Screen {
                         protein = state.getSummaryProtein(),
                     )
 
-                    DashboardItemWrapper(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 40.dp),
-                        type = DashboardItemWrapperType.FULL,
-                        title = R.string.water,
-                        subtitle = R.string.total,
-                        mainText = stringResource(id = R.string.ml_value, state.getSummaryWater()),
-                        needBottomRadius = true,
-                        content = {
-                            RadialProgress(
-                                modifier = Modifier,
-                                color = IntakeType.WATER.getColor(),
-                                value = state.getSummaryWater(),
-                                limit = 100
-                            )
-                        }
+                    WaterBlock(
+                        modifier = Modifier,
+                        total = state.getSummaryWater()
                     )
 
                     if (isCalendarVisible) {
@@ -218,8 +198,7 @@ object DashboardScreen : Screen {
                 modifier = Modifier.offset(x = 10f.dp, y = 6f.dp),
                 text = stringResource(id = R.string.app_name),
                 color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.headlineLarge,
             )
 
             Date(

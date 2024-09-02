@@ -23,3 +23,11 @@ fun IntakeType.getTitle() = when (this) {
     IntakeType.CALORIES -> R.string.calories
     IntakeType.WATER -> R.string.water
 }
+
+fun IntakeType.getUnit(): Int? = when (this) {
+    IntakeType.FAT -> R.string.unit_gram
+    IntakeType.CARBS -> R.string.unit_gram
+    IntakeType.PROTEIN -> R.string.unit_gram
+    IntakeType.CALORIES -> null
+    IntakeType.WATER -> R.string.unit_ml
+}

@@ -1,12 +1,12 @@
 package com.pichurchyk.fitflow.ui.screen.dashboard.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.ui.common.RadialProgress
 import com.pichurchyk.fitflow.ui.screen.dashboard.IntakeRate
 import com.pichurchyk.fitflow.ui.theme.AppTheme
 import com.pichurchyk.nutrition.database.model.IntakeType
@@ -28,24 +28,32 @@ fun IntakesBlock(
     ) {
         DashboardItemWrapper(
             type = DashboardItemWrapperType.FULL,
-            title = R.string.intakes,
-            subtitle = R.string.calories,
+            title = stringResource(id = R.string.intakes),
+            subtitle = stringResource(id = R.string.calories),
             needBottomRadius = false,
             mainText = stringResource(id = R.string.kcal_value, calories),
             content = {
-                RadialProgress(value = calories, limit = 2000)
+                AnimatedProgressIndicator(
+                    modifier = Modifier,
+                    value = calories,
+                    type = AnimatedProgressIndicatorType.RADIAL,
+                    color = MaterialTheme.colorScheme.primary,
+                    limit = 2000
+                )
             }
         )
 
         DashboardItemWrapper(
             type = DashboardItemWrapperType.FULL,
-            subtitle = R.string.carbs,
+            subtitle = stringResource(id = R.string.carbs),
             mainText = stringResource(id = R.string.g_value, carbs),
             needBottomRadius = false,
             content = {
-                RadialProgress(
+                AnimatedProgressIndicator(
                     modifier = Modifier,
                     value = carbsRate.value,
+                    type = AnimatedProgressIndicatorType.RADIAL,
+                    color = MaterialTheme.colorScheme.primary,
                     limit = 100
                 )
             }
@@ -53,13 +61,15 @@ fun IntakesBlock(
 
         DashboardItemWrapper(
             type = DashboardItemWrapperType.FULL,
-            subtitle = R.string.protein,
+            subtitle = stringResource(id = R.string.protein),
             mainText = stringResource(id = R.string.g_value, protein),
             needBottomRadius = false,
             content = {
-                RadialProgress(
+                AnimatedProgressIndicator(
                     modifier = Modifier,
                     value = proteinRate.value,
+                    type = AnimatedProgressIndicatorType.RADIAL,
+                    color = MaterialTheme.colorScheme.primary,
                     limit = 100
                 )
             }
@@ -67,12 +77,14 @@ fun IntakesBlock(
 
         DashboardItemWrapper(
             type = DashboardItemWrapperType.FULL,
-            subtitle = R.string.fat,
+            subtitle = stringResource(id = R.string.fat),
             mainText = stringResource(id = R.string.g_value, fat),
             content = {
-                RadialProgress(
+                AnimatedProgressIndicator(
                     modifier = Modifier,
                     value = fatRate.value,
+                    type = AnimatedProgressIndicatorType.RADIAL,
+                    color = MaterialTheme.colorScheme.primary,
                     limit = 100
                 )
             }

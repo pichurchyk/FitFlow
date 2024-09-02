@@ -1,6 +1,5 @@
 package com.pichurchyk.fitflow.ui.screen.dashboard.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,31 +14,40 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pichurchyk.fitflow.R
 import com.pichurchyk.fitflow.ui.theme.AppTheme
 
 @Composable
 fun DashboardItemWrapper(
     modifier: Modifier = Modifier,
-    type: DashboardItemWrapperType,
-    @StringRes title: Int? = null,
-    @StringRes subtitle: Int,
+    type: DashboardItemWrapperType = DashboardItemWrapperType.FULL,
+    level: DashboardItemWrapperLevel = DashboardItemWrapperLevel.HIGH,
+    title: String? = null,
+    subtitle: String,
     mainText: String,
     additionalText: String? = null,
     content: @Composable() () -> Unit,
     needBottomRadius: Boolean = true,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant
 ) {
     val bottomRadius = if (needBottomRadius) 10.dp else 4.dp
     val topRadius = if (title != null) 10.dp else 4.dp
+
+    val horizontalPaddings = when (level) {
+        DashboardItemWrapperLevel.HIGH -> 0.dp
+        DashboardItemWrapperLevel.MEDIUM -> 30.dp
+        DashboardItemWrapperLevel.LOW -> 60.dp
+    }
+
     Column(
         modifier = modifier
+            .padding(start = horizontalPaddings)
     ) {
         title?.let {
             Text(
-                text = stringResource(id = title),
+                text = title,
                 style = MaterialTheme.typography.titleLarge,
             )
         }
@@ -49,7 +57,7 @@ fun DashboardItemWrapper(
                 .padding(top = if (title == null) 4.dp else 10.dp)
                 .fillMaxWidth()
                 .background(
-                    MaterialTheme.colorScheme.surfaceVariant,
+                    backgroundColor,
                     RoundedCornerShape(
                         topStart = topRadius,
                         topEnd = topRadius,
@@ -66,7 +74,7 @@ fun DashboardItemWrapper(
                 when (type) {
                     DashboardItemWrapperType.FULL -> {
                         TextColumn(
-                            subtitle = stringResource(id = subtitle),
+                            subtitle = subtitle,
                             mainText = mainText,
                             additionalText = additionalText
                         )
@@ -74,7 +82,7 @@ fun DashboardItemWrapper(
 
                     DashboardItemWrapperType.SMALL -> {
                         TextRow(
-                            subtitle = stringResource(id = subtitle),
+                            subtitle = subtitle,
                             mainText = mainText,
                             additionalText = additionalText
                         )
@@ -162,16 +170,23 @@ enum class DashboardItemWrapperType {
     SMALL
 }
 
+enum class DashboardItemWrapperLevel {
+    HIGH,
+    MEDIUM,
+    LOW
+}
+
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 private fun Preview() {
     AppTheme {
         DashboardItemWrapper(
-            title = R.string.intakes,
-            subtitle = R.string.total,
+            title = "Intakes",
+            subtitle = "Total",
             mainText = "Main text",
             additionalText = "Additional text",
             type = DashboardItemWrapperType.FULL,
+            level = DashboardItemWrapperLevel.HIGH,
             content = {
                 Box(
                     modifier = Modifier
