@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.ui.theme.AppTheme
+import com.pichurchyk.fitflow.ui.theme.TextStyles
 
 @Composable
 fun DashboardItemWrapper(
@@ -48,7 +49,7 @@ fun DashboardItemWrapper(
         title?.let {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleLarge,
+                style = TextStyles.titleLarge,
             )
         }
 
@@ -109,21 +110,21 @@ private fun TextColumn(
     Column {
         Text(
             text = subtitle,
-            style = MaterialTheme.typography.titleMedium,
+            style = TextStyles.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
         Text(
             modifier = Modifier.padding(top = 20.dp),
             text = mainText,
-            style = MaterialTheme.typography.bodyLarge,
+            style = TextStyles.bodyLarge,
         )
 
         additionalText?.let {
             Text(
                 modifier = Modifier.padding(top = 10.dp),
                 text = it,
-                style = MaterialTheme.typography.bodyMedium,
+                style = TextStyles.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }

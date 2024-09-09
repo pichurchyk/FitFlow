@@ -1,10 +1,10 @@
 package com.pichurchyk.fitflow.viewmodel.dashboard
 
-import cafe.adriel.voyager.core.model.screenModelScope
-import com.pichurchyk.fitflow.common.ext.getNextDay
-import com.pichurchyk.fitflow.common.ext.getPreviousDay
-import com.pichurchyk.fitflow.common.ext.toStartOfDay
-import com.pichurchyk.fitflow.viewmodel.base.BaseScreenModel
+import androidx.lifecycle.viewModelScope
+import com.pichurchyk.fitflow.common.ext.date.getNextDay
+import com.pichurchyk.fitflow.common.ext.date.getPreviousDay
+import com.pichurchyk.fitflow.common.ext.date.toStartOfDay
+import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
 import com.pichurchyk.nutrition.database.usecase.GetDailyInfoUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +13,7 @@ import java.util.Date
 
 class DashboardViewModel(
     private val getDailyInfoUseCase: GetDailyInfoUseCase
-): BaseScreenModel() {
+): BaseViewModel() {
 
     private val _state = MutableStateFlow<DashboardViewState>(DashboardViewState.Init)
     val state = _state.asStateFlow()
@@ -22,7 +22,7 @@ class DashboardViewModel(
     val selectedDate = _selectedDate.asStateFlow()
 
     init {
-        screenModelScope.launch {
+        viewModelScope.launch {
             selectedDate.collect {
                 loadData()
             }
@@ -62,7 +62,7 @@ class DashboardViewModel(
     }
 
     private fun loadData() {
-        screenModelScope.launch {
+        viewModelScope.launch {
             getDailyInfoUseCase.invoke(selectedDate.value)
                 .collect { summary ->
                     _state.value = DashboardViewState.ShowData.Loaded(summary)

@@ -1,11 +1,11 @@
 package com.pichurchyk.fitflow.viewmodel.auth
 
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
 import com.pichurchyk.fitflow.auth.model.SignInResult
 import com.pichurchyk.fitflow.auth.usecase.CheckIsUserAuthenticatedUseCase
 import com.pichurchyk.fitflow.auth.usecase.SignInUseCase
-import com.pichurchyk.fitflow.viewmodel.base.BaseScreenModel
+import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -16,13 +16,13 @@ import kotlinx.coroutines.launch
 class AuthViewModel(
     private val checkIsUserAuthenticatedUseCase: CheckIsUserAuthenticatedUseCase,
     private val signInUseCase: SignInUseCase
-) : BaseScreenModel() {
+) : BaseViewModel() {
 
     private val _state = MutableStateFlow<AuthViewState>(AuthViewState.Init)
     val state = _state.asStateFlow()
 
     init {
-        screenModelScope.launch {
+        viewModelScope.launch {
             checkIsUserAuthenticatedUseCase.invoke()
                 .onStart {
                     _state.update { AuthViewState.Loading }
@@ -53,7 +53,7 @@ class AuthViewModel(
     }
 
     private fun auth(credentials: AuthCredential) {
-        screenModelScope.launch {
+        viewModelScope.launch {
             signInUseCase.invoke(credentials)
                 .onStart {
                     _state.update { AuthViewState.Loading }

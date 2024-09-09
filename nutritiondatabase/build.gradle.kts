@@ -36,8 +36,8 @@ android {
 dependencies {
     implementation(project(":common"))
 
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.okhttp)

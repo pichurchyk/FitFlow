@@ -24,6 +24,12 @@
     <string name="unit_gram">g</string>
     <string name="unit_ml">ml</string>
     <string name="unit_liter">l</string>
+    <string name="unit_kcal">kcal</string>
+
+    <string name="unit_with_value_gram">%sg</string>
+    <string name="unit_with_value_ml">%sml</string>
+    <string name="unit_with_value_liter">%sl</string>
+    <string name="unit_with_value_kcal">%skcal</string>
 
     <string name="fat">Fat</string>
     <string name="carbs">Carbs</string>

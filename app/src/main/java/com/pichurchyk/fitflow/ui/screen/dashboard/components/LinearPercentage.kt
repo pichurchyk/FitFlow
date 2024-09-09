@@ -19,6 +19,7 @@ import com.pichurchyk.fitflow.R
 import com.pichurchyk.fitflow.ui.ext.getColor
 import com.pichurchyk.fitflow.ui.screen.dashboard.IntakeRate
 import com.pichurchyk.fitflow.ui.theme.AppTheme
+import com.pichurchyk.fitflow.ui.theme.TextStyles
 import com.pichurchyk.nutrition.database.model.IntakeType
 
 @Composable
@@ -45,7 +46,7 @@ fun LinearPercentage(modifier: Modifier = Modifier, intake: IntakeRate, limit: I
                 .wrapContentSize(align = Alignment.CenterEnd, unbounded = true),
             text = stringResource(id = R.string.g_value, limit),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.bodySmall,
+            style = TextStyles.bodySmall,
             textAlign = TextAlign.End
         )
     }

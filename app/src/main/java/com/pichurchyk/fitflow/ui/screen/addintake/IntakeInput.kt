@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.ui.ext.getTitle
 import com.pichurchyk.fitflow.ui.ext.getUnit
+import com.pichurchyk.fitflow.ui.theme.TextStyles
 import com.pichurchyk.nutrition.database.model.IntakeType
 
 @Composable
@@ -67,7 +68,7 @@ fun IntakeInput(
                 Text(
                     modifier = Modifier.padding(end = 10.dp),
                     text = stringResource(id = intakeType.getTitle()),
-                    style = MaterialTheme.typography.titleMedium,
+                    style = TextStyles.titleMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },

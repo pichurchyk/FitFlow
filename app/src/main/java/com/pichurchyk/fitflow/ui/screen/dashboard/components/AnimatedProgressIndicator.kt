@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.ui.theme.AppTheme
+import com.pichurchyk.fitflow.ui.theme.TextStyles
 
 @Composable
 fun AnimatedProgressIndicator(
@@ -104,7 +105,7 @@ private fun CircularProgress(
         } else {
             Text(
                 text = limit.toString(),
-                style = MaterialTheme.typography.labelMedium,
+                style = TextStyles.labelMedium,
                 color = color
             )
         }

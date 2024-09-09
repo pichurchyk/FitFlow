@@ -3,8 +3,10 @@ package com.pichurchyk.fitflow.ui.common
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,35 +18,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.R
 import com.pichurchyk.fitflow.ui.ext.doOnClick
+import com.pichurchyk.fitflow.ui.theme.TextStyles
 
 @Composable
 fun Header(
     modifier: Modifier = Modifier,
     title: String,
-    onBackPressed: () -> Unit
+    onBackPressed: (() -> Unit)?  = null
 ) {
     Box(
         modifier = modifier
-            .padding(vertical = 12.dp, horizontal = 16.dp),
+            .padding(top = 16.dp, bottom = 12.dp, end = 16.dp, start = 16.dp),
         contentAlignment = Alignment.CenterStart
     ) {
-        Box(contentAlignment = Alignment.CenterStart) {
-            Icon(
-                modifier = Modifier
-                    .doOnClick {
-                        onBackPressed()
-                    },
-                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                contentDescription = stringResource(
-                    id = R.string.back
+        onBackPressed?.let {
+            Box(contentAlignment = Alignment.CenterStart) {
+                Icon(
+                    modifier = Modifier
+                        .doOnClick {
+                            onBackPressed()
+                        }
+                        .size(22.dp),
+                    imageVector = Icons.Rounded.Close,
+                    contentDescription = stringResource(
+                        id = R.string.back
+                    )
                 )
-            )
+            }
         }
 
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = title,
-            style = MaterialTheme.typography.headlineLarge,
+            style = TextStyles.headlineSmall,
             color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
         )

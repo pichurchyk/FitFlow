@@ -1,7 +1,7 @@
 package com.pichurchyk.nutrition.database.repository
 
-import com.pichurchyk.fitflow.common.ext.toEndOfDay
-import com.pichurchyk.fitflow.common.ext.toStartOfDay
+import com.pichurchyk.fitflow.common.ext.date.toEndOfDay
+import com.pichurchyk.fitflow.common.ext.date.toStartOfDay
 import com.pichurchyk.nutrition.database.NutritionDao
 import com.pichurchyk.nutrition.database.mapper.IntakeMapper
 import com.pichurchyk.nutrition.database.model.IntakeType
