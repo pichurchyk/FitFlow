@@ -9,14 +9,27 @@
     <string name="try_again">Try Again</string>
     <string name="submit">Submit</string>
     <string name="success">Success</string>
+    <string name="done">Done</string>
 
     <string name="zero">0</string>
-    <string name="zero_grams">0 grams</string>
 
     <string name="today">Today</string>
 
     <string name="total">Total</string>
-    <string name="kcal">kcal</string>
+    <string name="kcal_value">%s kcal</string>
+
+    <string name="g_value">%sg</string>
+    <string name="ml_value">%sml</string>
+
+    <string name="unit_gram">g</string>
+    <string name="unit_ml">ml</string>
+    <string name="unit_liter">l</string>
+    <string name="unit_kcal">kcal</string>
+
+    <string name="unit_with_value_gram">%sg</string>
+    <string name="unit_with_value_ml">%sml</string>
+    <string name="unit_with_value_liter">%sl</string>
+    <string name="unit_with_value_kcal">%skcal</string>
 
     <string name="fat">Fat</string>
     <string name="carbs">Carbs</string>
@@ -26,4 +39,6 @@
 
     <string name="validation_empty_calories">Calories can not be zero</string>
     <string name="validation_intake_empty_fields">You need fill at least one field</string>
+    <string name="intakes">Intakes</string>
+    <string name="back">Back</string>
 </resources>

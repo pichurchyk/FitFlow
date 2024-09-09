@@ -1,7 +1,7 @@
 package com.pichurchyk.fitflow.viewmodel.addintake
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.viewModelScope
+import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
 import com.pichurchyk.nutrition.database.model.IntakeType
 import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
 import com.pichurchyk.nutrition.database.usecase.SaveIntakeUseCase
@@ -18,7 +18,7 @@ import java.util.Date
 class AddIntakeViewModel(
     private val addIntakeUseCase: SaveIntakeUseCase,
     private val date: Date
-) : ScreenModel {
+) : BaseViewModel() {
 
     private val _state = MutableStateFlow<AddIntakeViewState>(
         AddIntakeViewState.Init(
@@ -61,7 +61,7 @@ class AddIntakeViewModel(
 
         val state = (state.value as AddIntakeViewState.Init)
 
-        screenModelScope.launch {
+        viewModelScope.launch {
             _state.update { currentState ->
                 AddIntakeViewState.Loading(intakes = currentState.intakes)
             }
