@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.R
 import com.pichurchyk.fitflow.ui.common.CommonButton
 import com.pichurchyk.fitflow.ui.common.CustomSnackbar
-import com.pichurchyk.fitflow.ui.common.ErrorBottomSheet
 import com.pichurchyk.fitflow.ui.common.Header
 import com.pichurchyk.fitflow.ui.common.SnackbarInfo
 import com.pichurchyk.fitflow.ui.ext.clearFocusOnClick
