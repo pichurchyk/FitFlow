@@ -53,25 +53,25 @@ class AddWaterIntakeViewModel(
 
         viewModelScope.launch {
             _state.update { currentState ->
-                AddWaterIntakeViewState.Loading(value = currentState.value)
+                AddWaterIntakeViewState.Loading(intake = currentState.intake)
             }
 
             try {
-                addIntakeUseCase.invoke(state.value)
+                addIntakeUseCase.invoke(state.intake)
                     .catch { e ->
                         throw e
                     }
                     .collect {
                         _state.update {
                             AddWaterIntakeViewState.Success(
-                                value = state.value
+                                intake = state.intake
                             )
                         }
                     }
             } catch (e: Throwable) {
                 _state.update { currentState ->
                     AddWaterIntakeViewState.Error(
-                        value = currentState.value,
+                        intake = currentState.intake,
                         errorMessage = e.message ?: "Error occurred"
                     )
                 }
@@ -81,16 +81,16 @@ class AddWaterIntakeViewModel(
 
     private fun closeError() {
         _state.update { currentState ->
-            AddWaterIntakeViewState.Init(currentState.value)
+            AddWaterIntakeViewState.Init(currentState.intake)
         }
     }
 
     private fun changeIntakeValue(value: Int) {
         val inputState = (state.value as AddWaterIntakeViewState.Init)
-        val updatedIntake = inputState.value.copy(value = value)
+        val updatedIntake = inputState.intake.copy(value = value)
 
         _state.update {
-            inputState.copy(value = updatedIntake)
+            inputState.copy(intake = updatedIntake)
         }
     }
 

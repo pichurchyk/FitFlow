@@ -4,6 +4,7 @@
     <string name="google_sign_in">Sign In with Google</string>
 
     <string name="add_intake">Add Intake</string>
+    <string name="add_water_intake">Add Water Intake</string>
 
     <string name="got_it">Got It</string>
     <string name="try_again">Try Again</string>
@@ -39,6 +40,7 @@
 
     <string name="validation_empty_calories">Calories can not be zero</string>
     <string name="validation_intake_empty_fields">You need fill at least one field</string>
+    <string name="validation_water_intake_empty">This field can not be blank</string>
     <string name="intakes">Intakes</string>
     <string name="back">Back</string>
 </resources>

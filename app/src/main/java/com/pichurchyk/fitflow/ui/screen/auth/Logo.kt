@@ -37,7 +37,7 @@ fun AnimatedLogo(modifier: Modifier = Modifier, isExpanded: Boolean, onLogoTrans
     )
 
     val offset by animateDpAsState(
-        targetValue = if (isExpanded) 0.dp else (-182).dp,
+        targetValue = if (isExpanded) 0.dp else (-156).dp,
         animationSpec = tween(durationMillis = 300),
         finishedListener = {
             isReadyToAnimateText = true

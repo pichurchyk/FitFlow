@@ -1,18 +1,25 @@
 package com.pichurchyk.fitflow.ui.screen.dashboard.components
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.EaseInCubic
 import androidx.compose.animation.core.EaseOutCubic
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -28,12 +35,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.ui.common.ContainerState
+import com.pichurchyk.fitflow.ui.ext.doOnClick
 import com.pichurchyk.fitflow.ui.screen.addintake.AddIntakeScreen
+import com.pichurchyk.fitflow.ui.screen.addwaterintake.AddWaterIntakeScreen
 import java.util.Date
 
 @Composable
@@ -44,15 +55,24 @@ fun AddIntakeFab(
     val toFullScreenTransitionTime = 400
     val toFabTransitionTime = toFullScreenTransitionTime / 2
 
-    var containerState by remember { mutableStateOf(ContainerState.FAB) }
+    var isFabExpanded by remember {
+        mutableStateOf(false)
+    }
+
+    var containerState by remember {
+        mutableStateOf<DashboardFabContainerState>(
+            DashboardFabContainerState.Fab
+        )
+    }
     val transition = updateTransition(containerState, label = "container transform")
 
     val animatedColor by transition.animateColor(
         label = "color",
     ) { state ->
         when (state) {
-            ContainerState.FAB -> MaterialTheme.colorScheme.primary
-            ContainerState.FULL_SCREEN -> MaterialTheme.colorScheme.background
+            is DashboardFabContainerState.Fab -> MaterialTheme.colorScheme.primary
+            is DashboardFabContainerState.AddIntakeScreen -> MaterialTheme.colorScheme.background
+            is DashboardFabContainerState.AddWaterIntakeScreen -> MaterialTheme.colorScheme.background
         }
     }
 
@@ -60,12 +80,17 @@ fun AddIntakeFab(
         label = "corner radius",
         transitionSpec = {
             when (targetState) {
-                ContainerState.FAB -> tween(
+                is DashboardFabContainerState.Fab -> tween(
                     durationMillis = toFullScreenTransitionTime,
                     easing = EaseOutCubic,
                 )
 
-                ContainerState.FULL_SCREEN -> tween(
+                is DashboardFabContainerState.AddIntakeScreen -> tween(
+                    durationMillis = toFabTransitionTime,
+                    easing = EaseInCubic,
+                )
+
+                is DashboardFabContainerState.AddWaterIntakeScreen -> tween(
                     durationMillis = toFabTransitionTime,
                     easing = EaseInCubic,
                 )
@@ -73,8 +98,9 @@ fun AddIntakeFab(
         }
     ) { state ->
         when (state) {
-            ContainerState.FAB -> 16.dp
-            ContainerState.FULL_SCREEN -> 0.dp
+            is DashboardFabContainerState.Fab -> 16.dp
+            is DashboardFabContainerState.AddIntakeScreen -> 0.dp
+            is DashboardFabContainerState.AddWaterIntakeScreen -> 0.dp
         }
     }
 
@@ -82,12 +108,17 @@ fun AddIntakeFab(
         label = "elevation",
         transitionSpec = {
             when (targetState) {
-                ContainerState.FAB -> tween(
+                is DashboardFabContainerState.Fab -> tween(
                     durationMillis = toFullScreenTransitionTime,
                     easing = EaseOutCubic,
                 )
 
-                ContainerState.FULL_SCREEN -> tween(
+                is DashboardFabContainerState.AddIntakeScreen -> tween(
+                    durationMillis = toFabTransitionTime,
+                    easing = EaseOutCubic,
+                )
+
+                is DashboardFabContainerState.AddWaterIntakeScreen -> tween(
                     durationMillis = toFabTransitionTime,
                     easing = EaseOutCubic,
                 )
@@ -95,8 +126,9 @@ fun AddIntakeFab(
         }
     ) { state ->
         when (state) {
-            ContainerState.FAB -> 6.dp
-            ContainerState.FULL_SCREEN -> 0.dp
+            is DashboardFabContainerState.Fab -> 6.dp
+            is DashboardFabContainerState.AddIntakeScreen -> 0.dp
+            is DashboardFabContainerState.AddWaterIntakeScreen -> 0.dp
         }
     }
 
@@ -104,8 +136,9 @@ fun AddIntakeFab(
         label = "padding",
     ) { state ->
         when (state) {
-            ContainerState.FAB -> 16.dp
-            ContainerState.FULL_SCREEN -> 0.dp
+            is DashboardFabContainerState.Fab -> 16.dp
+            is DashboardFabContainerState.AddIntakeScreen -> 0.dp
+            is DashboardFabContainerState.AddWaterIntakeScreen -> 0.dp
         }
     }
 
@@ -136,27 +169,103 @@ fun AddIntakeFab(
         }
     ) { state ->
         when (state) {
-            ContainerState.FAB -> {
-                FloatingActionButton(
-                    onClick = {
-                        containerState = ContainerState.FULL_SCREEN
+            is DashboardFabContainerState.Fab -> {
+                val fabRotation by animateFloatAsState(
+                    if (isFabExpanded) {
+                        45f
+                    } else {
+                        0f
                     },
-                    shape = RoundedCornerShape(10.dp),
-                    containerColor = MaterialTheme.colorScheme.primary
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Add,
-                        contentDescription = stringResource(id = R.string.add_intake),
-                        tint = MaterialTheme.colorScheme.onPrimary,
+                    label = "Fab rotation"
+                )
+
+                val enterTransition = remember {
+                    expandVertically(
+                        expandFrom = Alignment.Bottom,
+                        animationSpec = tween(150, easing = FastOutSlowInEasing)
                     )
+                }
+
+                val exitTransition = remember {
+                    shrinkVertically(
+                        shrinkTowards = Alignment.Bottom,
+                        animationSpec = tween(150, easing = FastOutSlowInEasing)
+                    )
+                }
+
+                Column(
+                    modifier = Modifier.background(Color.Transparent),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom)
+                ) {
+                    AnimatedVisibility(
+                        visible = isFabExpanded,
+                        enter = enterTransition,
+                        exit = exitTransition
+                    ) {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(
+                                modifier = Modifier
+                                    .padding(12.dp)
+                                    .doOnClick {
+                                        containerState = DashboardFabContainerState.AddWaterIntakeScreen
+                                        isFabExpanded = !isFabExpanded
+
+                                    },
+                                painter = painterResource(R.drawable.ic_water),
+                                contentDescription = stringResource(id = R.string.add_intake),
+                                tint = MaterialTheme.colorScheme.onPrimary,
+                            )
+
+                            Icon(
+                                modifier = Modifier
+                                    .padding(12.dp)
+                                    .doOnClick {
+                                        containerState = DashboardFabContainerState.AddIntakeScreen
+                                        isFabExpanded = !isFabExpanded
+
+                                    },
+                                painter = painterResource(R.drawable.ic_food),
+                                contentDescription = stringResource(id = R.string.add_intake),
+                                tint = MaterialTheme.colorScheme.onPrimary,
+                            )
+                        }
+                    }
+
+                    FloatingActionButton(
+                        onClick = {
+                            isFabExpanded = !isFabExpanded
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ) {
+                        Icon(
+                            modifier = Modifier.rotate(fabRotation),
+                            imageVector = Icons.Rounded.Add,
+                            contentDescription = stringResource(id = R.string.add_intake),
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                        )
+                    }
                 }
             }
 
-            ContainerState.FULL_SCREEN -> {
+            is DashboardFabContainerState.AddIntakeScreen -> {
                 AddIntakeScreen(
                     selectedDate = selectedDate,
                     closeScreen = {
-                        containerState = ContainerState.FAB
+                        containerState = DashboardFabContainerState.Fab
+                    }
+                )
+            }
+
+            is DashboardFabContainerState.AddWaterIntakeScreen -> {
+                AddWaterIntakeScreen(
+                    selectedDate = selectedDate,
+                    closeScreen = {
+                        containerState = DashboardFabContainerState.Fab
                     }
                 )
             }

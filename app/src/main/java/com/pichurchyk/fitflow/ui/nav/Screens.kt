@@ -12,4 +12,7 @@ sealed class Screen {
 
     @Serializable
     data class AddIntake(val selectedDateMillis: Long): Screen()
+
+    @Serializable
+    data class AddWaterIntake(val selectedDateMillis: Long): Screen()
 }

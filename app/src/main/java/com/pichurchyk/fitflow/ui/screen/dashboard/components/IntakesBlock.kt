@@ -40,12 +40,12 @@ fun IntakesBlock(
                 type = DashboardItemWrapperType.FULL,
                 title = if (isFirstElement) stringResource(id = R.string.intakes) else null,
                 subtitle = stringResource(item.type.getTitle()),
-                needBottomRadius = if (isLastElement) true else false,
+                needBottomRadius = isLastElement,
                 mainText = stringResource(id = item.type.getUnitWithValue(), item.value),
                 content = {
                     AnimatedProgressIndicator(
                         modifier = Modifier,
-                        value = calories,
+                        value = item.value,
                         type = AnimatedProgressIndicatorType.RADIAL,
                         color = MaterialTheme.colorScheme.primary,
                         limit = 2000
