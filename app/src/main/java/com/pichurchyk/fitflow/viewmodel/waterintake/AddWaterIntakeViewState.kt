@@ -2,15 +2,20 @@ package com.pichurchyk.fitflow.viewmodel.waterintake
 
 import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
 
-sealed class AddWaterIntakeViewState(open val value: IntakeDTO) {
+sealed class AddWaterIntakeViewState(open val intake: IntakeDTO) {
 
-    data class Loading(override val value: IntakeDTO) : AddWaterIntakeViewState(value)
-    data class Init(override val value: IntakeDTO) : AddWaterIntakeViewState(value)
+    data class Loading(override val intake: IntakeDTO) : AddWaterIntakeViewState(intake)
+    data class Init(override val intake: IntakeDTO) : AddWaterIntakeViewState(intake)
 
     data class Error(
-        override val value: IntakeDTO,
+        override val intake: IntakeDTO,
         val errorMessage: String
-    ) : AddWaterIntakeViewState(value)
+    ) : AddWaterIntakeViewState(intake)
 
-    data class Success(override val value: IntakeDTO): AddWaterIntakeViewState(value)
+    data class ValidationException(
+        override val intake: IntakeDTO,
+        val validationException: AddWaterIntakeValidationException
+    ) : AddWaterIntakeViewState(intake)
+
+    data class Success(override val intake: IntakeDTO): AddWaterIntakeViewState(intake)
 }

@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.pichurchyk.fitflow.ui.ext.navigateSingleTopTo
 import com.pichurchyk.fitflow.ui.screen.addintake.AddIntakeScreen
+import com.pichurchyk.fitflow.ui.screen.addwaterintake.AddWaterIntakeScreen
 import com.pichurchyk.fitflow.ui.screen.dashboard.DashboardScreen
 import java.time.Instant
 import java.util.Date
@@ -35,6 +36,19 @@ fun NavHost(
             }
 
             AddIntakeScreen(
+                selectedDate = selectedDate,
+                closeScreen = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable<Screen.AddWaterIntake> {backStackEntry ->
+            val selectedDate = backStackEntry.toRoute<Screen.AddWaterIntake>().selectedDateMillis.let {
+                Date.from(Instant.ofEpochMilli(it))
+            }
+
+            AddWaterIntakeScreen(
                 selectedDate = selectedDate,
                 closeScreen = {
                     navController.popBackStack()
