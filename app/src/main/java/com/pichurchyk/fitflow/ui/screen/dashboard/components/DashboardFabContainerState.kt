@@ -2,7 +2,7 @@ package com.pichurchyk.fitflow.ui.screen.dashboard.components
 
 sealed class DashboardFabContainerState {
 
-    data object Fab: DashboardFabContainerState()
+    data class Fab(val isExpanded: Boolean): DashboardFabContainerState()
 
     data object AddIntakeScreen: DashboardFabContainerState()
 

@@ -1,5 +1,6 @@
 package com.pichurchyk.fitflow.ui.screen.addwaterintake
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -59,6 +60,10 @@ fun AddWaterIntakeScreen(
 
     var errorMessage by remember {
         mutableStateOf<String?>(null)
+    }
+
+    BackHandler {
+        closeScreen()
     }
 
     LaunchedEffect(errorMessage) {

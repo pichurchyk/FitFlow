@@ -55,13 +55,9 @@ fun AddIntakeFab(
     val toFullScreenTransitionTime = 400
     val toFabTransitionTime = toFullScreenTransitionTime / 2
 
-    var isFabExpanded by remember {
-        mutableStateOf(false)
-    }
-
     var containerState by remember {
         mutableStateOf<DashboardFabContainerState>(
-            DashboardFabContainerState.Fab
+            DashboardFabContainerState.Fab(isExpanded = false)
         )
     }
     val transition = updateTransition(containerState, label = "container transform")
@@ -171,7 +167,7 @@ fun AddIntakeFab(
         when (state) {
             is DashboardFabContainerState.Fab -> {
                 val fabRotation by animateFloatAsState(
-                    if (isFabExpanded) {
+                    if (state.isExpanded) {
                         45f
                     } else {
                         0f
@@ -199,7 +195,7 @@ fun AddIntakeFab(
                     verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom)
                 ) {
                     AnimatedVisibility(
-                        visible = isFabExpanded,
+                        visible = state.isExpanded,
                         enter = enterTransition,
                         exit = exitTransition
                     ) {
@@ -212,8 +208,6 @@ fun AddIntakeFab(
                                     .padding(12.dp)
                                     .doOnClick {
                                         containerState = DashboardFabContainerState.AddWaterIntakeScreen
-                                        isFabExpanded = !isFabExpanded
-
                                     },
                                 painter = painterResource(R.drawable.ic_water),
                                 contentDescription = stringResource(id = R.string.add_intake),
@@ -225,8 +219,6 @@ fun AddIntakeFab(
                                     .padding(12.dp)
                                     .doOnClick {
                                         containerState = DashboardFabContainerState.AddIntakeScreen
-                                        isFabExpanded = !isFabExpanded
-
                                     },
                                 painter = painterResource(R.drawable.ic_food),
                                 contentDescription = stringResource(id = R.string.add_intake),
@@ -237,7 +229,7 @@ fun AddIntakeFab(
 
                     FloatingActionButton(
                         onClick = {
-                            isFabExpanded = !isFabExpanded
+                            containerState = DashboardFabContainerState.Fab(true)
                         },
                         shape = RoundedCornerShape(10.dp),
                         containerColor = MaterialTheme.colorScheme.primary
@@ -256,7 +248,7 @@ fun AddIntakeFab(
                 AddIntakeScreen(
                     selectedDate = selectedDate,
                     closeScreen = {
-                        containerState = DashboardFabContainerState.Fab
+                        containerState = DashboardFabContainerState.Fab(false)
                     }
                 )
             }
@@ -265,7 +257,7 @@ fun AddIntakeFab(
                 AddWaterIntakeScreen(
                     selectedDate = selectedDate,
                     closeScreen = {
-                        containerState = DashboardFabContainerState.Fab
+                        containerState = DashboardFabContainerState.Fab(false)
                     }
                 )
             }
