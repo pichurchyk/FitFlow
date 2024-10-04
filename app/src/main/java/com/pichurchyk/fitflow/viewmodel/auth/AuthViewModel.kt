@@ -3,7 +3,6 @@ package com.pichurchyk.fitflow.viewmodel.auth
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
 import com.pichurchyk.fitflow.auth.model.SignInResult
-import com.pichurchyk.fitflow.auth.usecase.CheckIsUserAuthenticatedUseCase
 import com.pichurchyk.fitflow.auth.usecase.SignInUseCase
 import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,31 +13,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
-    private val checkIsUserAuthenticatedUseCase: CheckIsUserAuthenticatedUseCase,
-    private val signInUseCase: SignInUseCase
+    private val signInUseCase: SignInUseCase,
 ) : BaseViewModel() {
 
     private val _state = MutableStateFlow<AuthViewState>(AuthViewState.Init)
     val state = _state.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            checkIsUserAuthenticatedUseCase.invoke()
-                .onStart {
-                    _state.update { AuthViewState.Loading }
-                }
-                .catch {
-                    _state.update { AuthViewState.Init }
-                }
-                .collect { isAuthenticated ->
-                    if (isAuthenticated) {
-                        _state.update { AuthViewState.Success }
-                    } else {
-                        _state.update { AuthViewState.Init }
-                    }
-                }
-        }
-    }
 
     fun handleIntent(intent: AuthIntent) {
         when (intent) {

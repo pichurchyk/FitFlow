@@ -8,6 +8,9 @@ sealed class Screen {
     data object Auth: Screen()
 
     @Serializable
+    data object Splash: Screen()
+
+    @Serializable
     data object Dashboard: Screen()
 
     @Serializable

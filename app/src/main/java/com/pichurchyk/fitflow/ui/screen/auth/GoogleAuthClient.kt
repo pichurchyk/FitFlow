@@ -12,8 +12,6 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingExcept
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
 import com.pichurchyk.fitflow.BuildConfig
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 class GoogleAuthClient(
     private val context: Context,
