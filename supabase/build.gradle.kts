@@ -1,10 +1,12 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
 }
 
 android {
-    namespace = "com.pichurchyk.fitflow.auth"
+    namespace = "com.pichurchyk.supabase"
     compileSdk = 34
 
     defaultConfig {
@@ -15,6 +17,14 @@ android {
     }
 
     buildTypes {
+        val supabaseAnonKey: String = gradleLocalProperties(rootDir).getProperty("SUPABASE_ANON_KEY")
+        val supabaseUrl: String = gradleLocalProperties(rootDir).getProperty("SUPABASE_URL")
+
+        getByName("debug") {
+            buildConfigField("String", "SUPABASE_ANON_KEY", "\"$supabaseAnonKey\"")
+            buildConfigField("String", "SUPABASE_URL", "\"$supabaseUrl\"")
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -22,6 +32,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -32,14 +45,13 @@ android {
     }
 }
 
-
 dependencies {
-    implementation(project(":common"))
-    implementation(project(":supabase"))
-
     implementation(platform(libs.supabase.bom))
     implementation(libs.supabase.auth)
+    implementation(libs.supabase.postgrest)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
+
+    implementation(libs.ktor.client.android)
 }

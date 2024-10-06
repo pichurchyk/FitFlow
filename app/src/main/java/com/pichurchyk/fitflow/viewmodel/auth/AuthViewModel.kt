@@ -1,7 +1,6 @@
 package com.pichurchyk.fitflow.viewmodel.auth
 
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.AuthCredential
 import com.pichurchyk.fitflow.auth.model.SignInResult
 import com.pichurchyk.fitflow.auth.usecase.SignInUseCase
 import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
@@ -22,7 +21,7 @@ class AuthViewModel(
     fun handleIntent(intent: AuthIntent) {
         when (intent) {
             is AuthIntent.Auth -> {
-                auth(intent.credentials)
+                auth(intent.googleIdToken)
             }
 
             is AuthIntent.Clear -> {
@@ -31,9 +30,9 @@ class AuthViewModel(
         }
     }
 
-    private fun auth(credentials: AuthCredential) {
+    private fun auth(googleIdToken: String) {
         viewModelScope.launch {
-            signInUseCase.invoke(credentials)
+            signInUseCase.invoke(googleIdToken)
                 .onStart {
                     _state.update { AuthViewState.Loading }
                 }

@@ -1,9 +1,9 @@
 package com.pichurchyk.fitflow.auth.model
 
-import com.google.firebase.auth.FirebaseUser
+import io.github.jan.supabase.gotrue.user.UserInfo
 
 sealed class SignInResult {
-    data class Success(val firebaseUser: FirebaseUser): SignInResult()
+    data class Success(val user: UserInfo): SignInResult()
 
     data class Error(val errorMessage: String): SignInResult()
 

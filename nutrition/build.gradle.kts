@@ -9,7 +9,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 29
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -35,16 +35,14 @@ android {
 
 dependencies {
     implementation(project(":common"))
+    implementation(project(":supabase"))
 
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.okhttp)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.client.logging)
-    implementation(libs.ktor.serialization.kotlinx.json)
-
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
+
+    implementation(libs.supabase.postgrest)
+    implementation(libs.supabase.auth)
 }
