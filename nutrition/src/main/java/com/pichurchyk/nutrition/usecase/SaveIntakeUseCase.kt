@@ -1,11 +1,11 @@
-package com.pichurchyk.nutrition.database.usecase
+package com.pichurchyk.nutrition.usecase
 
+import com.pichurchyk.nutrition.repository.NutritionRepository
 import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
-import com.pichurchyk.nutrition.database.repository.NutritionDatabaseRepository
 import kotlinx.coroutines.flow.Flow
 
 class SaveIntakeUseCase(
-    private val repository: NutritionDatabaseRepository
+    private val repository: NutritionRepository
 ) {
     suspend fun invoke(intake: IntakeDTO): Flow<Unit> = repository.saveIntake(intake)
 }

@@ -5,7 +5,7 @@ import com.pichurchyk.fitflow.common.ext.date.getNextDay
 import com.pichurchyk.fitflow.common.ext.date.getPreviousDay
 import com.pichurchyk.fitflow.common.ext.date.toStartOfDay
 import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
-import com.pichurchyk.nutrition.database.usecase.GetDailyInfoUseCase
+import com.pichurchyk.nutrition.usecase.GetDailyInfoUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

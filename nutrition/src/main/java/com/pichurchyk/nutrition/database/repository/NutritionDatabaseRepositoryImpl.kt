@@ -2,6 +2,7 @@ package com.pichurchyk.nutrition.database.repository
 
 import com.pichurchyk.fitflow.common.ext.date.toEndOfDay
 import com.pichurchyk.fitflow.common.ext.date.toStartOfDay
+import com.pichurchyk.nutrition.repository.NutritionRepository
 import com.pichurchyk.nutrition.database.NutritionDao
 import com.pichurchyk.nutrition.database.mapper.IntakeMapper
 import com.pichurchyk.nutrition.database.model.IntakeType
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.flow
 import java.util.Date
 
 internal class NutritionDatabaseRepositoryImpl(private val dao: NutritionDao) :
-    NutritionDatabaseRepository {
+    NutritionRepository {
     override suspend fun saveIntake(intake: IntakeDTO) = flow {
         IntakeMapper.fromDto(intake).let {
             dao.saveIntake(it)

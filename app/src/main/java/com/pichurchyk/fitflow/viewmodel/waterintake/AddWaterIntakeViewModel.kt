@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
 import com.pichurchyk.nutrition.database.model.IntakeType
 import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
-import com.pichurchyk.nutrition.database.usecase.SaveIntakeUseCase
+import com.pichurchyk.nutrition.usecase.SaveIntakeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
