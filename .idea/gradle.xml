@@ -13,8 +13,11 @@
             <option value="$PROJECT_DIR$/app/auth" />
             <option value="$PROJECT_DIR$/auth" />
             <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/mylibrary" />
+            <option value="$PROJECT_DIR$/nutrition" />
             <option value="$PROJECT_DIR$/nutritiondatabase" />
             <option value="$PROJECT_DIR$/nutritiondatabase/api" />
+            <option value="$PROJECT_DIR$/nutritionremote" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

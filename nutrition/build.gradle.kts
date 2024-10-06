@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.pichurchyk.fitness.database"
+    namespace = "com.pichurchyk.nutrition"
     compileSdk = 34
 
     defaultConfig {

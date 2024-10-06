@@ -98,6 +98,6 @@ dependencies {
     implementation(libs.koin.compose)
 
     implementation(project(":common"))
-    implementation(project(":nutritiondatabase"))
+    implementation(project(":nutrition"))
     implementation(project(":auth"))
 }
