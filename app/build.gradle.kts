@@ -95,10 +95,6 @@ dependencies {
     implementation(libs.androidx.credentials.play.services)
     implementation(libs.google.id)
 
-    implementation(platform(libs.koin.bom))
-    implementation(libs.koin.core)
-    implementation(libs.koin.compose)
-
     implementation(project(":common"))
     implementation(project(":nutrition"))
     implementation(project(":auth"))

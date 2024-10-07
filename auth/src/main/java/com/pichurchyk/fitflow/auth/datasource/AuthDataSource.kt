@@ -2,6 +2,8 @@ package com.pichurchyk.fitflow.auth.datasource
 
 import android.util.Log
 import com.pichurchyk.fitflow.auth.model.SignInResult
+import com.pichurchyk.fitflow.common.preferences.AuthPreferences
+import com.pichurchyk.fitflow.common.preferences.AuthPreferencesActions
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.gotrue.SessionStatus
 import io.github.jan.supabase.gotrue.auth
@@ -14,7 +16,8 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.first
 
 internal class AuthDataSource(
-    private val supabaseClient: SupabaseClient
+    private val supabaseClient: SupabaseClient,
+    private val preferences: AuthPreferencesActions
 ) {
     fun getSignedInUser(): Flow<UserInfo?> = callbackFlow {
         try {
@@ -41,6 +44,9 @@ internal class AuthDataSource(
                         trySend(
                             SignInResult.Success(it.session.user!!)
                         )
+
+                        preferences.setAccessToken(it.session.accessToken)
+                        preferences.setUserUid(it.session.user?.id)
                     }
 
                     else -> {
@@ -67,6 +73,10 @@ internal class AuthDataSource(
 
     fun signOut(): Flow<Unit> = callbackFlow {
         try {
+            supabaseClient.auth.signOut()
+
+            preferences.setAccessToken(null)
+            preferences.setUserUid(null)
 
             close()
 
