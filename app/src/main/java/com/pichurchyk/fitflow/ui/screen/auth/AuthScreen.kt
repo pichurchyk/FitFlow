@@ -59,8 +59,10 @@ fun AuthScreen(
         mutableStateOf(GoogleAuthClient(context))
     }
 
-    LaunchedEffect(googleAuthClient.signedInAccount.value) {
-        googleAuthClient.signedInAccount.value?.let { account ->
+    val accountGoogleIdToken by googleAuthClient.accountGoogleIdToken.collectAsState()
+
+    LaunchedEffect(accountGoogleIdToken) {
+        accountGoogleIdToken?.let { account ->
             viewModel.handleIntent(AuthIntent.Auth(account))
         }
     }
@@ -108,7 +110,10 @@ fun AuthScreen(
                             val errorMessage = (viewState as AuthViewState.Error).message
                             ErrorBottomSheet(
                                 errorMessage = errorMessage,
-                                onDismiss = { viewModel.handleIntent(AuthIntent.Clear) }
+                                onDismiss = {
+                                    googleAuthClient.clearIdToken()
+                                    viewModel.handleIntent(AuthIntent.Clear)
+                                }
                             )
                         }
 

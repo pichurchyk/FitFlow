@@ -32,10 +32,15 @@ android {
     }
 }
 
+
 dependencies {
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth)
+    implementation(project(":common"))
+    implementation(project(":supabase"))
+
+    implementation(platform(libs.supabase.bom))
+    implementation(libs.supabase.auth)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
+    implementation(libs.koin.android)
 }

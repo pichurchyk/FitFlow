@@ -15,7 +15,8 @@ import com.pichurchyk.nutrition.database.model.dbo.IntakeDBO
     views = [
         DailyIntakeSummary::class
             ],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 @TypeConverters(TypeConverter::class)
 internal abstract class NutritionDatabase : RoomDatabase() {

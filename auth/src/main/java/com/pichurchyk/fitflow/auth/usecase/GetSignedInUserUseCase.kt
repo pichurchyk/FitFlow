@@ -1,11 +1,11 @@
 package com.pichurchyk.fitflow.auth.usecase
 
-import com.google.firebase.auth.FirebaseUser
 import com.pichurchyk.fitflow.auth.repository.AuthRepository
+import io.github.jan.supabase.gotrue.user.UserInfo
 import kotlinx.coroutines.flow.Flow
 
 interface GetSignedInUserUseCase {
-    suspend fun invoke(): Flow<FirebaseUser?>
+    suspend fun invoke(): Flow<UserInfo?>
 }
 
 internal class GetSignedInUserImpl(

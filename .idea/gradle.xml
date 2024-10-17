@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/nutritiondatabase" />
             <option value="$PROJECT_DIR$/nutritiondatabase/api" />
             <option value="$PROJECT_DIR$/nutritionremote" />
+            <option value="$PROJECT_DIR$/supabase" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

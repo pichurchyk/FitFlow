@@ -21,7 +21,7 @@ internal interface NutritionDao {
     fun removeIntake(intake: IntakeDBO)
 
     @Query("SELECT * FROM Intake where date = :date AND type = :intakeType")
-    fun getAllIntakesByDateAndType(date: Date, intakeType: IntakeType): List<IntakeDBO>
+    fun getAllIntakesByDateAndType(date: Date, intakeType: IntakeType): Flow<List<IntakeDBO>>
 
     @Query("SELECT * FROM DailyIntakeSummary WHERE date BETWEEN :startOfDay AND :endOfDay")
     fun getDailyInfo(startOfDay: Date, endOfDay: Date): Flow<List<DailyIntakeSummary>>

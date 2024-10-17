@@ -46,4 +46,18 @@ dependencies {
 
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+
+    api(libs.ktor.client.core)
+    api(libs.ktor.client.auth)
+    api(libs.ktor.client.okhttp)
+    api(libs.ktor.client.android)
+    api(libs.ktor.client.content.negotiation)
+    api(libs.ktor.client.logging)
+    api(libs.ktor.client.resources)
+
+    api(platform(libs.koin.bom))
+    api(libs.koin.core)
+    api(libs.koin.compose)
+
+    api(libs.androidx.datastore.preferences)
 }

@@ -1,4 +1,4 @@
-package com.pichurchyk.nutrition.database.model.dto
+package com.pichurchyk.nutrition.model
 
 import java.util.Date
 

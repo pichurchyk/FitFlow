@@ -1,62 +1,52 @@
 package com.pichurchyk.nutrition.remote.repository
 
-import com.pichurchyk.fitflow.common.ext.date.toEndOfDay
-import com.pichurchyk.fitflow.common.ext.date.toStartOfDay
-import com.pichurchyk.nutrition.repository.NutritionRepository
-import com.pichurchyk.nutrition.database.NutritionDao
-import com.pichurchyk.nutrition.database.mapper.IntakeMapper
 import com.pichurchyk.nutrition.database.model.IntakeType
-import com.pichurchyk.nutrition.database.model.dto.DailyInfoDTO
-import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
+import com.pichurchyk.nutrition.model.DailyInfoDTO
+import com.pichurchyk.nutrition.model.IntakeDTO
+import com.pichurchyk.nutrition.remote.source.NutritionRemoteDataSource
+import com.pichurchyk.nutrition.repository.NutritionRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import java.util.Date
 
-//internal class NutritionRemoteRepositoryImpl(private val dao: NutritionDao) :
-//    NutritionRepository {
-//    override suspend fun saveIntake(intake: IntakeDTO) = flow {
-//        IntakeMapper.fromDto(intake).let {
-//            dao.saveIntake(it)
-//                .also {
-//                    emit(Unit)
-//                }
-//        }
-//    }
-//
-//    override suspend fun removeIntake(intake: IntakeDTO) {
-//        IntakeMapper.fromDto(intake).let {
-//            dao.removeIntake(it)
-//        }
-//    }
-//
-//    override suspend fun getAllIntakesByDateAndType(date: Date, type: IntakeType): List<IntakeDTO> {
-//        val dboResponse = dao.getAllIntakesByDateAndType(date, type)
-//
-//        return dboResponse.map { IntakeMapper.fromDbo(it) }
-//    }
-//
-//    override suspend fun getDailyInfo(date: Date): Flow<DailyInfoDTO> = flow {
-//        dao.getDailyInfo(startOfDay = date.toStartOfDay(), endOfDay = date.toEndOfDay())
-//            .collect { summary ->
-//                val intakes = summary.map { intake ->
-//                    IntakeDTO(
-//                        date = intake.date,
-//                        value = intake.totalValue,
-//                        type = intake.type,
-//                        id = intake.id
-//                    )
-//                }
-//
-//                val caloriesSum =
-//                    intakes.filter { it.type == IntakeType.CALORIES }.sumOf { it.value }
-//
-//                DailyInfoDTO(
-//                    date = date,
-//                    intakes = intakes,
-//                    caloriesSum = caloriesSum
-//                ).also {
-//                    emit(it)
-//                }
-//            }
-//    }
-//}
+internal class NutritionRemoteRepositoryImpl(
+    private val dataSource: NutritionRemoteDataSource
+) : NutritionRepository {
+
+    override suspend fun saveIntake(intake: IntakeDTO): Flow<Unit> =
+        dataSource.saveIntake(intake).flowOn(Dispatchers.IO)
+
+    override suspend fun removeIntake(intake: IntakeDTO): Flow<Unit> =
+        dataSource.removeIntake(intake).flowOn(Dispatchers.IO)
+
+    override suspend fun getAllIntakesByDateAndType(date: Date, type: IntakeType): Flow<List<IntakeDTO>> =
+        dataSource.getAllIntakes(type, date).flowOn(Dispatchers.IO)
+
+    override suspend fun getDailyInfo(date: Date): Flow<DailyInfoDTO> = flow {
+        val intakesCalls = IntakeType.getMainTypes()
+            .map { intakeType ->
+                dataSource.getAllIntakes(type = intakeType, date)
+            }
+
+        intakesCalls
+            .map { intakeFlow ->
+                intakeFlow.first()
+            }
+            .let { results ->
+                val resultsList = results.flatten()
+                val calories =
+                    resultsList.filter { it.type == IntakeType.CALORIES }.sumOf { it.value }
+
+                val dailyInfo = DailyInfoDTO(
+                    date = date,
+                    intakes = resultsList,
+                    caloriesSum = calories
+                )
+
+                emit(dailyInfo)
+            }
+    }
+}
