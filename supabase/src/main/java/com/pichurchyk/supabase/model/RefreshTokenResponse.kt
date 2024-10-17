@@ -1,4 +1,4 @@
-package com.pichurchyk.nutrition.remote.model
+package com.pichurchyk.supabase.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
