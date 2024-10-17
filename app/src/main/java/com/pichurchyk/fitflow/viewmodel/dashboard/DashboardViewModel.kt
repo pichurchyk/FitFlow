@@ -8,6 +8,7 @@ import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
 import com.pichurchyk.nutrition.usecase.GetDailyInfoUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -64,6 +65,9 @@ class DashboardViewModel(
     private fun loadData() {
         viewModelScope.launch {
             getDailyInfoUseCase.invoke(selectedDate.value)
+                .catch {
+
+                }
                 .collect { summary ->
                     _state.value = DashboardViewState.ShowData.Loaded(summary)
                 }

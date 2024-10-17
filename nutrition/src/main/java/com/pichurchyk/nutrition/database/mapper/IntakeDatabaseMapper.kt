@@ -1,9 +1,9 @@
 package com.pichurchyk.nutrition.database.mapper
 
 import com.pichurchyk.nutrition.database.model.dbo.IntakeDBO
-import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
+import com.pichurchyk.nutrition.model.IntakeDTO
 
-object IntakeMapper {
+object IntakeDatabaseMapper {
 
     fun fromDto(dto: IntakeDTO): IntakeDBO = IntakeDBO(
         date = dto.date,

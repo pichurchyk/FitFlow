@@ -9,6 +9,6 @@ enum class IntakeType {
     WATER;
 
     companion object {
-        fun getMainTypes(): List<IntakeType> = listOf(CARBS, PROTEIN, FAT, CALORIES)
+        fun getMainTypes(): List<IntakeType> = listOf(CARBS, PROTEIN, FAT, CALORIES, WATER)
     }
 }

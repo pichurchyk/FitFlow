@@ -1,8 +1,8 @@
 package com.pichurchyk.nutrition.database.model.ext
 
 import com.pichurchyk.nutrition.database.model.IntakeType
-import com.pichurchyk.nutrition.database.model.dto.DailyInfoDTO
-import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
+import com.pichurchyk.nutrition.model.DailyInfoDTO
+import com.pichurchyk.nutrition.model.IntakeDTO
 
 fun DailyInfoDTO.getFat(): List<IntakeDTO> {
     return this.intakes.filter { it.type == IntakeType.FAT }

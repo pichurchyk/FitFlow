@@ -1,6 +1,6 @@
 package com.pichurchyk.fitflow.viewmodel.waterintake
 
-import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
+import com.pichurchyk.nutrition.model.IntakeDTO
 
 sealed class AddWaterIntakeViewState(open val intake: IntakeDTO) {
 

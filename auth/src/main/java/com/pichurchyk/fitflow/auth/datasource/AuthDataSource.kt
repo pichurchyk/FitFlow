@@ -46,6 +46,7 @@ internal class AuthDataSource(
                         )
 
                         preferences.setAccessToken(it.session.accessToken)
+                        preferences.setRefreshToken(it.session.refreshToken)
                         preferences.setUserUid(it.session.user?.id)
                     }
 
@@ -76,6 +77,7 @@ internal class AuthDataSource(
             supabaseClient.auth.signOut()
 
             preferences.setAccessToken(null)
+            preferences.setRefreshToken(null)
             preferences.setUserUid(null)
 
             close()

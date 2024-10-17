@@ -48,6 +48,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
 
     api(libs.ktor.client.core)
+    api(libs.ktor.client.auth)
     api(libs.ktor.client.okhttp)
     api(libs.ktor.client.android)
     api(libs.ktor.client.content.negotiation)

@@ -20,6 +20,13 @@ class AuthPreferences(
         }
     }
 
+    override suspend fun setRefreshToken(refreshToken: String?) {
+        appContext.dataStore.edit { preferences ->
+            val newValue = if (refreshToken.isNullOrEmpty()) "" else refreshToken
+            preferences[KEY_REFRESH_TOKEN] = newValue
+        }
+    }
+
     override suspend fun setUserUid(uid: String?) {
         appContext.dataStore.edit { preferences ->
             val newValue = if (uid.isNullOrEmpty()) "" else uid
@@ -39,10 +46,17 @@ class AuthPreferences(
         }
     }
 
+    override suspend fun getRefreshToken(): String {
+        return appContext.dataStore.data.first().let { preferences ->
+            preferences[KEY_REFRESH_TOKEN] ?: ""
+        }
+    }
+
     companion object {
         private const val TITLE = "AuthPreferences"
 
         private val KEY_ACCESS_TOKEN = stringPreferencesKey("KEY_ACCESS_TOKEN")
+        private val KEY_REFRESH_TOKEN = stringPreferencesKey("KEY_REFRESH_TOKEN")
         private val KEY_USER_UID = stringPreferencesKey("KEY_USER_UID")
     }
 }

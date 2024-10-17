@@ -1,7 +1,7 @@
 package com.pichurchyk.nutrition.usecase
 
 import com.pichurchyk.nutrition.repository.NutritionRepository
-import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
+import com.pichurchyk.nutrition.model.IntakeDTO
 import kotlinx.coroutines.flow.Flow
 
 class SaveIntakeUseCase(

@@ -2,20 +2,21 @@ package com.pichurchyk.nutrition.database.repository
 
 import com.pichurchyk.fitflow.common.ext.date.toEndOfDay
 import com.pichurchyk.fitflow.common.ext.date.toStartOfDay
-import com.pichurchyk.nutrition.repository.NutritionRepository
 import com.pichurchyk.nutrition.database.NutritionDao
-import com.pichurchyk.nutrition.database.mapper.IntakeMapper
+import com.pichurchyk.nutrition.database.mapper.IntakeDatabaseMapper
 import com.pichurchyk.nutrition.database.model.IntakeType
-import com.pichurchyk.nutrition.database.model.dto.DailyInfoDTO
-import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
+import com.pichurchyk.nutrition.model.DailyInfoDTO
+import com.pichurchyk.nutrition.model.IntakeDTO
+import com.pichurchyk.nutrition.repository.NutritionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import java.util.Date
 
 internal class NutritionDatabaseRepositoryImpl(private val dao: NutritionDao) :
     NutritionRepository {
     override suspend fun saveIntake(intake: IntakeDTO) = flow {
-        IntakeMapper.fromDto(intake).let {
+        IntakeDatabaseMapper.fromDto(intake).let {
             dao.saveIntake(it)
                 .also {
                     emit(Unit)
@@ -23,21 +24,21 @@ internal class NutritionDatabaseRepositoryImpl(private val dao: NutritionDao) :
         }
     }
 
-    override suspend fun removeIntake(intake: IntakeDTO) {
-        IntakeMapper.fromDto(intake).let {
+    override suspend fun removeIntake(intake: IntakeDTO): Flow<Unit> = flow {
+        IntakeDatabaseMapper.fromDto(intake).let {
             dao.removeIntake(it)
         }
     }
 
-    override suspend fun getAllIntakesByDateAndType(date: Date, type: IntakeType): List<IntakeDTO> {
+    override suspend fun getAllIntakesByDateAndType(date: Date, type: IntakeType): Flow<List<IntakeDTO>> {
         val dboResponse = dao.getAllIntakesByDateAndType(date, type)
 
-        return dboResponse.map { IntakeMapper.fromDbo(it) }
+        return dboResponse.map { responseItems -> responseItems.map { IntakeDatabaseMapper.fromDbo(it) } }
     }
 
-    override suspend fun getDailyInfo(date: Date): Flow<DailyInfoDTO> = flow {
-        dao.getDailyInfo(startOfDay = date.toStartOfDay(), endOfDay = date.toEndOfDay())
-            .collect { summary ->
+    override suspend fun getDailyInfo(date: Date): Flow<DailyInfoDTO> {
+        return dao.getDailyInfo(startOfDay = date.toStartOfDay(), endOfDay = date.toEndOfDay())
+            .map { summary ->
                 val intakes = summary.map { intake ->
                     IntakeDTO(
                         date = intake.date,
@@ -54,9 +55,7 @@ internal class NutritionDatabaseRepositoryImpl(private val dao: NutritionDao) :
                     date = date,
                     intakes = intakes,
                     caloriesSum = caloriesSum
-                ).also {
-                    emit(it)
-                }
+                )
             }
     }
 }
