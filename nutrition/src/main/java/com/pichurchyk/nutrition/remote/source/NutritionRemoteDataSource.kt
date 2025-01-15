@@ -2,6 +2,7 @@ package com.pichurchyk.nutrition.remote.source
 
 import com.pichurchyk.fitflow.common.ext.date.toEndOfDay
 import com.pichurchyk.fitflow.common.ext.date.toStartOfDay
+import com.pichurchyk.fitflow.common.preferences.AuthPreferencesActions
 import com.pichurchyk.nutrition.database.model.IntakeType
 import com.pichurchyk.nutrition.model.IntakeDTO
 import com.pichurchyk.nutrition.remote.mapper.IntakeRemoteMapper
@@ -15,11 +16,13 @@ import io.ktor.client.plugins.resources.post
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import java.util.Date
 
 internal class NutritionRemoteDataSource(
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
+    private val preferences: AuthPreferencesActions
 ) {
 
     suspend fun getAllIntakes(type: IntakeType, date: Date): Flow<List<IntakeDTO>> = flow {
@@ -41,7 +44,7 @@ internal class NutritionRemoteDataSource(
     fun saveIntake(intakeDTO: IntakeDTO): Flow<Unit> = flow {
         httpClient
             .post(IntakesResource()) {
-                setBody(IntakeRemoteMapper.fromDTO(intakeDTO))
+                setBody(IntakeRemoteMapper.fromDTO(intakeDTO, preferences.getUserUid().first()))
             }
             .body<Unit>()
             .also { emit(it) }

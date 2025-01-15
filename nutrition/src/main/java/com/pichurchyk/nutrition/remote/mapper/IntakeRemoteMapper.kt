@@ -14,9 +14,10 @@ object IntakeRemoteMapper {
         type = response.type,
     )
 
-    fun fromDTO(dto: IntakeDTO): IntakePayload = IntakePayload(
+    fun fromDTO(dto: IntakeDTO, userUuid: String): IntakePayload = IntakePayload(
         date = dto.date.time,
         value = dto.value,
-        type = dto.type
+        type = dto.type,
+        userUuid = userUuid
     )
 }

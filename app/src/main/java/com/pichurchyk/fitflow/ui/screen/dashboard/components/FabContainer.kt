@@ -229,7 +229,8 @@ fun AddIntakeFab(
 
                     FloatingActionButton(
                         onClick = {
-                            containerState = DashboardFabContainerState.Fab(true)
+                            val isExpanded = (containerState as DashboardFabContainerState.Fab).isExpanded
+                            containerState = DashboardFabContainerState.Fab(!isExpanded)
                         },
                         shape = RoundedCornerShape(10.dp),
                         containerColor = MaterialTheme.colorScheme.primary

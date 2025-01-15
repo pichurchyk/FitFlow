@@ -86,7 +86,7 @@ val supabaseModule = module {
                                         RefreshTokenPayload(refreshToken)
                                     )
                                     header("apikey", BuildConfig.SUPABASE_ANON_KEY)
-                                    header("Content-Type", "application/json")
+                                    header(HttpHeaders.ContentType, "application/json")
                                 }.body()
 
                             authPreferences.setAccessToken(refreshTokenResponse.accessToken)
@@ -114,6 +114,7 @@ val supabaseModule = module {
                 url("${BuildConfig.SUPABASE_URL}/rest/v1/")
                 header("apikey", BuildConfig.SUPABASE_ANON_KEY)
                 header(HttpHeaders.Authorization, "Bearer $accessToken")
+                header(HttpHeaders.ContentType, "application/json")
             }
         }
     }
