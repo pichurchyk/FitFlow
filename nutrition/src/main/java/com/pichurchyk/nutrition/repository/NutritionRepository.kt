@@ -13,5 +13,5 @@ interface NutritionRepository {
 
     suspend fun getAllIntakesByDateAndType(date: Date, type: IntakeType): Flow<List<IntakeDTO>>
 
-    suspend fun getDailyInfo(date: Date): Flow<DailyInfoDTO>
+    suspend fun getDailyInfo(date: Date, needFetchWithRemote: Boolean = true): Flow<DailyInfoDTO>
 }
