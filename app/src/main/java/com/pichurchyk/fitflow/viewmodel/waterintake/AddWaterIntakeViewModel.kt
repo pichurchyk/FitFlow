@@ -3,7 +3,7 @@ package com.pichurchyk.fitflow.viewmodel.waterintake
 import androidx.lifecycle.viewModelScope
 import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
 import com.pichurchyk.nutrition.database.model.IntakeType
-import com.pichurchyk.nutrition.model.IntakeDTO
+import com.pichurchyk.nutrition.model.CreateIntakeModel
 import com.pichurchyk.nutrition.usecase.SaveIntakeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +18,7 @@ class AddWaterIntakeViewModel(
 ) : BaseViewModel() {
 
     private val _state = MutableStateFlow<AddWaterIntakeViewState>(
-        AddWaterIntakeViewState.Init(IntakeDTO.empty(date, IntakeType.WATER))
+        AddWaterIntakeViewState.Init(CreateIntakeModel.empty(date, IntakeType.WATER))
     )
     val state = _state.asStateFlow()
 
@@ -44,7 +44,7 @@ class AddWaterIntakeViewModel(
 
     private fun reset() {
         _state.update {
-            AddWaterIntakeViewState.Init(IntakeDTO.empty(date, IntakeType.WATER))
+            AddWaterIntakeViewState.Init(CreateIntakeModel.empty(date, IntakeType.WATER))
         }
     }
 

@@ -3,7 +3,7 @@ package com.pichurchyk.fitflow.viewmodel.addintake
 import androidx.lifecycle.viewModelScope
 import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
 import com.pichurchyk.nutrition.database.model.IntakeType
-import com.pichurchyk.nutrition.model.IntakeDTO
+import com.pichurchyk.nutrition.model.CreateIntakeModel
 import com.pichurchyk.nutrition.usecase.SaveIntakeUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -22,7 +22,7 @@ class AddIntakeViewModel(
 
     private val _state = MutableStateFlow<AddIntakeViewState>(
         AddIntakeViewState.Init(
-            IntakeDTO.getIntakesDtoByMainTypes(Date())
+            CreateIntakeModel.getIntakesDtoByMainTypes(Date())
         )
     )
     val state = _state.asStateFlow()
@@ -50,7 +50,7 @@ class AddIntakeViewModel(
     private fun reset() {
         _state.update {
             AddIntakeViewState.Init(
-                IntakeDTO.getIntakesDtoByMainTypes(Date())
+                CreateIntakeModel.getIntakesDtoByMainTypes(Date())
             )
         }
     }
@@ -81,7 +81,7 @@ class AddIntakeViewModel(
 
                 _state.update {
                     AddIntakeViewState.Success(
-                        IntakeDTO.getIntakesDtoByMainTypes(Date())
+                        CreateIntakeModel.getIntakesDtoByMainTypes(Date())
                     )
                 }
             } catch (e: Throwable) {

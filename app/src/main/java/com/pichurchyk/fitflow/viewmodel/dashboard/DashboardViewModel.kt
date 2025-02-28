@@ -5,16 +5,20 @@ import com.pichurchyk.fitflow.common.ext.date.getNextDay
 import com.pichurchyk.fitflow.common.ext.date.getPreviousDay
 import com.pichurchyk.fitflow.common.ext.date.toStartOfDay
 import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
+import com.pichurchyk.nutrition.usecase.FetchRemoteAndLocalUseCase
 import com.pichurchyk.nutrition.usecase.GetDailyInfoUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Date
 
 class DashboardViewModel(
-    private val getDailyInfoUseCase: GetDailyInfoUseCase
-): BaseViewModel() {
+    private val getDailyInfoUseCase: GetDailyInfoUseCase,
+    private val fetchRemoteAndLocalUseCase: FetchRemoteAndLocalUseCase
+) : BaseViewModel() {
 
     private val _state = MutableStateFlow<DashboardViewState>(DashboardViewState.Init)
     val state = _state.asStateFlow()
@@ -24,9 +28,13 @@ class DashboardViewModel(
 
     init {
         viewModelScope.launch {
-            selectedDate.collect {
-                loadData()
-            }
+            selectedDate
+                .drop(1)
+                .collect {
+                    loadData()
+
+                    fetchRemoteAndLocalUseCase.invoke(it)
+                }
         }
     }
 
@@ -64,9 +72,9 @@ class DashboardViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
-            getDailyInfoUseCase.invoke(selectedDate.value)
+            getDailyInfoUseCase.invoke(selectedDate.first())
                 .catch {
-
+                    it.printStackTrace()
                 }
                 .collect { summary ->
                     _state.value = DashboardViewState.ShowData.Loaded(summary)

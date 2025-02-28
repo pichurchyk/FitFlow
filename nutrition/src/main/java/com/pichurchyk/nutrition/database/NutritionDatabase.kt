@@ -6,15 +6,17 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.pichurchyk.nutrition.database.model.dbo.DailyIntakeSummary
+import com.pichurchyk.nutrition.database.model.dbo.FetchedDateDBO
 import com.pichurchyk.nutrition.database.model.dbo.IntakeDBO
 
 @Database(
     entities = [
-        IntakeDBO::class
-               ],
+        IntakeDBO::class,
+        FetchedDateDBO::class,
+    ],
     views = [
         DailyIntakeSummary::class
-            ],
+    ],
     version = 1,
     exportSchema = false
 )

@@ -8,14 +8,24 @@ import androidx.room.Query
 import com.pichurchyk.nutrition.database.model.dbo.IntakeDBO
 import com.pichurchyk.nutrition.database.model.IntakeType
 import com.pichurchyk.nutrition.database.model.dbo.DailyIntakeSummary
+import com.pichurchyk.nutrition.database.model.dbo.FetchedDateDBO
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 @Dao
 internal interface NutritionDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveIntake(intake: IntakeDBO)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun saveIntake(intake: IntakeDBO): Long
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun saveLastFetchedDate(fetchedDateDBO: FetchedDateDBO)
+
+    @Query("SELECT * FROM FetchedDates WHERE date =:date")
+    fun getFetchedDateInfo(date: Date): Flow<FetchedDateDBO?>
+
+    @Query("SELECT * FROM Intake WHERE id = :id")
+    suspend fun getIntakeById(id: Long): IntakeDBO?
 
     @Delete
     fun removeIntake(intake: IntakeDBO)
