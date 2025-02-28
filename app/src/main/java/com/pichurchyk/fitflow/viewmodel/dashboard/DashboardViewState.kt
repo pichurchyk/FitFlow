@@ -1,6 +1,6 @@
 package com.pichurchyk.fitflow.viewmodel.dashboard
 
-import com.pichurchyk.nutrition.database.model.dto.DailyInfoDTO
+import com.pichurchyk.nutrition.model.DailyInfoDTO
 import com.pichurchyk.nutrition.database.model.ext.getCarbs
 import com.pichurchyk.nutrition.database.model.ext.getFat
 import com.pichurchyk.nutrition.database.model.ext.getProtein

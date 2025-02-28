@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.R
+import com.pichurchyk.fitflow.common.ext.date.toStartOfDay
 import com.pichurchyk.fitflow.ui.common.Calendar
 import com.pichurchyk.fitflow.ui.common.CustomSnackbar
 import com.pichurchyk.fitflow.ui.common.ErrorBottomSheet
@@ -40,7 +41,7 @@ fun DashboardScreen(
     viewModel: DashboardViewModel = koinViewModel()
 ) {
     val viewState by viewModel.state.collectAsState()
-    val selectedDate by viewModel.selectedDate.collectAsState()
+    val selectedDate by viewModel.selectedDate.collectAsState(initial = Date().toStartOfDay())
 
     val snackbarHostState = remember { SnackbarHostState() }
 

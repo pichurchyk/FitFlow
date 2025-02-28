@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -15,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.pichurchyk.fitflow"
-        minSdk = 29
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -85,19 +86,17 @@ dependencies {
 
     debugImplementation(libs.kotlinx.serialization.json)
 
-    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.auth)
+
+    implementation(platform(libs.supabase.bom))
+    implementation(libs.supabase.auth)
 
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services)
     implementation(libs.google.id)
 
-    implementation(platform(libs.koin.bom))
-    implementation(libs.koin.core)
-    implementation(libs.koin.compose)
-
     implementation(project(":common"))
-    implementation(project(":nutritiondatabase"))
+    implementation(project(":nutrition"))
     implementation(project(":auth"))
+    implementation(project(":supabase"))
 }

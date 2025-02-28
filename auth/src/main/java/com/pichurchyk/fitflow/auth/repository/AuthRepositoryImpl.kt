@@ -1,20 +1,19 @@
 package com.pichurchyk.fitflow.auth.repository
 
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FirebaseUser
 import com.pichurchyk.fitflow.auth.datasource.AuthDataSource
 import com.pichurchyk.fitflow.auth.model.SignInResult
+import io.github.jan.supabase.gotrue.user.UserInfo
 import kotlinx.coroutines.flow.Flow
 
 internal class AuthRepositoryImpl(
     private val authDataSource: AuthDataSource
 ): AuthRepository {
 
-    override suspend fun signIn(authCredential: AuthCredential): Flow<SignInResult> {
-        return authDataSource.signIn(authCredential)
+    override suspend fun signIn(googleIdToken: String): Flow<SignInResult> {
+        return authDataSource.signIn(googleIdToken)
     }
 
-    override suspend fun getSignedInUser(): Flow<FirebaseUser?> {
+    override suspend fun getSignedInUser(): Flow<UserInfo?> {
         return authDataSource.getSignedInUser()
     }
 
