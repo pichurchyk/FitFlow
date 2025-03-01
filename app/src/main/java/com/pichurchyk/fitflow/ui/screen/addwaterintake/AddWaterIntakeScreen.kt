@@ -35,7 +35,6 @@ import com.pichurchyk.nutrition.database.model.IntakeType
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-import java.time.Instant
 import java.util.Date
 
 @Composable
@@ -164,7 +163,7 @@ fun AddWaterIntakeScreen(
 private fun Preview() {
     AppTheme {
         AddWaterIntakeScreen(
-            selectedDate = Date.from(Instant.now()),
+            selectedDate = Date(),
             closeScreen = {}
         )
     }

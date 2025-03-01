@@ -6,8 +6,10 @@ import com.pichurchyk.nutrition.remote.source.NutritionRemoteDataSource
 import com.pichurchyk.nutrition.repository.NutritionRepository
 import com.pichurchyk.nutrition.repository.NutritionRepositoryImpl
 import com.pichurchyk.nutrition.usecase.FetchRemoteAndLocalUseCase
-import com.pichurchyk.nutrition.usecase.GetDailyInfoUseCase
+import com.pichurchyk.nutrition.usecase.GetDailyIntakesUseCase
+import com.pichurchyk.nutrition.usecase.GetDailyWaterIntakesUseCase
 import com.pichurchyk.nutrition.usecase.SaveIntakeUseCase
+import com.pichurchyk.nutrition.usecase.SaveWaterIntakeUseCase
 import org.koin.dsl.module
 
 val nutritionModule = module {
@@ -24,7 +26,9 @@ val nutritionModule = module {
 
 //    Use Cases
     single { SaveIntakeUseCase(get()) }
-    single { GetDailyInfoUseCase(get()) }
+    single { SaveWaterIntakeUseCase(get()) }
+    single { GetDailyIntakesUseCase(get()) }
+    single { GetDailyWaterIntakesUseCase(get()) }
     single { FetchRemoteAndLocalUseCase(get()) }
 }
 

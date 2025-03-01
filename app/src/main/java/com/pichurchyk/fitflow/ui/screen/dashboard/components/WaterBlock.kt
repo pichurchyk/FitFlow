@@ -11,12 +11,15 @@ import com.pichurchyk.fitflow.ui.ext.getColor
 import com.pichurchyk.fitflow.ui.theme.AppTheme
 import com.pichurchyk.fitflow.ui.theme.color_water
 import com.pichurchyk.nutrition.database.model.IntakeType
+import com.pichurchyk.nutrition.model.WaterIntake
 
 @Composable
 fun WaterBlock(
     modifier: Modifier = Modifier,
-    total: Int,
+    intakes: List<WaterIntake>,
 ) {
+    val total = intakes.sumOf { it.value }
+
     DashboardItemWrapper(
         modifier = modifier
             .padding(horizontal = 16.dp)
@@ -43,7 +46,7 @@ fun WaterBlock(
 private fun Preview() {
     AppTheme {
         WaterBlock(
-            total = 1000
+            intakes = listOf()
         )
     }
 }

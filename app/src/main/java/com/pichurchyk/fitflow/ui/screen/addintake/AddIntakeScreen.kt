@@ -30,6 +30,7 @@ import com.pichurchyk.fitflow.ui.ext.getText
 import com.pichurchyk.fitflow.viewmodel.addintake.AddIntakeIntent
 import com.pichurchyk.fitflow.viewmodel.addintake.AddIntakeViewModel
 import com.pichurchyk.fitflow.viewmodel.addintake.AddIntakeViewState
+import com.pichurchyk.nutrition.database.model.IntakeType
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -106,29 +107,78 @@ fun AddIntakeScreen(
                     ),
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                val state = viewState
-                state.intakes.forEach { intake ->
-                    IntakeInput(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        intakeType = intake.type,
-                        value = intake.value,
-                        onValueChanged = { newValue ->
-                            viewModel.handleIntent(
-                                AddIntakeIntent.ChangeIntakeValue(
-                                    value = newValue,
-                                    intakeType = intake.type
-                                )
+                IntakeInput(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    intakeType = IntakeType.CARBS,
+                    value = viewState.getValuesSumOfType(IntakeType.CARBS),
+                    onValueChanged = { newValue ->
+                        viewModel.handleIntent(
+                            AddIntakeIntent.ChangeIntakeValue(
+                                value = newValue,
+                                intakeType = IntakeType.CARBS
                             )
-                        },
-                        needBottomRadius = state.intakes.last() == intake,
-                        needTopRadius = state.intakes.first() == intake
-                    )
-                }
+                        )
+                    },
+                    needBottomRadius = false,
+                    needTopRadius = true
+                )
 
+                IntakeInput(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    intakeType = IntakeType.PROTEIN,
+                    value = viewState.getValuesSumOfType(IntakeType.PROTEIN),
+                    onValueChanged = { newValue ->
+                        viewModel.handleIntent(
+                            AddIntakeIntent.ChangeIntakeValue(
+                                value = newValue,
+                                intakeType = IntakeType.PROTEIN
+                            )
+                        )
+                    },
+                    needBottomRadius = false,
+                    needTopRadius = false
+                )
 
-                when (state) {
+                IntakeInput(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    intakeType = IntakeType.FAT,
+                    value = viewState.getValuesSumOfType(IntakeType.FAT),
+                    onValueChanged = { newValue ->
+                        viewModel.handleIntent(
+                            AddIntakeIntent.ChangeIntakeValue(
+                                value = newValue,
+                                intakeType = IntakeType.FAT
+                            )
+                        )
+                    },
+                    needBottomRadius = true,
+                    needTopRadius = false
+                )
+
+                IntakeInput(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    intakeType = IntakeType.CALORIES,
+                    value = viewState.intake.calories,
+                    onValueChanged = { newValue ->
+                        viewModel.handleIntent(
+                            AddIntakeIntent.ChangeCaloriesValue(
+                                value = newValue,
+                            )
+                        )
+                    },
+                    needBottomRadius = true,
+                    needTopRadius = false
+                )
+
+                when (val state = viewState) {
                     is AddIntakeViewState.ValidationException -> {
                         errorMessage = stringResource(state.validationException.getText())
                     }

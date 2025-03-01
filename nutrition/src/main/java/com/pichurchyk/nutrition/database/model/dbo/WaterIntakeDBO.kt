@@ -4,11 +4,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity(tableName = "Intake")
-data class IntakeDBO(
+@Entity(tableName = "WaterIntake")
+data class WaterIntakeDBO(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val date: Date,
-    val values: List<IntakeValueDBO>,
-    val calories: Int,
+    val value: Int,
 )

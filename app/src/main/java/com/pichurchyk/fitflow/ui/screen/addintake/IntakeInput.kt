@@ -32,10 +32,10 @@ fun IntakeInput(
     val bottomRadius = if (needBottomRadius) 10.dp else 4.dp
     val topRadius = if (needTopRadius) 10.dp else 4.dp
 
-    val unit = intakeType.getUnit()?.let { stringResource(id = it) }
-    val placeholder = "0${unit?:""}"
+    val unit = stringResource(id = intakeType.getUnit())
+    val placeholder = "0${unit}"
 
-    val valueToShow = if (value == 0 ) "" else "$value${unit ?: ""}"
+    val valueToShow = if (value == 0 ) "" else "$value${unit}"
 
     Column(
         modifier = modifier
@@ -54,7 +54,7 @@ fun IntakeInput(
             ),
             value = valueToShow,
             onValueChange = { newValue ->
-                val newValueWithoutUnit = newValue.removeSuffix(unit?:"")
+                val newValueWithoutUnit = newValue.removeSuffix(unit)
 
                 if (newValueWithoutUnit.isEmpty()) {
                     onValueChanged(0)

@@ -145,15 +145,12 @@ private fun MainContent(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .padding(top = 40.dp),
-                    calories = state.data.caloriesSum,
-                    fat = state.getSummaryFat(),
-                    carbs = state.getSummaryCarbs(),
-                    protein = state.getSummaryProtein(),
+                    intakes = state.data.intakes,
                 )
 
                 WaterBlock(
                     modifier = Modifier,
-                    total = state.getSummaryWater()
+                    intakes = state.waterIntakes
                 )
 
                 if (isCalendarVisible) {

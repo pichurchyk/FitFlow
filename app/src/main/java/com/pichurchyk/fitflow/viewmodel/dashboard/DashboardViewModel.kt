@@ -6,17 +6,20 @@ import com.pichurchyk.fitflow.common.ext.date.getPreviousDay
 import com.pichurchyk.fitflow.common.ext.date.toStartOfDay
 import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
 import com.pichurchyk.nutrition.usecase.FetchRemoteAndLocalUseCase
-import com.pichurchyk.nutrition.usecase.GetDailyInfoUseCase
+import com.pichurchyk.nutrition.usecase.GetDailyIntakesUseCase
+import com.pichurchyk.nutrition.usecase.GetDailyWaterIntakesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Date
 
 class DashboardViewModel(
-    private val getDailyInfoUseCase: GetDailyInfoUseCase,
+    private val getDailyIntakesUseCase: GetDailyIntakesUseCase,
+    private val getDailyWaterIntakesUseCase: GetDailyWaterIntakesUseCase,
     private val fetchRemoteAndLocalUseCase: FetchRemoteAndLocalUseCase
 ) : BaseViewModel() {
 
@@ -72,12 +75,15 @@ class DashboardViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
-            getDailyInfoUseCase.invoke(selectedDate.first())
-                .catch {
-                    it.printStackTrace()
-                }
-                .collect { summary ->
-                    _state.value = DashboardViewState.ShowData.Loaded(summary)
+            combine(
+                getDailyIntakesUseCase.invoke(selectedDate.first()),
+                getDailyWaterIntakesUseCase.invoke(selectedDate.first())
+            ) { intakes, waterIntakes ->
+                DashboardViewState.ShowData.Loaded(intakes, waterIntakes)
+            }
+                .catch { it.printStackTrace() }
+                .collect { combinedData ->
+                    _state.value = combinedData
                 }
         }
     }

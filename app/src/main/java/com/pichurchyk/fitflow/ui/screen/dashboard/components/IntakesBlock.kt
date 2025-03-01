@@ -10,42 +10,36 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.pichurchyk.fitflow.R
 import com.pichurchyk.fitflow.ui.ext.getTitle
 import com.pichurchyk.fitflow.ui.ext.getUnitWithValue
-import com.pichurchyk.fitflow.ui.screen.dashboard.IntakeRate
+import com.pichurchyk.fitflow.ui.ext.groupByIntakeType
 import com.pichurchyk.fitflow.ui.theme.AppTheme
-import com.pichurchyk.nutrition.database.model.IntakeType
+import com.pichurchyk.nutrition.model.Intake
 
 @Composable
 fun IntakesBlock(
     modifier: Modifier = Modifier,
-    calories: Int,
-    fat: Int,
-    protein: Int,
-    carbs: Int
+    intakes: List<Intake>,
 ) {
-    val carbsRate = IntakeRate(type = IntakeType.CARBS, value = carbs)
-    val fatRate = IntakeRate(type = IntakeType.FAT, value = fat)
-    val proteinRate = IntakeRate(type = IntakeType.PROTEIN, value = protein)
-    val caloriesRate = IntakeRate(type = IntakeType.CALORIES, value = calories)
-
-    val items = listOf(caloriesRate, carbsRate, proteinRate, fatRate)
+    val items = intakes.groupByIntakeType()
 
     LazyColumn(
         modifier = modifier
     ) {
-        itemsIndexed(items) { index, item ->
+        itemsIndexed(items) { index, combinedIntakes ->
             val isFirstElement = index == 0
             val isLastElement = index == items.size - 1
+
+            val intakesSum = combinedIntakes.intakes.sumOf { it.values.sumOf { it.value } }
 
             DashboardItemWrapper(
                 type = DashboardItemWrapperType.FULL,
                 title = if (isFirstElement) stringResource(id = R.string.intakes) else null,
-                subtitle = stringResource(item.type.getTitle()),
+                subtitle = stringResource(combinedIntakes.intakeType.getTitle()),
                 needBottomRadius = isLastElement,
-                mainText = stringResource(id = item.type.getUnitWithValue(), item.value),
+                mainText = stringResource(id = combinedIntakes.intakeType.getUnitWithValue(), intakesSum),
                 content = {
                     AnimatedProgressIndicator(
                         modifier = Modifier,
-                        value = item.value,
+                        value = intakesSum,
                         type = AnimatedProgressIndicatorType.RADIAL,
                         color = MaterialTheme.colorScheme.primary,
                         limit = 2000
@@ -61,10 +55,7 @@ fun IntakesBlock(
 private fun Preview() {
     AppTheme {
         IntakesBlock(
-            calories = 123,
-            fat = 10,
-            protein = 70,
-            carbs = 120
+            intakes = listOf()
         )
     }
 }

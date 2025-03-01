@@ -2,8 +2,7 @@ package com.pichurchyk.nutrition.model
 
 import java.util.Date
 
-data class DailyInfoDTO(
+data class DailyInfo(
     val date: Date,
-    val intakes: List<IntakeDTO>,
-    val caloriesSum: Int
+    val intakes: List<Intake>
 )

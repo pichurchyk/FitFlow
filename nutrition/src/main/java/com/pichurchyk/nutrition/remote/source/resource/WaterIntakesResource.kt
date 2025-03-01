@@ -4,5 +4,5 @@ import io.ktor.resources.Resource
 import kotlinx.serialization.Serializable
 
 @Serializable
-@Resource("/functions/v1/save-intake")
-class IntakesResource
+@Resource("/rest/v1/WaterIntakes")
+class WaterIntakesResource()

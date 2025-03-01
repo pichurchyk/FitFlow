@@ -2,9 +2,8 @@ package com.pichurchyk.fitflow.viewmodel.waterintake
 
 import androidx.lifecycle.viewModelScope
 import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
-import com.pichurchyk.nutrition.database.model.IntakeType
-import com.pichurchyk.nutrition.model.CreateIntakeModel
-import com.pichurchyk.nutrition.usecase.SaveIntakeUseCase
+import com.pichurchyk.nutrition.model.create.CreateWaterIntakeModel
+import com.pichurchyk.nutrition.usecase.SaveWaterIntakeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -13,12 +12,12 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 class AddWaterIntakeViewModel(
-    private val addIntakeUseCase: SaveIntakeUseCase,
+    private val addWaterIntakeUseCase: SaveWaterIntakeUseCase,
     private val date: Date
 ) : BaseViewModel() {
 
     private val _state = MutableStateFlow<AddWaterIntakeViewState>(
-        AddWaterIntakeViewState.Init(CreateIntakeModel.empty(date, IntakeType.WATER))
+        AddWaterIntakeViewState.Init(CreateWaterIntakeModel())
     )
     val state = _state.asStateFlow()
 
@@ -44,7 +43,7 @@ class AddWaterIntakeViewModel(
 
     private fun reset() {
         _state.update {
-            AddWaterIntakeViewState.Init(CreateIntakeModel.empty(date, IntakeType.WATER))
+            AddWaterIntakeViewState.Init(CreateWaterIntakeModel())
         }
     }
 
@@ -57,7 +56,7 @@ class AddWaterIntakeViewModel(
             }
 
             try {
-                addIntakeUseCase.invoke(state.intake)
+                addWaterIntakeUseCase.invoke(state.intake)
                     .catch { e ->
                         throw e
                     }
@@ -87,7 +86,7 @@ class AddWaterIntakeViewModel(
 
     private fun changeIntakeValue(value: Int) {
         val inputState = (state.value as AddWaterIntakeViewState.Init)
-        val updatedIntake = inputState.intake.copy(value = value)
+        val updatedIntake = inputState.intake.copy(value = value, date = date)
 
         _state.update {
             inputState.copy(intake = updatedIntake)

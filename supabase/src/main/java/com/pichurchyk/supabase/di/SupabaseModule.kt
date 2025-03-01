@@ -111,7 +111,7 @@ val supabaseModule = module {
             }
 
             defaultRequest {
-                url("${BuildConfig.SUPABASE_URL}/rest/v1/")
+                url(BuildConfig.SUPABASE_URL)
                 header("apikey", BuildConfig.SUPABASE_ANON_KEY)
                 header(HttpHeaders.Authorization, "Bearer $accessToken")
                 header(HttpHeaders.ContentType, "application/json")
