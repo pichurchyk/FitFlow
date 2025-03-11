@@ -37,7 +37,11 @@ internal class NutritionRepositoryImpl(
                         savedIntakeDBO?.let {
                             val savedIntakeDTO = savedIntakeDBO.toDomain()
 
-                            remoteDataSource.saveIntake(savedIntakeDTO).first()
+                            try {
+                                remoteDataSource.saveIntake(savedIntakeDTO).first()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
                         }
                     }
                 }
