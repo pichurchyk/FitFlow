@@ -11,8 +11,8 @@ fun List<Intake>.groupByIntakeType(): List<CombinedIntakesByType> {
 
     // Create a list of CombinedIntakesByType, grouping IntakeDTOs by type
     return allTypes.map { type ->
-        val filteredIntakes = this.filter { intakeDTO ->
-            intakeDTO.values.any { it.intakeType == type }
+        val filteredIntakes = this.flatMap { it.values }.filter { intakeValue ->
+            intakeValue.intakeType == type
         }
         CombinedIntakesByType(type, filteredIntakes)
     }

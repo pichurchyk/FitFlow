@@ -28,7 +28,7 @@ fun IntakesBlock(
             val isFirstElement = index == 0
             val isLastElement = index == items.size - 1
 
-            val intakesSum = combinedIntakes.intakes.sumOf { it.values.sumOf { it.value } }
+            val intakesSum = combinedIntakes.intakes.sumOf { it.value }
 
             DashboardItemWrapper(
                 type = DashboardItemWrapperType.FULL,
