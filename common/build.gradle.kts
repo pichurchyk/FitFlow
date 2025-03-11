@@ -30,14 +30,34 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
+    }
 }
 
 dependencies {
 
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+
+    api(libs.ktor.client.core)
+    api(libs.ktor.client.auth)
+    api(libs.ktor.client.okhttp)
+    api(libs.ktor.client.android)
+    api(libs.ktor.client.content.negotiation)
+    api(libs.ktor.client.logging)
+    api(libs.ktor.client.resources)
+
+    api(platform(libs.koin.bom))
+    api(libs.koin.core)
+    api(libs.koin.compose)
+
+    api(libs.androidx.datastore.preferences)
 }

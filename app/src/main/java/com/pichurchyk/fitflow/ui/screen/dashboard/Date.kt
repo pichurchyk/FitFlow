@@ -1,14 +1,15 @@
 package com.pichurchyk.fitflow.ui.screen.dashboard
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,25 +22,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.common.ext.getNextDay
-import com.pichurchyk.fitflow.common.ext.isToday
-import com.pichurchyk.fitflow.common.ext.toDateString
+import com.pichurchyk.fitflow.common.R
+import com.pichurchyk.fitflow.common.ext.date.getNextDay
+import com.pichurchyk.fitflow.common.ext.date.isCurrentYear
+import com.pichurchyk.fitflow.common.ext.date.isToday
+import com.pichurchyk.fitflow.common.ext.date.isTomorrow
+import com.pichurchyk.fitflow.common.ext.date.isYesterday
+import com.pichurchyk.fitflow.common.ext.date.toDateString
+import com.pichurchyk.fitflow.common.utils.date.DateFormat
 import com.pichurchyk.fitflow.ui.ext.doOnClick
 import com.pichurchyk.fitflow.ui.theme.AppTheme
 import java.util.Date
+import java.util.Locale
 
 @Composable
-fun Date(
+fun DateSelector(
     modifier: Modifier = Modifier,
     date: Date,
     onDateClick: () -> Unit,
     onNextClick: () -> Unit,
     onPreviousClick: () -> Unit
 ) {
+    val dateString = when {
+        date.isToday() -> stringResource(id = R.string.today)
+        date.isTomorrow() -> stringResource(id = R.string.tomorrow)
+        date.isYesterday() -> stringResource(id = R.string.yesterday)
+        date.isCurrentYear() -> date.toDateString(format = DateFormat.DAY_SHORT_MONTH)
+        else -> date.toDateString()
+    }.replaceFirstChar { if (it. isLowerCase()) it. titlecase(Locale.ROOT) else it. toString() }
+
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         Icon(
             modifier = Modifier
@@ -49,32 +64,29 @@ fun Date(
             contentDescription = "",
             tint = MaterialTheme.colorScheme.onSurface
         )
-        Card(
-            modifier = Modifier
-                .doOnClick {
-                    onDateClick.invoke()
-                }
-                .widthIn(min = 150.dp),
-            colors = CardDefaults.elevatedCardColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            ),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 2.dp
-            ),
-            shape = RoundedCornerShape(6.dp),
-        ) {
-            val dateString =
-                if (date.isToday()) stringResource(id = R.string.today) else date.toDateString()
 
+        Box(
+            modifier = Modifier
+                .weight(1f)
+        ) {
             Text(
                 modifier = Modifier
-                    .widthIn(150.dp)
-                    .padding(10.dp),
+                    .align(Alignment.Center),
                 text = dateString,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center
+            )
+
+            Icon(
+                modifier = Modifier
+                    .size(20.dp)
+                    .align(Alignment.CenterEnd)
+                    .doOnClick { onDateClick.invoke() },
+                imageVector = Icons.Rounded.DateRange,
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
 
@@ -89,10 +101,13 @@ fun Date(
     }
 }
 
+
 @Composable
 @Preview
 private fun Preview() {
     AppTheme {
-        Date(modifier = Modifier, date = Date().getNextDay(), {}, {}, {})
+        Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+            DateSelector(modifier = Modifier, date = Date().getNextDay(), {}, {}, {})
+        }
     }
 }

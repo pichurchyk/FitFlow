@@ -1,5 +1,6 @@
 package com.pichurchyk.fitflow.ui.common
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -19,6 +20,7 @@ fun CommonButton(
     doOnClick: () -> Unit
 ) {
     Button(
+        modifier = modifier.height(56.dp),
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary

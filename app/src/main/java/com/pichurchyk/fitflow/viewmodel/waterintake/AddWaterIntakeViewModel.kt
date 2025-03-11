@@ -1,10 +1,9 @@
 package com.pichurchyk.fitflow.viewmodel.waterintake
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
-import com.pichurchyk.nutrition.database.model.IntakeType
-import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
-import com.pichurchyk.nutrition.database.usecase.SaveIntakeUseCase
+import androidx.lifecycle.viewModelScope
+import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
+import com.pichurchyk.nutrition.model.create.CreateWaterIntakeModel
+import com.pichurchyk.nutrition.usecase.SaveWaterIntakeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -13,12 +12,12 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 class AddWaterIntakeViewModel(
-    private val addIntakeUseCase: SaveIntakeUseCase,
+    private val addWaterIntakeUseCase: SaveWaterIntakeUseCase,
     private val date: Date
-) : ScreenModel {
+) : BaseViewModel() {
 
     private val _state = MutableStateFlow<AddWaterIntakeViewState>(
-        AddWaterIntakeViewState.Init(IntakeDTO.empty(date, IntakeType.WATER))
+        AddWaterIntakeViewState.Init(CreateWaterIntakeModel())
     )
     val state = _state.asStateFlow()
 
@@ -44,34 +43,34 @@ class AddWaterIntakeViewModel(
 
     private fun reset() {
         _state.update {
-            AddWaterIntakeViewState.Init(IntakeDTO.empty(date, IntakeType.WATER))
+            AddWaterIntakeViewState.Init(CreateWaterIntakeModel())
         }
     }
 
     private fun submit() {
         val state = (state.value as AddWaterIntakeViewState.Init)
 
-        screenModelScope.launch {
+        viewModelScope.launch {
             _state.update { currentState ->
-                AddWaterIntakeViewState.Loading(value = currentState.value)
+                AddWaterIntakeViewState.Loading(intake = currentState.intake)
             }
 
             try {
-                addIntakeUseCase.invoke(state.value)
+                addWaterIntakeUseCase.invoke(state.intake)
                     .catch { e ->
                         throw e
                     }
                     .collect {
                         _state.update {
                             AddWaterIntakeViewState.Success(
-                                value = state.value
+                                intake = state.intake
                             )
                         }
                     }
             } catch (e: Throwable) {
                 _state.update { currentState ->
                     AddWaterIntakeViewState.Error(
-                        value = currentState.value,
+                        intake = currentState.intake,
                         errorMessage = e.message ?: "Error occurred"
                     )
                 }
@@ -81,16 +80,16 @@ class AddWaterIntakeViewModel(
 
     private fun closeError() {
         _state.update { currentState ->
-            AddWaterIntakeViewState.Init(currentState.value)
+            AddWaterIntakeViewState.Init(currentState.intake)
         }
     }
 
     private fun changeIntakeValue(value: Int) {
         val inputState = (state.value as AddWaterIntakeViewState.Init)
-        val updatedIntake = inputState.value.copy(value = value)
+        val updatedIntake = inputState.intake.copy(value = value, date = date)
 
         _state.update {
-            inputState.copy(value = updatedIntake)
+            inputState.copy(intake = updatedIntake)
         }
     }
 

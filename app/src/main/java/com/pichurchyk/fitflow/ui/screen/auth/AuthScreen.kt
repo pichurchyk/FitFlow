@@ -1,18 +1,11 @@
 package com.pichurchyk.fitflow.ui.screen.auth
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -29,187 +22,107 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import com.pichurchyk.fitflow.R
 import com.pichurchyk.fitflow.ui.common.CustomSnackbar
 import com.pichurchyk.fitflow.ui.common.ErrorBottomSheet
+import com.pichurchyk.fitflow.ui.common.Header
 import com.pichurchyk.fitflow.ui.common.Loader
-import com.pichurchyk.fitflow.ui.screen.dashboard.DashboardScreen
 import com.pichurchyk.fitflow.ui.theme.AppTheme
 import com.pichurchyk.fitflow.viewmodel.auth.AuthIntent
 import com.pichurchyk.fitflow.viewmodel.auth.AuthViewModel
 import com.pichurchyk.fitflow.viewmodel.auth.AuthViewState
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
-object AuthScreen : Screen {
-    private fun readResolve(): Any = AuthScreen
+@Composable
+fun AuthScreen(
+    viewModel: AuthViewModel = koinViewModel(),
+    openDashboard: () -> Unit,
+) {
+    val viewState by viewModel.state.collectAsState()
 
-    @Composable
-    override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
+    val snackbarHostState = remember { SnackbarHostState() }
 
-        val viewModel: AuthViewModel = getScreenModel()
-        val viewState by viewModel.state.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
-        val snackbarHostState = remember { SnackbarHostState() }
+    val googleAuthClient by remember {
+        mutableStateOf(GoogleAuthClient(context))
+    }
 
-        val coroutineScope = rememberCoroutineScope()
-        val context = LocalContext.current
+    val accountGoogleIdToken by googleAuthClient.accountGoogleIdToken.collectAsState()
 
-        val googleAuthClient by remember {
-            mutableStateOf(GoogleAuthClient(context))
+    LaunchedEffect(accountGoogleIdToken) {
+        accountGoogleIdToken?.let { account ->
+            viewModel.handleIntent(AuthIntent.Auth(account))
         }
+    }
 
-        val signedInUser = googleAuthClient.signedInAccount.value
-
-        var expandedLogo by remember {
-            mutableStateOf(true)
+    LaunchedEffect(viewState) {
+        if (viewState is AuthViewState.Success) {
+            openDashboard()
         }
+    }
 
-        var readyToNavigateToDashboard by remember {
-            mutableStateOf(false)
-        }
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) { data -> CustomSnackbar(data) } },
+        content = { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Header(
+                    modifier = Modifier,
+                    title = stringResource(R.string.app_name),
+                )
 
-        LaunchedEffect(signedInUser) {
-            signedInUser?.let { account ->
-                viewModel.handleIntent(AuthIntent.Auth(account))
-            }
-        }
-
-        LaunchedEffect(readyToNavigateToDashboard) {
-            if (readyToNavigateToDashboard) navigator.replace(DashboardScreen)
-        }
-
-        Scaffold(
-            snackbarHost = { SnackbarHost(snackbarHostState) { data -> CustomSnackbar(data) } },
-            content = { paddingValues ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Logo(
-                        modifier = Modifier.weight(1f),
-                        isExpanded = expandedLogo,
-                        onLogoTransitionFinished = {
-                            readyToNavigateToDashboard = true
+                    when (viewState) {
+                        is AuthViewState.Loading -> {
+                            Loader()
                         }
-                    )
 
-                    Box(
-                        modifier = Modifier.weight(1f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        when (viewState) {
-                            is AuthViewState.Loading -> {
-                                Loader()
-                            }
-
-                            is AuthViewState.Success -> {
-                                expandedLogo = false
-                            }
-
-                            is AuthViewState.Init -> {
-                                GoogleSignInButton(
-                                    onClick = {
-                                        coroutineScope.launch {
-                                            googleAuthClient.startSignIn()
-                                        }
+                        is AuthViewState.Init -> {
+                            GoogleSignInButton(
+                                onClick = {
+                                    coroutineScope.launch {
+                                        googleAuthClient.startSignIn()
                                     }
-                                )
-                            }
-
-                            is AuthViewState.Error -> {
-                                val errorMessage = (viewState as AuthViewState.Error).message
-                                ErrorBottomSheet(
-                                    errorMessage = errorMessage,
-                                    onDismiss = { viewModel.handleIntent(AuthIntent.Clear) }
-                                )
-                            }
+                                }
+                            )
                         }
+
+                        is AuthViewState.Error -> {
+                            val errorMessage = (viewState as AuthViewState.Error).message
+                            ErrorBottomSheet(
+                                errorMessage = errorMessage,
+                                onDismiss = {
+                                    googleAuthClient.clearIdToken()
+                                    viewModel.handleIntent(AuthIntent.Clear)
+                                }
+                            )
+                        }
+
+                        else -> {}
                     }
                 }
             }
-        )
-    }
-}
-
-@Composable
-fun Logo(modifier: Modifier = Modifier, isExpanded: Boolean, onLogoTransitionFinished: () -> Unit) {
-    var isReadyToAnimateText by remember {
-        mutableStateOf(false)
-    }
-
-    val fontSize by animateFloatAsState(
-        targetValue = if (!isReadyToAnimateText) 70f else 30f,
-        animationSpec = tween(durationMillis = 100),
-        finishedListener = {
-            onLogoTransitionFinished()
         }
     )
-
-    val offsetX by animateFloatAsState(
-        targetValue = if (isExpanded) 78f else 10f,
-        animationSpec = tween(durationMillis = 300)
-    )
-
-    val offsetY by animateFloatAsState(
-        targetValue = if (isExpanded) 320f else 6f,
-        animationSpec = tween(durationMillis = 300),
-        finishedListener = {
-            isReadyToAnimateText = true
-        }
-    )
-
-    val density = LocalDensity.current
-
-    Box(
-        modifier = modifier
-            .animateContentSize()
-            .wrapContentWidth()
-            .wrapContentHeight()
-            .offset {
-                IntOffset(
-                    x = with(density) {
-                        offsetX.dp
-                            .toPx()
-                            .toInt()
-                    },
-                    y = with(density) {
-                        offsetY.dp
-                            .toPx()
-                            .toInt()
-                    }
-                )
-            },
-        contentAlignment = Alignment.TopStart
-    ) {
-        Text(
-            modifier = Modifier.fillMaxSize(),
-            text = stringResource(id = R.string.app_name),
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = fontSize.sp,
-            fontWeight = FontWeight.Bold,
-        )
-    }
 }
 
 @Composable
@@ -246,6 +159,8 @@ private fun GoogleSignInButton(
 @Preview(showSystemUi = true)
 private fun AuthScreenPreview() {
     AppTheme {
-        AuthScreen.Content()
+        AuthScreen(
+            openDashboard = {}
+        )
     }
 }

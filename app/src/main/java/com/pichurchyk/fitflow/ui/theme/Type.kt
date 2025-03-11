@@ -8,6 +8,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.pichurchyk.fitflow.R
+import com.pichurchyk.fitflow.ui.theme.AppFont.interFont
 
 object AppFont {
     val interFont = FontFamily(
@@ -18,25 +19,60 @@ object AppFont {
     )
 }
 
-private val defaultTypography = Typography()
-val Typography = Typography(
-    displayLarge = defaultTypography.displayLarge.copy(fontFamily = AppFont.interFont),
-    displayMedium = defaultTypography.displayMedium.copy(fontFamily = AppFont.interFont),
-    displaySmall = defaultTypography.displaySmall.copy(fontFamily = AppFont.interFont),
+object TextStyles {
+    val bodyLarge = TextStyle(
+        fontFamily = interFont,
+        fontWeight = FontWeight.W600,
+        fontSize = 20.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp,
+    )
 
-    headlineLarge = defaultTypography.headlineLarge.copy(fontFamily = AppFont.interFont),
-    headlineMedium = defaultTypography.headlineMedium.copy(fontFamily = AppFont.interFont),
-    headlineSmall = defaultTypography.headlineSmall.copy(fontFamily = AppFont.interFont),
+    val bodyMedium = TextStyle(
+        fontFamily = interFont,
+        fontWeight = FontWeight.W500,
+        fontSize = 16.sp,
+        lineHeight = 22.sp,
+        letterSpacing = 0.25.sp,
+    )
 
-    titleLarge = defaultTypography.titleLarge.copy(fontFamily = AppFont.interFont),
-    titleMedium = defaultTypography.titleMedium.copy(fontFamily = AppFont.interFont),
-    titleSmall = defaultTypography.titleSmall.copy(fontFamily = AppFont.interFont),
+    val bodySmall = TextStyle(
+        fontFamily = interFont,
+        fontWeight = FontWeight.W400,
+        fontSize = 14.sp,
+        lineHeight = 18.sp,
+        letterSpacing = 0.4.sp,
+    )
 
-    bodyLarge = defaultTypography.bodyLarge.copy(fontFamily = AppFont.interFont),
-    bodyMedium = defaultTypography.bodyMedium.copy(fontFamily = AppFont.interFont),
-    bodySmall = defaultTypography.bodySmall.copy(fontFamily = AppFont.interFont),
+    val headlineSmall = TextStyle(
+        fontFamily = interFont,
+        fontWeight = FontWeight.W400,
+        fontSize = 20.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.sp,
+    )
 
-    labelLarge = defaultTypography.labelLarge.copy(fontFamily = AppFont.interFont),
-    labelMedium = defaultTypography.labelMedium.copy(fontFamily = AppFont.interFont),
-    labelSmall = defaultTypography.labelSmall.copy(fontFamily = AppFont.interFont)
-)
+    val titleLarge = TextStyle(
+        fontFamily = interFont,
+        fontWeight = FontWeight.W400,
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp,
+    )
+
+    val titleMedium = TextStyle(
+        fontFamily = interFont,
+        fontWeight = FontWeight.W500,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.15.sp,
+    )
+
+    val labelMedium = TextStyle(
+        fontFamily = interFont,
+        fontWeight = FontWeight.W500,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp,
+    )
+}

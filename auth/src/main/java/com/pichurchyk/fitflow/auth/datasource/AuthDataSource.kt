@@ -1,22 +1,29 @@
 package com.pichurchyk.fitflow.auth.datasource
 
 import android.util.Log
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.pichurchyk.fitflow.auth.model.SignInResult
+import com.pichurchyk.fitflow.common.preferences.AuthPreferences
+import com.pichurchyk.fitflow.common.preferences.AuthPreferencesActions
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.gotrue.SessionStatus
+import io.github.jan.supabase.gotrue.auth
+import io.github.jan.supabase.gotrue.providers.Google
+import io.github.jan.supabase.gotrue.providers.builtin.IDToken
+import io.github.jan.supabase.gotrue.user.UserInfo
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.first
 
-internal class AuthDataSource {
-    private val firebaseAuth = Firebase.auth
-
-    fun checkIsUserAuthenticated(): Flow<Boolean> = callbackFlow {
+internal class AuthDataSource(
+    private val supabaseClient: SupabaseClient,
+    private val preferences: AuthPreferencesActions
+) {
+    fun getSignedInUser(): Flow<UserInfo?> = callbackFlow {
         try {
-            val authenticatedUser = firebaseAuth.currentUser
+            trySend(supabaseClient.auth.currentUserOrNull())
 
-            trySend(authenticatedUser != null)
+            close()
 
             awaitClose()
         } catch (e: Exception) {
@@ -24,33 +31,56 @@ internal class AuthDataSource {
         }
     }
 
-    fun signIn(authCredential: AuthCredential): Flow<SignInResult> = callbackFlow {
+    fun signIn(googleIdToken: String): Flow<SignInResult> = callbackFlow {
         try {
-            firebaseAuth.signInWithCredential(authCredential)
-                .addOnSuccessListener { result ->
-                    result.user?.let { user ->
+            supabaseClient.auth.signInWith(IDToken) {
+                idToken = googleIdToken
+                provider = Google
+            }
+
+            supabaseClient.auth.sessionStatus.first {
+                when (it) {
+                    is SessionStatus.Authenticated -> {
                         trySend(
-                            SignInResult.Success(user)
+                            SignInResult.Success(it.session.user!!)
+                        )
+
+                        preferences.setAccessToken(it.session.accessToken)
+                        preferences.setRefreshToken(it.session.refreshToken)
+                        preferences.setUserUid(it.session.user?.id)
+                    }
+
+                    else -> {
+                        trySend(
+                            SignInResult.Error("Error while signing in")
                         )
                     }
                 }
-                .addOnFailureListener {
-                    trySend(
-                        SignInResult.Error(it.message ?: "Error while signing in")
-                    )
-                }
 
-            awaitClose()
+                close()
+                true
+            }
         } catch (e: Exception) {
             Log.e(TAG, e.message ?: "Error occurred")
+            trySend(
+                SignInResult.Error("Error while signing in")
+            )
+
+            close()
         }
+
+        awaitClose()
     }
 
     fun signOut(): Flow<Unit> = callbackFlow {
         try {
-            firebaseAuth.signOut().also {
-                trySend(Unit)
-            }
+            supabaseClient.auth.signOut()
+
+            preferences.setAccessToken(null)
+            preferences.setRefreshToken(null)
+            preferences.setUserUid(null)
+
+            close()
 
             awaitClose()
         } catch (e: Exception) {

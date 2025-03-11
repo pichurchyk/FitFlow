@@ -1,11 +1,9 @@
 package com.pichurchyk.fitflow.viewmodel.auth
 
-import cafe.adriel.voyager.core.model.screenModelScope
-import com.google.firebase.auth.AuthCredential
+import androidx.lifecycle.viewModelScope
 import com.pichurchyk.fitflow.auth.model.SignInResult
-import com.pichurchyk.fitflow.auth.usecase.CheckIsUserAuthenticatedUseCase
 import com.pichurchyk.fitflow.auth.usecase.SignInUseCase
-import com.pichurchyk.fitflow.viewmodel.base.BaseScreenModel
+import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -14,36 +12,16 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
-    private val checkIsUserAuthenticatedUseCase: CheckIsUserAuthenticatedUseCase,
-    private val signInUseCase: SignInUseCase
-) : BaseScreenModel() {
+    private val signInUseCase: SignInUseCase,
+) : BaseViewModel() {
 
     private val _state = MutableStateFlow<AuthViewState>(AuthViewState.Init)
     val state = _state.asStateFlow()
 
-    init {
-        screenModelScope.launch {
-            checkIsUserAuthenticatedUseCase.invoke()
-                .onStart {
-                    _state.update { AuthViewState.Loading }
-                }
-                .catch {
-                    _state.update { AuthViewState.Init }
-                }
-                .collect { isAuthenticated ->
-                    if (isAuthenticated) {
-                        _state.update { AuthViewState.Success }
-                    } else {
-                        _state.update { AuthViewState.Init }
-                    }
-                }
-        }
-    }
-
     fun handleIntent(intent: AuthIntent) {
         when (intent) {
             is AuthIntent.Auth -> {
-                auth(intent.credentials)
+                auth(intent.googleIdToken)
             }
 
             is AuthIntent.Clear -> {
@@ -52,9 +30,9 @@ class AuthViewModel(
         }
     }
 
-    private fun auth(credentials: AuthCredential) {
-        screenModelScope.launch {
-            signInUseCase.invoke(credentials)
+    private fun auth(googleIdToken: String) {
+        viewModelScope.launch {
+            signInUseCase.invoke(googleIdToken)
                 .onStart {
                     _state.update { AuthViewState.Loading }
                 }

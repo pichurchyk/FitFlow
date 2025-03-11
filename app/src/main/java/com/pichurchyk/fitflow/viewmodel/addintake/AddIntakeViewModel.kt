@@ -1,16 +1,14 @@
 package com.pichurchyk.fitflow.viewmodel.addintake
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.viewModelScope
+import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
 import com.pichurchyk.nutrition.database.model.IntakeType
-import com.pichurchyk.nutrition.database.model.dto.IntakeDTO
-import com.pichurchyk.nutrition.database.usecase.SaveIntakeUseCase
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import com.pichurchyk.nutrition.model.create.CreateIntakeModel
+import com.pichurchyk.nutrition.model.create.CreateIntakeValueModel
+import com.pichurchyk.nutrition.usecase.SaveIntakeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -18,12 +16,10 @@ import java.util.Date
 class AddIntakeViewModel(
     private val addIntakeUseCase: SaveIntakeUseCase,
     private val date: Date
-) : ScreenModel {
+) : BaseViewModel() {
 
     private val _state = MutableStateFlow<AddIntakeViewState>(
-        AddIntakeViewState.Init(
-            IntakeDTO.getIntakesDtoByMainTypes(Date())
-        )
+        AddIntakeViewState.Init(CreateIntakeModel(date = date))
     )
     val state = _state.asStateFlow()
 
@@ -31,6 +27,10 @@ class AddIntakeViewModel(
         when (intent) {
             is AddIntakeIntent.ChangeIntakeValue -> {
                 changeIntakeValue(intent.value, intent.intakeType)
+            }
+
+            is AddIntakeIntent.ChangeCaloriesValue -> {
+                changeCaloriesValue(intent.value)
             }
 
             is AddIntakeIntent.CloseError -> {
@@ -48,11 +48,7 @@ class AddIntakeViewModel(
     }
 
     private fun reset() {
-        _state.update {
-            AddIntakeViewState.Init(
-                IntakeDTO.getIntakesDtoByMainTypes(Date())
-            )
-        }
+        _state.update { AddIntakeViewState.Init(CreateIntakeModel()) }
     }
 
     private fun submit() {
@@ -61,56 +57,46 @@ class AddIntakeViewModel(
 
         val state = (state.value as AddIntakeViewState.Init)
 
-        screenModelScope.launch {
+        viewModelScope.launch {
             _state.update { currentState ->
-                AddIntakeViewState.Loading(intakes = currentState.intakes)
+                AddIntakeViewState.Loading(intake = currentState.intake)
             }
 
-            val intakes = state.intakes.filterNot { it.value == 0 }
-
             try {
-                intakes.map { intake ->
-                    async {
-                        addIntakeUseCase.invoke(intake)
-                            .catch { e ->
-                                throw e
-                            }
-                            .collect()
-                    }
-                }.awaitAll()
-
-                _state.update {
-                    AddIntakeViewState.Success(
-                        IntakeDTO.getIntakesDtoByMainTypes(Date())
-                    )
+                launch {
+                    addIntakeUseCase.invoke(state.intake)
+                        .catch {
+                            throw it
+                        }
+                        .collect {
+                            reset()
+                        }
                 }
             } catch (e: Throwable) {
                 _state.update { currentState ->
                     AddIntakeViewState.Error(
-                        intakes = currentState.intakes,
+                        intake = currentState.intake,
                         errorMessage = e.message ?: "Error occurred"
                     )
                 }
             }
         }
     }
+
     private fun validate(): Boolean {
         val state = (state.value as AddIntakeViewState.Init)
-
-        val caloriesIntakes = state.intakes.firstOrNull { it.type == IntakeType.CALORIES }!!
-        val otherIntakes = state.intakes.filterNot { it.type == IntakeType.CALORIES }
 
         val exceptions = mutableListOf<AddIntakeValidationException>()
 
         when {
-            otherIntakes.all { it.value == 0 } -> exceptions.add(AddIntakeValidationException.EMPTY_VALUES)
-            caloriesIntakes.value == 0 -> exceptions.add(AddIntakeValidationException.EMPTY_CALORIES)
+            state.intake.values.all { it.value == 0 } -> exceptions.add(AddIntakeValidationException.EMPTY_VALUES)
+            state.intake.calories == 0 -> exceptions.add(AddIntakeValidationException.EMPTY_CALORIES)
         }
 
         if (exceptions.isNotEmpty()) {
             _state.update {
                 AddIntakeViewState.ValidationException(
-                    intakes = state.intakes,
+                    intake = state.intake,
                     validationException = exceptions.first()
                 )
             }
@@ -121,23 +107,38 @@ class AddIntakeViewModel(
 
     private fun closeError() {
         _state.update { currentState ->
-            AddIntakeViewState.Init(currentState.intakes)
+            AddIntakeViewState.Init(currentState.intake)
         }
     }
 
     private fun changeIntakeValue(value: Int, intakeType: IntakeType) {
-        val inputState = (state.value as AddIntakeViewState.Init)
-        val updatedIntakes = inputState.intakes.map { intake ->
-            if (intake.type == intakeType) {
-                intake.copy(value = value, date = date)
-            } else {
-                intake
+        val currentState = (state.value as AddIntakeViewState.Init)
+        val currentIntake = currentState.intake
+
+        val updatedIntakes: List<CreateIntakeValueModel> = if (currentIntake.values.any { it.intakeType == intakeType }) {
+            currentIntake.values.map { intake ->
+                if (intake.intakeType == intakeType) {
+                    intake.copy(value = value)
+                } else {
+                    intake
+                }
             }
+        } else {
+            currentIntake.values + CreateIntakeValueModel(value = value, intakeType = intakeType)
         }
 
         _state.update {
-            inputState.copy(intakes = updatedIntakes)
+            currentState.copy(intake = currentIntake.copy(values = updatedIntakes))
         }
+
     }
 
+    private fun changeCaloriesValue(value: Int) {
+        val currentState = (state.value as AddIntakeViewState.Init)
+        val currentIntake = currentState.intake
+
+        _state.update {
+            currentState.copy(intake = currentIntake.copy(calories = value))
+        }
+    }
 }

@@ -1,7 +1,7 @@
 package com.pichurchyk.fitflow.viewmodel.base
 
-import cafe.adriel.voyager.core.model.ScreenModel
+import androidx.lifecycle.ViewModel
 
-abstract class BaseScreenModel: ScreenModel {
+abstract class BaseViewModel : ViewModel() {
     val defaultError = "Some error occurred"
 }

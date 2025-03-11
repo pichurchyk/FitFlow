@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -14,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.pichurchyk.fitflow"
-        minSdk = 29
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -63,43 +65,38 @@ android {
 
 dependencies {
 
-    implementation(libs.core.ktx)
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.activity.compose)
-    implementation(platform(libs.compose.bom))
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.animation) // For animations
     implementation(libs.androidx.foundation) // For foundation components
     implementation(libs.androidx.material) // For material components (like buttons)    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.material3)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.ui.test.junit4)
-    debugImplementation(libs.ui.tooling)
-    debugImplementation(libs.ui.test.manifest)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    implementation(libs.voyager.nav)
-    implementation(libs.voyager.transitions)
-    implementation(libs.voyager.screenModel)
-    implementation(libs.voyager.koin)
+    debugImplementation(libs.kotlinx.serialization.json)
 
-    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.auth)
+
+    implementation(platform(libs.supabase.bom))
+    implementation(libs.supabase.auth)
 
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services)
     implementation(libs.google.id)
 
-    implementation(platform(libs.koin.bom))
-    implementation(libs.koin.core)
-
-    implementation(libs.kermit)
-
     implementation(project(":common"))
-    implementation(project(":nutritiondatabase"))
+    implementation(project(":nutrition"))
     implementation(project(":auth"))
+    implementation(project(":supabase"))
 }

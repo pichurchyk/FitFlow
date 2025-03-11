@@ -9,19 +9,17 @@ import androidx.credentials.exceptions.GetCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.GoogleAuthProvider
 import com.pichurchyk.fitflow.BuildConfig
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class GoogleAuthClient(
     private val context: Context,
 ) {
-
     private val credentialManager = CredentialManager.create(context)
 
-    val signedInAccount = mutableStateOf<AuthCredential?>(null)
+    private val _accountGoogleIdToken = MutableStateFlow<String?>(null)
+    val accountGoogleIdToken: StateFlow<String?> = _accountGoogleIdToken
 
     private val googleIdOption = GetGoogleIdOption.Builder()
         .setFilterByAuthorizedAccounts(false)
@@ -39,15 +37,11 @@ class GoogleAuthClient(
                 request = credentialRequest
             )
 
-            val credential = result.credential
-
-            val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+            val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(result.credential.data)
 
             val googleIdToken = googleIdTokenCredential.idToken
 
-            val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
-
-            signedInAccount.value = googleCredentials
+            _accountGoogleIdToken.value = googleIdToken
 
             Log.i(TAG, "GoogleSignInCredentials received")
         } catch (e: GetCredentialException) {
@@ -55,6 +49,10 @@ class GoogleAuthClient(
         } catch (e: GoogleIdTokenParsingException) {
             Log.e(TAG, e.message ?: "Error while parsing GoogleIdToken")
         }
+    }
+
+    fun clearIdToken() {
+        _accountGoogleIdToken.value = null
     }
 
     companion object {

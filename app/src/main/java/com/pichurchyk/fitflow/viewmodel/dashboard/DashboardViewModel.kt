@@ -1,19 +1,27 @@
 package com.pichurchyk.fitflow.viewmodel.dashboard
 
-import cafe.adriel.voyager.core.model.screenModelScope
-import com.pichurchyk.fitflow.common.ext.getNextDay
-import com.pichurchyk.fitflow.common.ext.getPreviousDay
-import com.pichurchyk.fitflow.common.ext.toStartOfDay
-import com.pichurchyk.fitflow.viewmodel.base.BaseScreenModel
-import com.pichurchyk.nutrition.database.usecase.GetDailyInfoUseCase
+import androidx.lifecycle.viewModelScope
+import com.pichurchyk.fitflow.common.ext.date.getNextDay
+import com.pichurchyk.fitflow.common.ext.date.getPreviousDay
+import com.pichurchyk.fitflow.common.ext.date.toStartOfDay
+import com.pichurchyk.fitflow.viewmodel.base.BaseViewModel
+import com.pichurchyk.nutrition.usecase.FetchRemoteAndLocalUseCase
+import com.pichurchyk.nutrition.usecase.GetDailyIntakesUseCase
+import com.pichurchyk.nutrition.usecase.GetDailyWaterIntakesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Date
 
 class DashboardViewModel(
-    private val getDailyInfoUseCase: GetDailyInfoUseCase
-): BaseScreenModel() {
+    private val getDailyIntakesUseCase: GetDailyIntakesUseCase,
+    private val getDailyWaterIntakesUseCase: GetDailyWaterIntakesUseCase,
+    private val fetchRemoteAndLocalUseCase: FetchRemoteAndLocalUseCase
+) : BaseViewModel() {
 
     private val _state = MutableStateFlow<DashboardViewState>(DashboardViewState.Init)
     val state = _state.asStateFlow()
@@ -22,10 +30,14 @@ class DashboardViewModel(
     val selectedDate = _selectedDate.asStateFlow()
 
     init {
-        screenModelScope.launch {
-            selectedDate.collect {
-                loadData()
-            }
+        viewModelScope.launch {
+            selectedDate
+                .drop(1)
+                .collect {
+                    loadData()
+
+                    fetchRemoteAndLocalUseCase.invoke(it)
+                }
         }
     }
 
@@ -62,10 +74,16 @@ class DashboardViewModel(
     }
 
     private fun loadData() {
-        screenModelScope.launch {
-            getDailyInfoUseCase.invoke(selectedDate.value)
-                .collect { summary ->
-                    _state.value = DashboardViewState.ShowData.Loaded(summary)
+        viewModelScope.launch {
+            combine(
+                getDailyIntakesUseCase.invoke(selectedDate.first()),
+                getDailyWaterIntakesUseCase.invoke(selectedDate.first())
+            ) { intakes, waterIntakes ->
+                DashboardViewState.ShowData.Loaded(intakes, waterIntakes)
+            }
+                .catch { it.printStackTrace() }
+                .collect { combinedData ->
+                    _state.value = combinedData
                 }
         }
     }
