@@ -36,6 +36,7 @@ import com.pichurchyk.profile.R
 @Composable
 fun ProfileFab(
     modifier: Modifier = Modifier,
+    onStateChanged: (ProfileFabContainerState) -> Unit = {}
 ) {
     val toFullScreenTransitionTime = 400
     val toFabTransitionTime = toFullScreenTransitionTime / 2
@@ -44,6 +45,12 @@ fun ProfileFab(
         mutableStateOf<ProfileFabContainerState>(
             ProfileFabContainerState.Fab
         )
+    }
+
+    fun changeFabState(state: ProfileFabContainerState) {
+        containerState = state
+
+        onStateChanged(state)
     }
     val transition = updateTransition(containerState, label = "container transform")
 
@@ -139,7 +146,7 @@ fun ProfileFab(
             is ProfileFabContainerState.Fab -> {
                     FloatingActionButton(
                         onClick = {
-                            containerState = ProfileFabContainerState.Screen
+                            changeFabState(ProfileFabContainerState.Screen)
                         },
                         shape = RoundedCornerShape(10.dp),
                         containerColor = MaterialTheme.colorScheme.primary
@@ -155,7 +162,7 @@ fun ProfileFab(
             is ProfileFabContainerState.Screen -> {
                 ProfileScreen(
                     onBackPressed = {
-                        containerState = ProfileFabContainerState.Fab
+                        changeFabState(ProfileFabContainerState.Fab)
                     }
                 )
             }

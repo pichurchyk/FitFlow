@@ -28,12 +28,14 @@ import com.pichurchyk.fitflow.ui.common.ErrorBottomSheet
 import com.pichurchyk.fitflow.ui.common.Header
 import com.pichurchyk.fitflow.ui.common.Loader
 import com.pichurchyk.fitflow.ui.screen.dashboard.components.AddIntakeFab
+import com.pichurchyk.fitflow.ui.screen.dashboard.components.AddIntakeFabContainerState
 import com.pichurchyk.fitflow.ui.screen.dashboard.components.IntakesBlock
 import com.pichurchyk.fitflow.ui.screen.dashboard.components.WaterBlock
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardIntent
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardViewModel
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardViewState
 import com.pichurchyk.profile.ui.ProfileFab
+import com.pichurchyk.profile.ui.ProfileFabContainerState
 import org.koin.androidx.compose.koinViewModel
 import java.util.Date
 
@@ -48,6 +50,14 @@ fun DashboardScreen(
 
     var isCalendarVisible by remember {
         mutableStateOf(false)
+    }
+
+    var addIntakeFabContainerState by remember {
+        mutableStateOf<AddIntakeFabContainerState?>(null)
+    }
+
+    var profileFabState by remember {
+        mutableStateOf<ProfileFabContainerState?>(null)
     }
 
     LaunchedEffect(Unit) {
@@ -115,14 +125,24 @@ fun DashboardScreen(
                     }
                 }
 
-                AddIntakeFab(
-                    modifier = Modifier.align(Alignment.BottomEnd),
-                    selectedDate = selectedDate
-                )
+                if (profileFabState == null || profileFabState is ProfileFabContainerState.Fab) {
+                    AddIntakeFab(
+                        modifier = Modifier.align(Alignment.BottomEnd),
+                        selectedDate = selectedDate,
+                        onStateChanged = {
+                            addIntakeFabContainerState = it
+                        }
+                    )
+                }
 
-                ProfileFab(
-                    modifier = Modifier.align(Alignment.BottomStart),
-                )
+                if (addIntakeFabContainerState == null || addIntakeFabContainerState is AddIntakeFabContainerState.Fab) {
+                    ProfileFab(
+                        modifier = Modifier.align(Alignment.BottomStart),
+                        onStateChanged = {
+                            profileFabState = it
+                        }
+                    )
+                }
             }
         }
     )
