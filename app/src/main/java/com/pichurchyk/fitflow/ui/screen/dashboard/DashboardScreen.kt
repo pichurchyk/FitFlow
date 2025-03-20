@@ -33,6 +33,7 @@ import com.pichurchyk.fitflow.ui.screen.dashboard.components.WaterBlock
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardIntent
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardViewModel
 import com.pichurchyk.fitflow.viewmodel.dashboard.DashboardViewState
+import com.pichurchyk.profile.ui.ProfileFab
 import org.koin.androidx.compose.koinViewModel
 import java.util.Date
 
@@ -117,6 +118,10 @@ fun DashboardScreen(
                 AddIntakeFab(
                     modifier = Modifier.align(Alignment.BottomEnd),
                     selectedDate = selectedDate
+                )
+
+                ProfileFab(
+                    modifier = Modifier.align(Alignment.BottomStart),
                 )
             }
         }

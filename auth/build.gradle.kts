@@ -37,9 +37,11 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":supabase"))
 
+    // Supabase Authentication
     implementation(platform(libs.supabase.bom))
     implementation(libs.supabase.auth)
 
+    // Dependency Injection (Koin)
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(libs.koin.android)

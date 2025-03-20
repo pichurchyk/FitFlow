@@ -1,12 +1,11 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
-    namespace = "com.pichurchyk.nutrition"
+    namespace = "com.pichurchyk.profile"
     compileSdk = 34
 
     defaultConfig {
@@ -25,6 +24,13 @@ android {
             )
         }
     }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -36,17 +42,4 @@ android {
 
 dependencies {
     implementation(project(":common"))
-    implementation(project(":supabase"))
-
-    // Room Database (Module-Specific)
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
-
-    // Koin (Already in `common`, but keeping core for safety)
-    implementation(platform(libs.koin.bom))
-    implementation(libs.koin.core)
-
-    // Supabase (Module-Specific)
-    implementation(libs.supabase.postgrest)
-    implementation(libs.supabase.auth)
 }

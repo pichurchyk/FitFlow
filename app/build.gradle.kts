@@ -64,39 +64,27 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.animation) // For animations
-    implementation(libs.androidx.foundation) // For foundation components
-    implementation(libs.androidx.material) // For material components (like buttons)    implementation(libs.ui)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-    debugImplementation(libs.kotlinx.serialization.json)
-
-    implementation(libs.firebase.crashlytics)
-
-    implementation(platform(libs.supabase.bom))
-    implementation(libs.supabase.auth)
-
-    implementation(libs.androidx.credentials)
-    implementation(libs.androidx.credentials.play.services)
-    implementation(libs.google.id)
-
     implementation(project(":common"))
     implementation(project(":nutrition"))
     implementation(project(":auth"))
     implementation(project(":supabase"))
+    implementation(project(":profile"))
+
+    // Lifecycle & Core
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    // Firebase (App-Specific)
+    implementation(libs.firebase.crashlytics)
+
+    // Authentication (Google Play Services)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services)
+    implementation(libs.google.id)
+
+    // Supabase Auth (App-Specific)
+    implementation(platform(libs.supabase.bom))
+    implementation(libs.supabase.auth)
+
+    // Debugging & Serialization (App-Specific)
+    debugImplementation(libs.kotlinx.serialization.json)
 }

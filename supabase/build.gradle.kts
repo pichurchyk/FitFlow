@@ -49,12 +49,15 @@ android {
 dependencies {
     implementation(project(":common"))
 
+    // Supabase SDK
     implementation(platform(libs.supabase.bom))
     implementation(libs.supabase.auth)
     implementation(libs.supabase.postgrest)
 
+    // Koin (Already in `common`, but keeping core for safety)
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
 
+    // Ktor Client (Android-Specific)
     implementation(libs.ktor.client.android)
 }
