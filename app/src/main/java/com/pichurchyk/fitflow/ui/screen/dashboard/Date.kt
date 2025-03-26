@@ -30,8 +30,8 @@ import com.pichurchyk.fitflow.common.ext.date.isTomorrow
 import com.pichurchyk.fitflow.common.ext.date.isYesterday
 import com.pichurchyk.fitflow.common.ext.date.toDateString
 import com.pichurchyk.fitflow.common.utils.date.DateFormat
-import com.pichurchyk.fitflow.ui.ext.doOnClick
-import com.pichurchyk.fitflow.ui.theme.AppTheme
+import com.pichurchyk.fitflow.common.ext.doOnClick
+import com.pichurchyk.fitflow.common.ui.theme.AppTheme
 import java.util.Date
 import java.util.Locale
 

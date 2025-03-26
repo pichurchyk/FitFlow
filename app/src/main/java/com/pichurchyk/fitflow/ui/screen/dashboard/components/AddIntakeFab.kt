@@ -42,7 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.ui.ext.doOnClick
+import com.pichurchyk.fitflow.common.ext.doOnClick
 import com.pichurchyk.fitflow.ui.screen.addintake.AddIntakeScreen
 import com.pichurchyk.fitflow.ui.screen.addwaterintake.AddWaterIntakeScreen
 import java.util.Date

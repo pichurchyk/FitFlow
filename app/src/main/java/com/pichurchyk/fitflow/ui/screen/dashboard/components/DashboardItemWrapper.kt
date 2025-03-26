@@ -17,8 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pichurchyk.fitflow.ui.theme.AppTheme
-import com.pichurchyk.fitflow.ui.theme.TextStyles
+import com.pichurchyk.fitflow.common.ui.theme.AppTheme
+import com.pichurchyk.fitflow.common.ui.theme.TextStyles
 
 @Composable
 fun DashboardItemWrapper(

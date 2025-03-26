@@ -1,14 +1,13 @@
-package com.pichurchyk.fitflow.ui.theme
+package com.pichurchyk.fitflow.common.ui.theme
 
-import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.ui.theme.AppFont.interFont
+import com.pichurchyk.fitflow.common.R
+import com.pichurchyk.fitflow.common.ui.theme.AppFont.interFont
 
 object AppFont {
     val interFont = FontFamily(

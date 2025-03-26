@@ -1,4 +1,4 @@
-package com.pichurchyk.fitflow.ui.common
+package com.pichurchyk.fitflow.common.ui
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pichurchyk.fitflow.ui.theme.AppTheme
+import com.pichurchyk.fitflow.common.ui.theme.AppTheme
 
 @Composable
 fun CommonButton(

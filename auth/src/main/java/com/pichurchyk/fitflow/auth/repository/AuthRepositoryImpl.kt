@@ -1,9 +1,11 @@
 package com.pichurchyk.fitflow.auth.repository
 
 import com.pichurchyk.fitflow.auth.datasource.AuthDataSource
+import com.pichurchyk.fitflow.auth.ext.toUser
 import com.pichurchyk.fitflow.auth.model.SignInResult
-import io.github.jan.supabase.gotrue.user.UserInfo
+import com.pichurchyk.fitflow.auth.model.User
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 internal class AuthRepositoryImpl(
     private val authDataSource: AuthDataSource
@@ -13,8 +15,8 @@ internal class AuthRepositoryImpl(
         return authDataSource.signIn(googleIdToken)
     }
 
-    override suspend fun getSignedInUser(): Flow<UserInfo?> {
-        return authDataSource.getSignedInUser()
+    override suspend fun getSignedInUser(): Flow<User?> {
+        return authDataSource.getSignedInUser().map { it?.toUser() }
     }
 
     override suspend fun signOut(): Flow<Unit> {

@@ -11,7 +11,7 @@ import com.pichurchyk.fitflow.R
 import com.pichurchyk.fitflow.ui.ext.getTitle
 import com.pichurchyk.fitflow.ui.ext.getUnitWithValue
 import com.pichurchyk.fitflow.ui.ext.groupByIntakeType
-import com.pichurchyk.fitflow.ui.theme.AppTheme
+import com.pichurchyk.fitflow.common.ui.theme.AppTheme
 import com.pichurchyk.nutrition.model.Intake
 
 @Composable

@@ -7,6 +7,7 @@ import com.pichurchyk.fitflow.common.di.commonModule
 import com.pichurchyk.fitflow.di.initKoin
 import com.pichurchyk.fitflow.di.mainModule
 import com.pichurchyk.nutrition.di.nutritionModule
+import com.pichurchyk.profile.di.profileModule
 import com.pichurchyk.supabase.di.supabaseModule
 import org.koin.dsl.module
 
@@ -25,6 +26,7 @@ class Application : Application() {
             authModule,
             supabaseModule,
             nutritionModule,
+            profileModule
         )
     }
 

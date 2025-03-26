@@ -1,11 +1,11 @@
 package com.pichurchyk.fitflow.ui.ext
 
 import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.ui.theme.color_calories
-import com.pichurchyk.fitflow.ui.theme.color_carbs
-import com.pichurchyk.fitflow.ui.theme.color_fat
-import com.pichurchyk.fitflow.ui.theme.color_protein
-import com.pichurchyk.fitflow.ui.theme.color_water
+import com.pichurchyk.fitflow.common.ui.theme.color_calories
+import com.pichurchyk.fitflow.common.ui.theme.color_carbs
+import com.pichurchyk.fitflow.common.ui.theme.color_fat
+import com.pichurchyk.fitflow.common.ui.theme.color_protein
+import com.pichurchyk.fitflow.common.ui.theme.color_water
 import com.pichurchyk.nutrition.database.model.IntakeType
 
 fun IntakeType.getColor() = when (this) {

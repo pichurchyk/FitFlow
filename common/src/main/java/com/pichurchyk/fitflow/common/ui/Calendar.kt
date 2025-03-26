@@ -1,11 +1,10 @@
-package com.pichurchyk.fitflow.ui.common
+package com.pichurchyk.fitflow.common.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DatePickerFormatter
 import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -14,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.pichurchyk.fitflow.R
+import com.pichurchyk.fitflow.common.R
 import com.pichurchyk.fitflow.common.ext.date.toEndOfDay
 import java.time.Instant
 import java.util.Date
@@ -42,6 +41,7 @@ fun Calendar(
                     .padding(16.dp)
                     .clickable {
                     state.selectedDateMillis?.let {
+//                        TODO() FIX
                         val newSelectedDate = Date.from(Instant.ofEpochMilli(it))
                         onDateSelected(newSelectedDate)
                     }

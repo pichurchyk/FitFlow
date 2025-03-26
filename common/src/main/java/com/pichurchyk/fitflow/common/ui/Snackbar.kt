@@ -1,4 +1,4 @@
-package com.pichurchyk.fitflow.ui.common
+package com.pichurchyk.fitflow.common.ui
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.pichurchyk.fitflow.ui.theme.TextStyles
+import com.pichurchyk.fitflow.common.ui.theme.TextStyles
 
 class SnackbarInfo(
     override val message: String,

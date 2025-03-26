@@ -1,4 +1,4 @@
-package com.pichurchyk.fitflow.ui.common
+package com.pichurchyk.fitflow.common.ui
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pichurchyk.fitflow.ui.theme.AppTheme
+import com.pichurchyk.fitflow.common.ui.theme.AppTheme
 
 @Composable
 fun Loader(

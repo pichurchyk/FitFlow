@@ -22,12 +22,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.ui.common.CommonButton
-import com.pichurchyk.fitflow.ui.common.Header
-import com.pichurchyk.fitflow.ui.common.SnackbarInfo
+import com.pichurchyk.fitflow.common.ui.CommonButton
+import com.pichurchyk.fitflow.common.ui.Header
+import com.pichurchyk.fitflow.common.ui.SnackbarInfo
 import com.pichurchyk.fitflow.ui.ext.getText
 import com.pichurchyk.fitflow.ui.screen.addintake.IntakeInput
-import com.pichurchyk.fitflow.ui.theme.AppTheme
+import com.pichurchyk.fitflow.common.ui.theme.AppTheme
 import com.pichurchyk.fitflow.viewmodel.waterintake.AddWaterIntakeIntent
 import com.pichurchyk.fitflow.viewmodel.waterintake.AddWaterIntakeViewModel
 import com.pichurchyk.fitflow.viewmodel.waterintake.AddWaterIntakeViewState

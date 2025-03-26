@@ -1,4 +1,4 @@
-package com.pichurchyk.fitflow.ui.common
+package com.pichurchyk.fitflow.common.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,9 +25,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.ui.theme.AppFont
-import com.pichurchyk.fitflow.ui.theme.AppTheme
+import com.pichurchyk.fitflow.common.R
+import com.pichurchyk.fitflow.common.ui.theme.AppFont
+import com.pichurchyk.fitflow.common.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

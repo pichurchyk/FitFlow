@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.jetbrainsKotlinSerialization)
 }
 
 android {
@@ -42,4 +43,5 @@ android {
 
 dependencies {
     implementation(project(":common"))
+    implementation(project(":auth"))
 }

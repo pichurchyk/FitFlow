@@ -1,11 +1,10 @@
-package com.pichurchyk.fitflow.ui.common
+package com.pichurchyk.fitflow.common.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -16,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.ui.ext.doOnClick
-import com.pichurchyk.fitflow.ui.theme.TextStyles
+import com.pichurchyk.fitflow.common.R
+import com.pichurchyk.fitflow.common.ext.doOnClick
+import com.pichurchyk.fitflow.common.ui.theme.TextStyles
 
 @Composable
 fun Header(

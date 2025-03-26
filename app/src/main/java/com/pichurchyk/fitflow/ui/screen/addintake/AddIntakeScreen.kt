@@ -21,11 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.ui.common.CommonButton
-import com.pichurchyk.fitflow.ui.common.CustomSnackbar
-import com.pichurchyk.fitflow.ui.common.Header
-import com.pichurchyk.fitflow.ui.common.SnackbarInfo
-import com.pichurchyk.fitflow.ui.ext.clearFocusOnClick
+import com.pichurchyk.fitflow.common.ui.CommonButton
+import com.pichurchyk.fitflow.common.ui.CustomSnackbar
+import com.pichurchyk.fitflow.common.ui.Header
+import com.pichurchyk.fitflow.common.ui.SnackbarInfo
+import com.pichurchyk.fitflow.common.ext.clearFocusOnClick
 import com.pichurchyk.fitflow.ui.ext.getText
 import com.pichurchyk.fitflow.viewmodel.addintake.AddIntakeIntent
 import com.pichurchyk.fitflow.viewmodel.addintake.AddIntakeViewModel

@@ -1,4 +1,4 @@
-package com.pichurchyk.fitflow.ui.ext
+package com.pichurchyk.fitflow.common.ext
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

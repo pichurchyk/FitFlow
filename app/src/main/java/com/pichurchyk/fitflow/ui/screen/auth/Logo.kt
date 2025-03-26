@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.ui.theme.TextStyles
+import com.pichurchyk.fitflow.common.ui.theme.TextStyles
 
 @Composable
 fun AnimatedLogo(modifier: Modifier = Modifier, isExpanded: Boolean, onLogoTransitionFinished: () -> Unit) {

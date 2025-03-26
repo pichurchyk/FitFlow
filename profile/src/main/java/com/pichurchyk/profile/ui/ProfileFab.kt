@@ -161,7 +161,7 @@ fun ProfileFab(
 
             is ProfileFabContainerState.Screen -> {
                 ProfileScreen(
-                    onBackPressed = {
+                    closeScreen = {
                         changeFabState(ProfileFabContainerState.Fab)
                     }
                 )

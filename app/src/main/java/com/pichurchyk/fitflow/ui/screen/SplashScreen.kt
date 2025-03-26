@@ -17,8 +17,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.pichurchyk.fitflow.ui.common.CustomSnackbar
-import com.pichurchyk.fitflow.ui.common.Loader
+import com.pichurchyk.fitflow.common.ui.CustomSnackbar
+import com.pichurchyk.fitflow.common.ui.Loader
 import com.pichurchyk.fitflow.ui.screen.auth.AnimatedLogo
 import com.pichurchyk.fitflow.viewmodel.splash.SplashIntent
 import com.pichurchyk.fitflow.viewmodel.splash.SplashViewModel

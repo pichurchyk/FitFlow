@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -30,8 +31,8 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
+    buildFeatures {
+        compose = true
     }
 }
 
@@ -49,6 +50,8 @@ dependencies {
     api(libs.androidx.compose.ui.tooling.preview)
     api(libs.androidx.animation)
     api(libs.androidx.navigation.compose) // Shared navigation
+    api(libs.coil.compose)
+    api(libs.coil.network.ktor2)
 
     // Networking (Ktor)
     api(libs.ktor.client.core)

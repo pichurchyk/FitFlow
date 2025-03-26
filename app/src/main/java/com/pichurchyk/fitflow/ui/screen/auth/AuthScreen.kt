@@ -32,11 +32,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.ui.common.CustomSnackbar
-import com.pichurchyk.fitflow.ui.common.ErrorBottomSheet
-import com.pichurchyk.fitflow.ui.common.Header
-import com.pichurchyk.fitflow.ui.common.Loader
-import com.pichurchyk.fitflow.ui.theme.AppTheme
+import com.pichurchyk.fitflow.common.ui.CustomSnackbar
+import com.pichurchyk.fitflow.common.ui.ErrorBottomSheet
+import com.pichurchyk.fitflow.common.ui.Header
+import com.pichurchyk.fitflow.common.ui.Loader
+import com.pichurchyk.fitflow.common.ui.theme.AppTheme
 import com.pichurchyk.fitflow.viewmodel.auth.AuthIntent
 import com.pichurchyk.fitflow.viewmodel.auth.AuthViewModel
 import com.pichurchyk.fitflow.viewmodel.auth.AuthViewState

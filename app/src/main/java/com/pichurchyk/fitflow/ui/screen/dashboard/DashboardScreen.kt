@@ -22,11 +22,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.R
 import com.pichurchyk.fitflow.common.ext.date.toStartOfDay
-import com.pichurchyk.fitflow.ui.common.Calendar
-import com.pichurchyk.fitflow.ui.common.CustomSnackbar
-import com.pichurchyk.fitflow.ui.common.ErrorBottomSheet
-import com.pichurchyk.fitflow.ui.common.Header
-import com.pichurchyk.fitflow.ui.common.Loader
+import com.pichurchyk.fitflow.common.ui.Calendar
+import com.pichurchyk.fitflow.common.ui.CustomSnackbar
+import com.pichurchyk.fitflow.common.ui.ErrorBottomSheet
+import com.pichurchyk.fitflow.common.ui.Header
+import com.pichurchyk.fitflow.common.ui.Loader
 import com.pichurchyk.fitflow.ui.screen.dashboard.components.AddIntakeFab
 import com.pichurchyk.fitflow.ui.screen.dashboard.components.AddIntakeFabContainerState
 import com.pichurchyk.fitflow.ui.screen.dashboard.components.IntakesBlock
