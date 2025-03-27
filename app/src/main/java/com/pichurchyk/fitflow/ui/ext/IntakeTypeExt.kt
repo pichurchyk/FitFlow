@@ -1,6 +1,7 @@
 package com.pichurchyk.fitflow.ui.ext
 
 import com.pichurchyk.fitflow.R
+import com.pichurchyk.fitflow.common.R as commonR
 import com.pichurchyk.fitflow.common.ui.theme.color_calories
 import com.pichurchyk.fitflow.common.ui.theme.color_carbs
 import com.pichurchyk.fitflow.common.ui.theme.color_fat
@@ -17,19 +18,19 @@ fun IntakeType.getColor() = when (this) {
 }
 
 fun IntakeType.getTitle() = when (this) {
-    IntakeType.FAT -> R.string.fat
-    IntakeType.CARBS -> R.string.carbs
-    IntakeType.PROTEIN -> R.string.protein
-    IntakeType.CALORIES -> R.string.calories
-    IntakeType.WATER -> R.string.water
+    IntakeType.FAT -> commonR.string.fat
+    IntakeType.CARBS -> commonR.string.carbs
+    IntakeType.PROTEIN -> commonR.string.protein
+    IntakeType.CALORIES -> commonR.string.calories
+    IntakeType.WATER -> commonR.string.water
 }
 
 fun IntakeType.getUnit(): Int = when (this) {
-    IntakeType.FAT -> R.string.unit_gram
-    IntakeType.CARBS -> R.string.unit_gram
-    IntakeType.PROTEIN -> R.string.unit_gram
-    IntakeType.CALORIES -> R.string.unit_kcal
-    IntakeType.WATER -> R.string.unit_ml
+    IntakeType.FAT -> commonR.string.unit_gram_long
+    IntakeType.CARBS -> commonR.string.unit_gram_long
+    IntakeType.PROTEIN -> commonR.string.unit_gram_long
+    IntakeType.CALORIES -> commonR.string.unit_kcal
+    IntakeType.WATER -> commonR.string.unit_ml
 }
 
 fun IntakeType.getUnitWithValue(): Int = when (this) {

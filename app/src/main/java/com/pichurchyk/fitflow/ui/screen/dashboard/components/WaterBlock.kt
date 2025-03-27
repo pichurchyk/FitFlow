@@ -7,6 +7,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.R
+import com.pichurchyk.fitflow.common.R as commonR
 import com.pichurchyk.fitflow.ui.ext.getColor
 import com.pichurchyk.fitflow.common.ui.theme.AppTheme
 import com.pichurchyk.fitflow.common.ui.theme.color_water
@@ -25,7 +26,7 @@ fun WaterBlock(
             .padding(horizontal = 16.dp)
             .padding(top = 40.dp),
         type = DashboardItemWrapperType.FULL,
-        title = stringResource(id = R.string.water),
+        title = stringResource(id = commonR.string.water),
         subtitle = stringResource(id = R.string.total),
         mainText = stringResource(id = R.string.ml_value, total),
         needBottomRadius = true,

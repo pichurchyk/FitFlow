@@ -71,7 +71,15 @@ object TextStyles {
         fontFamily = interFont,
         fontWeight = FontWeight.W500,
         fontSize = 12.sp,
-        lineHeight = 16.sp,
+        lineHeight = 12.sp,
+        letterSpacing = 0.5.sp,
+    )
+
+    val labelLarge = TextStyle(
+        fontFamily = interFont,
+        fontWeight = FontWeight.W600,
+        fontSize = 14.sp,
+        lineHeight = 14.sp,
         letterSpacing = 0.5.sp,
     )
 }
