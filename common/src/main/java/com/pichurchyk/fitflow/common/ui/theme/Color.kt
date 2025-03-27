@@ -1,10 +1,10 @@
 package com.pichurchyk.fitflow.common.ui.theme
 import androidx.compose.ui.graphics.Color
 
-val primaryLight = Color(0xFF38693C)
+val primaryLight = Color(0xFF18181C)
 val onPrimaryLight = Color(0xFFFFFFFF)
-val primaryContainerLight = Color(0xFFB9F0B8)
-val onPrimaryContainerLight = Color(0xFF002107)
+val primaryContainerLight = Color(0xFF6B6A6A)
+val onPrimaryContainerLight = Color(0xFF0B0B0E)
 val secondaryLight = Color(0xFF516350)
 val onSecondaryLight = Color(0xFFFFFFFF)
 val secondaryContainerLight = Color(0xFFD4E8D0)
@@ -17,10 +17,10 @@ val errorLight = Color(0xFFBA1A1A)
 val onErrorLight = Color(0xFFFFFFFF)
 val errorContainerLight = Color(0xFFFFDAD6)
 val onErrorContainerLight = Color(0xFF410002)
-val backgroundLight = Color(0xFFF7FBF2)
-val onBackgroundLight = Color(0xFF181D18)
-val surfaceLight = Color(0xFFF7FBF2)
-val onSurfaceLight = Color(0xFF181D18)
+val backgroundLight = Color(0xFFFFFFFF)
+val onBackgroundLight = Color(0xFF0A0A0B)
+val surfaceLight = Color(0xFFF4F4F5)
+val onSurfaceLight = Color(0xFF818189)
 val surfaceVariantLight = Color(0xFFDEE5D9)
 val onSurfaceVariantLight = Color(0xFF424940)
 val outlineLight = Color(0xFF72796F)
@@ -248,10 +248,10 @@ val customColorContainerDarkHighContrast = Color(0xFFABCDFF)
 val onCustomColorContainerDarkHighContrast = Color(0xFF000000)
 
 val color_orange = Color(0xFFC5910C)
-val color_green = Color(0xFF0C8F08)
-val color_red = Color(0xFFBD0B26)
+val color_green = Color(0xFF4ADE80)
+val color_red = Color(0xFFF87171)
 val color_brown = Color(0xFF180000)
-val color_blue = Color(0xFF3880DA)
+val color_blue = Color(0xFF60A5FA)
 
 val color_fat = color_orange
 val color_protein = color_green

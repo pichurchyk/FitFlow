@@ -28,7 +28,7 @@ fun NutritionGoalsItem(
         modifier = modifier
             .background(color = bgColor.copy(alpha = 0.2f), RoundedCornerShape(8.dp))
             .border(1.dp, bgColor, RoundedCornerShape(4.dp))
-            .padding(vertical = 16.dp, horizontal = 16.dp)
+            .padding(vertical = 6.dp, horizontal = 16.dp)
     ) {
         CommonInput(
             modifier = modifier,
