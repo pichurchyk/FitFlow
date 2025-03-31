@@ -161,23 +161,6 @@ fun AddIntakeScreen(
                     needTopRadius = false
                 )
 
-                IntakeInput(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    intakeType = IntakeType.CALORIES,
-                    value = viewState.intake.calories,
-                    onValueChanged = { newValue ->
-                        viewModel.handleIntent(
-                            AddIntakeIntent.ChangeCaloriesValue(
-                                value = newValue,
-                            )
-                        )
-                    },
-                    needBottomRadius = true,
-                    needTopRadius = false
-                )
-
                 when (val state = viewState) {
                     is AddIntakeViewState.ValidationException -> {
                         errorMessage = stringResource(state.validationException.getText())

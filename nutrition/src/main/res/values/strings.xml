@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unit_with_value_gram">%sg</string>
+    <string name="unit_with_value_ml">%sml</string>
+    <string name="unit_with_value_liter">%sl</string>
+    <string name="unit_with_value_kcal">%skcal</string>
+</resources>

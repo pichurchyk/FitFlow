@@ -15,8 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.pichurchyk.fitflow.ui.ext.getTitle
-import com.pichurchyk.fitflow.ui.ext.getUnit
+import com.pichurchyk.nutrition.ui.ext.getTitle
+import com.pichurchyk.nutrition.ui.ext.getUnit
 import com.pichurchyk.fitflow.common.ui.theme.TextStyles
 import com.pichurchyk.nutrition.database.model.IntakeType
 

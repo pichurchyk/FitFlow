@@ -43,5 +43,6 @@ android {
 
 dependencies {
     implementation(project(":common"))
+    implementation(project(":nutrition"))
     implementation(project(":auth"))
 }

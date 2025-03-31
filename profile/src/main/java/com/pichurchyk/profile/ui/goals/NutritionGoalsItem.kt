@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.common.ui.input.CommonInput
 import com.pichurchyk.fitflow.common.ui.input.DefaultCommonInputColors
 import com.pichurchyk.fitflow.common.ui.theme.AppTheme
+import com.pichurchyk.fitflow.common.ui.theme.color_grey
 
 @Composable
 fun NutritionGoalsItem(
@@ -26,9 +27,9 @@ fun NutritionGoalsItem(
 ) {
     Box(
         modifier = modifier
-            .background(color = bgColor.copy(alpha = 0.2f), RoundedCornerShape(8.dp))
-            .border(1.dp, bgColor, RoundedCornerShape(4.dp))
-            .padding(vertical = 6.dp, horizontal = 16.dp)
+            .background(color = bgColor.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
+            .border(1.dp, bgColor, RoundedCornerShape(6.dp))
+            .padding(vertical = 10.dp, horizontal = 16.dp)
     ) {
         CommonInput(
             modifier = modifier,
@@ -40,7 +41,7 @@ fun NutritionGoalsItem(
                 bgColor = MaterialTheme.colorScheme.background,
                 subtitleColor = MaterialTheme.colorScheme.onBackground,
                 titleColor = bgColor,
-                borderColor = bgColor,
+                borderColor = color_grey,
                 valueColor = MaterialTheme.colorScheme.onPrimary,
                 placeholderColor = MaterialTheme.colorScheme.onBackground.copy(0.5f),
             )

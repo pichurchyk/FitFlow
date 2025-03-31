@@ -20,7 +20,7 @@ fun CommonButton(
     doOnClick: () -> Unit
 ) {
     Button(
-        modifier = modifier.height(56.dp),
+        modifier = modifier.height(44.dp),
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary

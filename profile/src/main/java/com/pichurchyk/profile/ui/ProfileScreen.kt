@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.pichurchyk.fitflow.common.ui.CommonButton
 import com.pichurchyk.fitflow.common.ui.Header
 import com.pichurchyk.fitflow.common.ui.Loader
 import com.pichurchyk.fitflow.common.ui.SnackbarInfo
@@ -35,6 +36,7 @@ import com.pichurchyk.profile.ui.viewmodel.ProfileViewModel
 import com.pichurchyk.profile.ui.viewmodel.ProfileViewState
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import com.pichurchyk.fitflow.common.R as commonR
 
 @Composable
 fun ProfileScreen(
@@ -50,6 +52,10 @@ fun ProfileScreen(
 
     var errorMessage by remember {
         mutableStateOf<String?>(null)
+    }
+
+    var isProfileChanged by remember {
+        mutableStateOf(false)
     }
 
     LaunchedEffect(Unit) {
@@ -106,7 +112,9 @@ fun ProfileScreen(
                     }
 
                     is ProfileViewState.Loaded -> {
-                        val user = state.data
+                        val user = state.userData
+                        val userParams = state.userParams
+                        val nutritionGoals = state.nutritionGoals
 
                         ProfileHeader(
                             modifier = Modifier,
@@ -115,19 +123,35 @@ fun ProfileScreen(
                             avatarUrl = user.avatarUrl
                         )
 
-                        ProfileStats(
-                            modifier = Modifier.padding(top = 10.dp, start = 6.dp, end = 6.dp)
-                        )
+                        userParams?.let {
+                            ProfileStats(
+                                modifier = Modifier.padding(top = 10.dp, start = 6.dp, end = 6.dp),
+                                userParams = userParams
+                            )
+                        }
 
-                        NutritionGoals(
-                            modifier = Modifier.padding(top = 10.dp, start = 6.dp, end = 6.dp)
-                        )
+                        nutritionGoals?.let {
+                            NutritionGoals(
+                                modifier = Modifier.padding(top = 24.dp, start = 6.dp, end = 6.dp),
+                                goals = it,
+                                onGoalChanged = {
+                                    viewModel.handleIntent(ProfileIntent.OnNutritionGoalChanged(it))
+                                }
+                            )
+                        }
                     }
                 }
             }
         },
         bottomBar = {
+            if (isProfileChanged) {
+                CommonButton(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                    text = stringResource(commonR.string.save)
+                ) {
 
+                }
+            }
         }
     )
 }

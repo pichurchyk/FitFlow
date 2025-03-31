@@ -22,11 +22,6 @@
     <string name="g_value">%sg</string>
     <string name="ml_value">%sml</string>
 
-    <string name="unit_with_value_gram">%sg</string>
-    <string name="unit_with_value_ml">%sml</string>
-    <string name="unit_with_value_liter">%sl</string>
-    <string name="unit_with_value_kcal">%skcal</string>
-
     <string name="validation_empty_calories">Calories can not be zero</string>
     <string name="validation_intake_empty_fields">You need fill at least one field</string>
     <string name="validation_water_intake_empty">This field can not be blank</string>

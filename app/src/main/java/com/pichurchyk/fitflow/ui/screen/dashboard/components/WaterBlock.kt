@@ -8,7 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.R
 import com.pichurchyk.fitflow.common.R as commonR
-import com.pichurchyk.fitflow.ui.ext.getColor
+import com.pichurchyk.nutrition.ui.ext.getColor
 import com.pichurchyk.fitflow.common.ui.theme.AppTheme
 import com.pichurchyk.fitflow.common.ui.theme.color_water
 import com.pichurchyk.nutrition.database.model.IntakeType

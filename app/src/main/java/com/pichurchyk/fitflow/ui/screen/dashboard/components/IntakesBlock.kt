@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.pichurchyk.fitflow.R
-import com.pichurchyk.fitflow.ui.ext.getTitle
-import com.pichurchyk.fitflow.ui.ext.getUnitWithValue
+import com.pichurchyk.nutrition.ui.ext.getTitle
+import com.pichurchyk.nutrition.ui.ext.getUnitWithValue
 import com.pichurchyk.fitflow.ui.ext.groupByIntakeType
 import com.pichurchyk.fitflow.common.ui.theme.AppTheme
 import com.pichurchyk.nutrition.model.Intake

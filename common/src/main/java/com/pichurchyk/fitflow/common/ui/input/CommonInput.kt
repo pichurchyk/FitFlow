@@ -30,6 +30,8 @@ fun CommonInput(
     subtitle: String? = null,
     placeholder: String? = null,
     colors: CommonInputColors = DefaultCommonInputColors(),
+    isEnable: Boolean = true,
+    inputType: KeyboardType = KeyboardType.Number,
     onValueChanged: (String) -> Unit
 ) {
     Column(
@@ -37,7 +39,7 @@ fun CommonInput(
     ) {
         title?.let {
             Text(
-                modifier = Modifier.padding(bottom = 4.dp),
+                modifier = Modifier.padding(bottom = 6.dp),
                 text = it,
                 style = TextStyles.labelLarge,
                 color = colors.titleColor
@@ -45,10 +47,11 @@ fun CommonInput(
         }
 
         OutlinedTextField(
+            enabled = isEnable,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 6.dp)
-                .height(36.dp),
+                .height(44.dp),
             colors = OutlinedTextFieldDefaults.colors().copy(
                 focusedContainerColor = colors.bgColor,
                 unfocusedContainerColor = colors.bgColor,
@@ -56,7 +59,10 @@ fun CommonInput(
                 focusedTextColor = colors.valueColor,
                 unfocusedPlaceholderColor = colors.placeholderColor,
                 focusedPlaceholderColor = colors.placeholderColor,
+                focusedIndicatorColor = colors.borderColor,
+                unfocusedIndicatorColor = colors.borderColor
             ),
+            textStyle = TextStyles.labelMedium,
             shape = RoundedCornerShape(4.dp),
             value = value,
             onValueChange = { newValue ->
@@ -71,14 +77,14 @@ fun CommonInput(
                 }
             },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
+                keyboardType = inputType,
                 imeAction = ImeAction.Next
             ),
         )
 
         subtitle?.let {
             Text(
-                modifier = Modifier.padding(top = 4.dp),
+                modifier = Modifier.padding(top = 6.dp),
                 text = it,
                 style = TextStyles.labelMedium,
                 color = colors.subtitleColor
