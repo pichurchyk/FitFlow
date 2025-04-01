@@ -42,7 +42,7 @@ fun NutritionGoalsItem(
                 subtitleColor = MaterialTheme.colorScheme.onBackground,
                 titleColor = bgColor,
                 borderColor = color_grey,
-                valueColor = MaterialTheme.colorScheme.onPrimary,
+                valueColor = MaterialTheme.colorScheme.onBackground,
                 placeholderColor = MaterialTheme.colorScheme.onBackground.copy(0.5f),
             )
         )

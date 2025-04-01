@@ -7,11 +7,13 @@ import com.pichurchyk.nutrition.database.model.IntakeType
 import com.pichurchyk.nutrition.model.Intake
 import com.pichurchyk.nutrition.model.WaterIntake
 import com.pichurchyk.nutrition.remote.model.IntakeResponse
+import com.pichurchyk.nutrition.remote.model.NutritionGoalsResponse
 import com.pichurchyk.nutrition.remote.model.WaterIntakeResponse
+import com.pichurchyk.nutrition.remote.source.resource.GoalsResource
 import com.pichurchyk.nutrition.remote.source.resource.IntakesResource
 import com.pichurchyk.nutrition.remote.source.resource.WaterIntakesResource
-import com.pichurchyk.nutrition.toDomain
-import com.pichurchyk.nutrition.toPayload
+import com.pichurchyk.nutrition.model.ext.toDomain
+import com.pichurchyk.nutrition.model.ext.toPayload
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.resources.delete
@@ -76,6 +78,13 @@ internal class NutritionRemoteDataSource(
                 setBody(intake.toPayload(preferences.getUserUid().first()))
             }
             .body<Unit>()
+            .also { emit(it) }
+    }
+
+    fun getUserGoals(): Flow<List<NutritionGoalsResponse>> = flow {
+        httpClient
+            .get(GoalsResource())
+            .body<List<NutritionGoalsResponse>>()
             .also { emit(it) }
     }
 

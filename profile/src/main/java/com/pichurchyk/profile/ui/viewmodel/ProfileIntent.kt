@@ -1,6 +1,6 @@
 package com.pichurchyk.profile.ui.viewmodel
 
-import com.pichurchyk.nutrition.model.NutritionGoal
+import com.pichurchyk.nutrition.model.goals.NutritionGoal
 
 sealed class ProfileIntent {
     data object LoadInfo: ProfileIntent()

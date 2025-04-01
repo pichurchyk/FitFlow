@@ -5,6 +5,7 @@ import com.pichurchyk.nutrition.model.DailyInfo
 import com.pichurchyk.nutrition.model.Intake
 import com.pichurchyk.nutrition.model.WaterIntake
 import com.pichurchyk.nutrition.model.create.CreateWaterIntakeModel
+import com.pichurchyk.nutrition.model.goals.NutritionGoal
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
@@ -20,4 +21,6 @@ interface NutritionRepository {
     suspend fun getDailyWaterIntakes(date: Date): Flow<List<WaterIntake>>
 
     suspend fun fetchRemoteAndLocal(date: Date)
+
+    suspend fun getUserGoals(): Flow<List<NutritionGoal>>
 }

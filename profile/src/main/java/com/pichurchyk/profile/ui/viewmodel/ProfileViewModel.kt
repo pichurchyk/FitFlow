@@ -3,6 +3,7 @@ package com.pichurchyk.profile.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pichurchyk.fitflow.auth.usecase.GetSignedInUserUseCase
+import com.pichurchyk.nutrition.usecase.GetUserGoalsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val getUserUseCase: GetSignedInUserUseCase,
+    private val getUserGoalsUseCase: GetUserGoalsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<ProfileViewState>(ProfileViewState.Loading)
@@ -20,6 +22,7 @@ class ProfileViewModel(
     fun handleIntent(intent: ProfileIntent) {
         when (intent) {
             is ProfileIntent.LoadInfo -> loadUserInfo()
+            is ProfileIntent.OnNutritionGoalChanged -> {}
         }
     }
 
@@ -35,8 +38,24 @@ class ProfileViewModel(
                 .collect { user ->
                     user?.let {
                         _state.update { ProfileViewState.Loaded(user) }
+
+                        loadUserGoals()
                     } ?: kotlin.run {
                         _state.update { ProfileViewState.Error("User not found") }
+                    }
+                }
+        }
+    }
+
+    private fun loadUserGoals() {
+        viewModelScope.launch {
+            getUserGoalsUseCase.invoke()
+                .catch { error ->
+                    _state.update { ProfileViewState.Error(error.localizedMessage ?: "Some error occurred") }
+                }
+                .collect { goals ->
+                    _state.update { currentState ->
+                        (currentState as ProfileViewState.Loaded).copy(nutritionGoals = goals)
                     }
                 }
         }

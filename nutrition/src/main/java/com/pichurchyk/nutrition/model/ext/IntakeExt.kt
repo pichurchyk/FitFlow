@@ -1,4 +1,4 @@
-package com.pichurchyk.nutrition
+package com.pichurchyk.nutrition.model.ext
 
 import com.pichurchyk.nutrition.database.model.dbo.IntakeDBO
 import com.pichurchyk.nutrition.database.model.dbo.IntakeValueDBO

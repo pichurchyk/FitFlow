@@ -8,6 +8,8 @@ import com.pichurchyk.nutrition.repository.NutritionRepositoryImpl
 import com.pichurchyk.nutrition.usecase.FetchRemoteAndLocalUseCase
 import com.pichurchyk.nutrition.usecase.GetDailyIntakesUseCase
 import com.pichurchyk.nutrition.usecase.GetDailyWaterIntakesUseCase
+import com.pichurchyk.nutrition.usecase.GetUserGoalsUseCase
+import com.pichurchyk.nutrition.usecase.GetUserGoalsUseCaseImpl
 import com.pichurchyk.nutrition.usecase.SaveIntakeUseCase
 import com.pichurchyk.nutrition.usecase.SaveWaterIntakeUseCase
 import org.koin.dsl.module
@@ -30,6 +32,7 @@ val nutritionModule = module {
     single { GetDailyIntakesUseCase(get()) }
     single { GetDailyWaterIntakesUseCase(get()) }
     single { FetchRemoteAndLocalUseCase(get()) }
+    single<GetUserGoalsUseCase> { GetUserGoalsUseCaseImpl(get()) }
 }
 
 private fun provideNutritionDatabaseDao(database: NutritionDatabase): NutritionDao {

@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.common.ui.theme.AppTheme
 import com.pichurchyk.fitflow.common.ui.theme.TextStyles
 import com.pichurchyk.fitflow.common.ui.theme.color_calories
-import com.pichurchyk.nutrition.model.NutritionGoal
+import com.pichurchyk.nutrition.model.goals.NutritionGoal
 import com.pichurchyk.nutrition.ui.ext.getColor
 import kotlin.math.roundToInt
 

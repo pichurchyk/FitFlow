@@ -15,11 +15,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pichurchyk.fitflow.common.ui.theme.AppTheme
 import com.pichurchyk.fitflow.common.ui.theme.TextStyles
-import com.pichurchyk.fitflow.common.ui.theme.color_carbs
-import com.pichurchyk.fitflow.common.ui.theme.color_fat
-import com.pichurchyk.fitflow.common.ui.theme.color_protein
 import com.pichurchyk.nutrition.database.model.IntakeType
-import com.pichurchyk.nutrition.model.NutritionGoal
+import com.pichurchyk.nutrition.model.goals.NutritionGoal
+import com.pichurchyk.nutrition.ui.ext.getColor
+import com.pichurchyk.nutrition.ui.ext.getUnit
 import com.pichurchyk.profile.R
 import com.pichurchyk.fitflow.common.R as commonR
 
@@ -52,41 +51,19 @@ fun NutritionGoals(
                 )
             }
 
-            item(span = { GridItemSpan(1) }) {
-                NutritionGoalsItem(
-                    modifier = Modifier,
-                    title = stringResource(commonR.string.carbs),
-                    value = "200",
-                    subtitle = stringResource(commonR.string.unit_gram_long),
-                    bgColor = color_carbs,
-                    onValueChanged = {
-                        onGoalChanged(NutritionGoal(IntakeType.CARBS, it.toInt()))
-                    }
-                )
-            }
-            item(span = { GridItemSpan(1) }) {
-                NutritionGoalsItem(
-                    modifier = Modifier,
-                    title = stringResource(commonR.string.protein),
-                    value = "80",
-                    subtitle = stringResource(commonR.string.unit_gram_long),
-                    bgColor = color_protein,
-                    onValueChanged = {
-                        onGoalChanged(NutritionGoal(IntakeType.PROTEIN, it.toInt()))
-                    }
-                )
-            }
-            item(span = { GridItemSpan(1) }) {
-                NutritionGoalsItem(
-                    modifier = Modifier,
-                    title = stringResource(commonR.string.fat),
-                    value = "50",
-                    subtitle = stringResource(commonR.string.unit_gram_long),
-                    bgColor = color_fat,
-                    onValueChanged = {
-                        onGoalChanged(NutritionGoal(IntakeType.FAT, it.toInt()))
-                    }
-                )
+            goals.forEach { goal ->
+                item(span = { GridItemSpan(1) }) {
+                    NutritionGoalsItem(
+                        modifier = Modifier,
+                        title = stringResource(commonR.string.carbs),
+                        value = goal.value.toString(),
+                        subtitle = stringResource(goal.intakeType.getUnit()),
+                        bgColor = goal.intakeType.getColor(),
+                        onValueChanged = {
+                            onGoalChanged(NutritionGoal(goal.intakeType, it.toInt()))
+                        }
+                    )
+                }
             }
         }
     }
@@ -96,6 +73,14 @@ fun NutritionGoals(
 @Preview
 private fun Preview() {
     AppTheme {
-        NutritionGoals(Modifier)
+        NutritionGoals(
+            modifier = Modifier,
+            goals = listOf(
+                NutritionGoal(IntakeType.FAT, 60),
+                NutritionGoal(IntakeType.PROTEIN, 140),
+                NutritionGoal(IntakeType.FAT, 200),
+            ),
+            onGoalChanged = {}
+        )
     }
 }
