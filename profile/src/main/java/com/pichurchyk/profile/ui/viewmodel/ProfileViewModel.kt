@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pichurchyk.fitflow.auth.usecase.GetSignedInUserUseCase
 import com.pichurchyk.nutrition.usecase.GetUserGoalsUseCase
+import com.pichurchyk.profile.domain.usecase.GetUserParamsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val getUserUseCase: GetSignedInUserUseCase,
-    private val getUserGoalsUseCase: GetUserGoalsUseCase
+    private val getUserGoalsUseCase: GetUserGoalsUseCase,
+    private val getUserParamsUseCase: GetUserParamsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<ProfileViewState>(ProfileViewState.Loading)
@@ -33,13 +35,18 @@ class ProfileViewModel(
                     _state.update { ProfileViewState.Loading }
                 }
                 .catch { error ->
-                    _state.update { ProfileViewState.Error(error.localizedMessage ?: "Some error occurred") }
+                    _state.update {
+                        ProfileViewState.Error(
+                            error.localizedMessage ?: "Some error occurred"
+                        )
+                    }
                 }
                 .collect { user ->
                     user?.let {
                         _state.update { ProfileViewState.Loaded(user) }
 
                         loadUserGoals()
+                        loadUserParams()
                     } ?: kotlin.run {
                         _state.update { ProfileViewState.Error("User not found") }
                     }
@@ -47,17 +54,36 @@ class ProfileViewModel(
         }
     }
 
-    private fun loadUserGoals() {
-        viewModelScope.launch {
-            getUserGoalsUseCase.invoke()
-                .catch { error ->
-                    _state.update { ProfileViewState.Error(error.localizedMessage ?: "Some error occurred") }
+    private suspend fun loadUserGoals() {
+        getUserGoalsUseCase.invoke()
+            .catch { error ->
+                _state.update {
+                    ProfileViewState.Error(
+                        error.localizedMessage ?: "Some error occurred"
+                    )
                 }
-                .collect { goals ->
-                    _state.update { currentState ->
-                        (currentState as ProfileViewState.Loaded).copy(nutritionGoals = goals)
-                    }
+            }
+            .collect { goals ->
+                _state.update { currentState ->
+                    (currentState as ProfileViewState.Loaded).copy(nutritionGoals = goals)
                 }
-        }
+            }
+
+    }
+
+    private suspend fun loadUserParams() {
+        getUserParamsUseCase.invoke()
+            .catch { error ->
+                _state.update {
+                    ProfileViewState.Error(
+                        error.localizedMessage ?: "Some error occurred"
+                    )
+                }
+            }
+            .collect { params ->
+                _state.update { currentState ->
+                    (currentState as ProfileViewState.Loaded).copy(userParams = params)
+                }
+            }
     }
 }

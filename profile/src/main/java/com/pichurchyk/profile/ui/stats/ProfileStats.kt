@@ -45,7 +45,7 @@ fun ProfileStats(
                 iconRes = R.drawable.ic_ruler_vertical,
                 iconTint = color_blue,
                 title = R.string.height,
-                value = stringResource(R.string.placeholder_cm, userParams.height)
+                value = stringResource(R.string.placeholder_cm, userParams.heightCm)
             )
 
             ProfileStatsItem(
@@ -53,7 +53,7 @@ fun ProfileStats(
                 iconRes = R.drawable.ic_weight,
                 iconTint = color_red,
                 title = R.string.weight,
-                value = stringResource(R.string.placeholder_kg, userParams.weight)
+                value = stringResource(R.string.placeholder_kg, userParams.weightKg)
             )
 
             ProfileStatsItem(
@@ -73,8 +73,8 @@ private fun Preview() {
     AppTheme {
         ProfileStats(
             userParams = UserParams(
-            weight = 72.5,
-            height = 175,
+            weightGrams = 70500,
+            heightCm = 175,
             age = 25
             )
         )
