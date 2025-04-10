@@ -5,7 +5,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NutritionGoalsResponse(
+data class NutritionGoalResponse(
+    val id: Int,
+
     @SerialName("intake_type")
     val intakeType: IntakeType,
 

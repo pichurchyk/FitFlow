@@ -23,4 +23,6 @@ interface NutritionRepository {
     suspend fun fetchRemoteAndLocal(date: Date)
 
     suspend fun getUserGoals(): Flow<List<NutritionGoal>>
+
+    suspend fun updateUserGoals(goals: List<NutritionGoal>): Flow<List<NutritionGoal>>
 }

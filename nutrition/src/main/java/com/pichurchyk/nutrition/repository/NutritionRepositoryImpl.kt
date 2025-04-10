@@ -11,10 +11,10 @@ import com.pichurchyk.nutrition.model.IntakeValue
 import com.pichurchyk.nutrition.model.WaterIntake
 import com.pichurchyk.nutrition.model.create.CreateIntakeModel
 import com.pichurchyk.nutrition.model.create.CreateWaterIntakeModel
-import com.pichurchyk.nutrition.model.goals.NutritionGoal
-import com.pichurchyk.nutrition.remote.source.NutritionRemoteDataSource
 import com.pichurchyk.nutrition.model.ext.toDBO
 import com.pichurchyk.nutrition.model.ext.toDomain
+import com.pichurchyk.nutrition.model.goals.NutritionGoal
+import com.pichurchyk.nutrition.remote.source.NutritionRemoteDataSource
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -177,6 +177,20 @@ internal class NutritionRepositoryImpl(
             .map { response ->
                 response.map { it.toDomain() }
             }
+
+    override suspend fun updateUserGoals(goals: List<NutritionGoal>): Flow<List<NutritionGoal>> = flow {
+        val updatedGoalsResult = coroutineScope {
+            goals.map { goalToUpdate ->
+                async {
+                    remoteDataSource
+                        .updateUserGoal(goalToUpdate)
+                        .first()
+                }
+            }.awaitAll()
+        }
+
+        emit(updatedGoalsResult)
+    }
 
     companion object {
         private const val FETCH_UPDATE_LIMIT = 2 * 60 * 1000L

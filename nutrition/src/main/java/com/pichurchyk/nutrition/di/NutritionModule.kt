@@ -12,6 +12,8 @@ import com.pichurchyk.nutrition.usecase.GetUserGoalsUseCase
 import com.pichurchyk.nutrition.usecase.GetUserGoalsUseCaseImpl
 import com.pichurchyk.nutrition.usecase.SaveIntakeUseCase
 import com.pichurchyk.nutrition.usecase.SaveWaterIntakeUseCase
+import com.pichurchyk.nutrition.usecase.UpdateUserGoalsUseCase
+import com.pichurchyk.nutrition.usecase.UpdateUserGoalsUseCaseImpl
 import org.koin.dsl.module
 
 val nutritionModule = module {
@@ -33,6 +35,7 @@ val nutritionModule = module {
     single { GetDailyWaterIntakesUseCase(get()) }
     single { FetchRemoteAndLocalUseCase(get()) }
     single<GetUserGoalsUseCase> { GetUserGoalsUseCaseImpl(get()) }
+    single<UpdateUserGoalsUseCase> { UpdateUserGoalsUseCaseImpl(get()) }
 }
 
 private fun provideNutritionDatabaseDao(database: NutritionDatabase): NutritionDao {

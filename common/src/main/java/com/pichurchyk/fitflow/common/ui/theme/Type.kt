@@ -82,4 +82,12 @@ object TextStyles {
         lineHeight = 14.sp,
         letterSpacing = 0.5.sp,
     )
+
+    val labelSmall = TextStyle(
+        fontFamily = interFont,
+        fontWeight = FontWeight.W400,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.5.sp,
+    )
 }

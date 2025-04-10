@@ -1,16 +1,15 @@
 package com.pichurchyk.fitflow.common.ui.input
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -46,40 +45,33 @@ fun CommonInput(
             )
         }
 
-        OutlinedTextField(
-            enabled = isEnable,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 6.dp)
-                .height(44.dp),
-            colors = OutlinedTextFieldDefaults.colors().copy(
-                focusedContainerColor = colors.bgColor,
-                unfocusedContainerColor = colors.bgColor,
-                unfocusedTextColor = colors.valueColor,
-                focusedTextColor = colors.valueColor,
-                unfocusedPlaceholderColor = colors.placeholderColor,
-                focusedPlaceholderColor = colors.placeholderColor,
-                focusedIndicatorColor = colors.borderColor,
-                unfocusedIndicatorColor = colors.borderColor
-            ),
-            textStyle = TextStyles.labelMedium,
-            shape = RoundedCornerShape(4.dp),
+        BasicTextField(
             value = value,
             onValueChange = { newValue ->
                 onValueChanged(newValue)
             },
-            placeholder = {
-                placeholder?.let {
-                    Text(
-                        text = placeholder,
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                }
-            },
+            enabled = isEnable,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(36.dp)
+                .background(colors.bgColor, shape = RoundedCornerShape(4.dp))
+                .border(1.dp, colors.borderColor, shape = RoundedCornerShape(4.dp))
+                .padding(horizontal = 8.dp, vertical = 10.dp),
+            textStyle = TextStyles.labelSmall.copy(color = colors.valueColor),
             keyboardOptions = KeyboardOptions(
                 keyboardType = inputType,
                 imeAction = ImeAction.Next
             ),
+            decorationBox = { innerTextField ->
+                if (value.isEmpty()) {
+                    Text(
+                        text = placeholder.orEmpty(),
+                        style = TextStyles.labelSmall,
+                        color = colors.placeholderColor
+                    )
+                }
+                innerTextField()
+            }
         )
 
         subtitle?.let {

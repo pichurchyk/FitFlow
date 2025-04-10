@@ -45,22 +45,24 @@ fun NutritionGoalsPercentage(
                     val leftCorners = if (index == 0) 8.dp else 0.dp
                     val rightCorners = if (index == intakes.size) 8.dp else 0.dp
 
-                    Box(
-                        modifier = Modifier
-                            .height(20.dp)
-                            .weight(weight)
-                            .background(
-                                intake.intakeType
-                                    .getColor()
-                                    .copy(alpha = 0.7f),
-                                RoundedCornerShape(
-                                    topStart = leftCorners,
-                                    bottomStart = leftCorners,
-                                    topEnd = rightCorners,
-                                    bottomEnd = rightCorners
+                    if (weight > 0) {
+                        Box(
+                            modifier = Modifier
+                                .height(20.dp)
+                                .weight(weight)
+                                .background(
+                                    intake.intakeType
+                                        .getColor()
+                                        .copy(alpha = 0.7f),
+                                    RoundedCornerShape(
+                                        topStart = leftCorners,
+                                        bottomStart = leftCorners,
+                                        topEnd = rightCorners,
+                                        bottomEnd = rightCorners
+                                    )
                                 )
-                            )
-                    )
+                        )
+                    }
                 }
             }
         }
@@ -76,10 +78,11 @@ fun NutritionGoalsPercentage(
                     if (totalCalories > 0) (intake.goalCalories / totalCalories).toFloat() else 0f
 
                 Text(
-                    modifier =  Modifier.weight(weight),
+                    modifier = Modifier.weight(1f),
                     text = "${(weight * 100).roundToInt()}%",
                     style = TextStyles.labelLarge,
                     color = intake.intakeType.getColor(),
+                    maxLines = 1
                 )
             }
         }

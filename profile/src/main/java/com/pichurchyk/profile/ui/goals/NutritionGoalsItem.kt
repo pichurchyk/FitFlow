@@ -33,8 +33,9 @@ fun NutritionGoalsItem(
     ) {
         CommonInput(
             modifier = modifier,
-            value = value,
+            value = if (value == "0") "" else value,
             title = title,
+            placeholder = if (value == "0") value else null,
             subtitle = subtitle,
             onValueChanged = onValueChanged,
             colors = DefaultCommonInputColors(

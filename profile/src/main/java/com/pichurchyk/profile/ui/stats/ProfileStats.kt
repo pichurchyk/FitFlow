@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.pichurchyk.fitflow.common.ext.toPrettyString
 import com.pichurchyk.fitflow.common.ui.theme.AppTheme
 import com.pichurchyk.fitflow.common.ui.theme.TextStyles
 import com.pichurchyk.fitflow.common.ui.theme.color_blue
@@ -53,7 +54,7 @@ fun ProfileStats(
                 iconRes = R.drawable.ic_weight,
                 iconTint = color_red,
                 title = R.string.weight,
-                value = stringResource(R.string.placeholder_kg, userParams.weightKg)
+                value = stringResource(R.string.placeholder_kg, userParams.weightKg.toPrettyString())
             )
 
             ProfileStatsItem(

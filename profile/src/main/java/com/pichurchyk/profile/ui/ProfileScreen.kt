@@ -4,9 +4,15 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -20,10 +26,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pichurchyk.fitflow.common.ui.CommonButton
+import com.pichurchyk.fitflow.common.ext.clearFocusOnClick
 import com.pichurchyk.fitflow.common.ui.Header
 import com.pichurchyk.fitflow.common.ui.Loader
 import com.pichurchyk.fitflow.common.ui.SnackbarInfo
@@ -36,7 +43,6 @@ import com.pichurchyk.profile.ui.viewmodel.ProfileViewModel
 import com.pichurchyk.profile.ui.viewmodel.ProfileViewState
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import com.pichurchyk.fitflow.common.R as commonR
 
 @Composable
 fun ProfileScreen(
@@ -54,13 +60,11 @@ fun ProfileScreen(
         mutableStateOf<String?>(null)
     }
 
-    var isProfileChanged by remember {
-        mutableStateOf(false)
-    }
-
     LaunchedEffect(Unit) {
         viewModel.handleIntent(ProfileIntent.LoadInfo)
     }
+
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(errorMessage) {
         errorMessage?.let { message ->
@@ -79,11 +83,15 @@ fun ProfileScreen(
     BackHandler {
         closeScreen()
     }
+    val insets = WindowInsets.systemBars.asPaddingValues()
 
     Scaffold(
+        modifier = Modifier.padding(top = insets.calculateTopPadding()).clearFocusOnClick(),
         topBar = {
             Header(
-                modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.primary),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primary),
                 title = stringResource(R.string.profile),
                 textColor = MaterialTheme.colorScheme.onPrimary,
                 onBackPressed = {
@@ -114,7 +122,8 @@ fun ProfileScreen(
                     is ProfileViewState.Loaded -> {
                         val user = state.userData
                         val userParams = state.userParams
-                        val nutritionGoals = state.nutritionGoals
+
+                        val nutritionGoalsState = state.nutritionGoals
 
                         ProfileHeader(
                             modifier = Modifier,
@@ -123,36 +132,53 @@ fun ProfileScreen(
                             avatarUrl = user.avatarUrl
                         )
 
-                        userParams?.let {
-                            ProfileStats(
-                                modifier = Modifier.padding(top = 10.dp, start = 6.dp, end = 6.dp),
-                                userParams = userParams
-                            )
-                        }
 
-                        nutritionGoals?.let {
-                            NutritionGoals(
-                                modifier = Modifier.padding(top = 24.dp, start = 6.dp, end = 6.dp),
-                                goals = it,
-                                onGoalChanged = {
-                                    viewModel.handleIntent(ProfileIntent.OnNutritionGoalChanged(it))
+                        LazyVerticalGrid(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            columns = GridCells.Fixed(3),
+                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                        ) {
+                            item(span = { GridItemSpan(3) }) {
+                                userParams?.let {
+                                    ProfileStats(
+                                        modifier = Modifier.padding(
+                                            top = 10.dp,
+                                            start = 6.dp,
+                                            end = 6.dp
+                                        ),
+                                        userParams = userParams
+                                    )
                                 }
-                            )
+                            }
+
+                            item(span = { GridItemSpan(3) }) {
+                                NutritionGoals(
+                                    modifier = Modifier.padding(
+                                        top = 24.dp,
+                                        start = 6.dp,
+                                        end = 6.dp
+                                    ),
+                                    state = nutritionGoalsState,
+                                    onGoalChanged = {
+                                        viewModel.handleIntent(ProfileIntent.ChangeNutritionGoal(it))
+                                    },
+                                    onSaveClick = {
+                                        focusManager.clearFocus(true)
+                                        viewModel.handleIntent(ProfileIntent.SaveChangedNutritionGoals)
+                                    },
+                                    onDiscardClick = {
+                                        focusManager.clearFocus(true)
+                                        viewModel.handleIntent(ProfileIntent.DiscardChangedNutritionGoals)
+                                    }
+                                )
+                            }
                         }
                     }
                 }
             }
         },
-        bottomBar = {
-            if (isProfileChanged) {
-                CommonButton(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-                    text = stringResource(commonR.string.save)
-                ) {
-
-                }
-            }
-        }
+        bottomBar = {}
     )
 }
 

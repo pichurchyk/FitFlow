@@ -40,6 +40,7 @@ fun Header(
                             onBackPressed()
                         }
                         .size(22.dp),
+                    tint = textColor,
                     imageVector = Icons.Rounded.Close,
                     contentDescription = stringResource(
                         id = R.string.back

@@ -7,17 +7,19 @@ import com.pichurchyk.nutrition.database.model.IntakeType
 import com.pichurchyk.nutrition.model.Intake
 import com.pichurchyk.nutrition.model.WaterIntake
 import com.pichurchyk.nutrition.remote.model.IntakeResponse
-import com.pichurchyk.nutrition.remote.model.NutritionGoalsResponse
+import com.pichurchyk.nutrition.remote.model.NutritionGoalResponse
 import com.pichurchyk.nutrition.remote.model.WaterIntakeResponse
 import com.pichurchyk.nutrition.remote.source.resource.GoalsResource
 import com.pichurchyk.nutrition.remote.source.resource.IntakesResource
 import com.pichurchyk.nutrition.remote.source.resource.WaterIntakesResource
 import com.pichurchyk.nutrition.model.ext.toDomain
 import com.pichurchyk.nutrition.model.ext.toPayload
+import com.pichurchyk.nutrition.model.goals.NutritionGoal
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.resources.delete
 import io.ktor.client.plugins.resources.get
+import io.ktor.client.plugins.resources.patch
 import io.ktor.client.plugins.resources.post
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -81,11 +83,22 @@ internal class NutritionRemoteDataSource(
             .also { emit(it) }
     }
 
-    fun getUserGoals(): Flow<List<NutritionGoalsResponse>> = flow {
+    fun getUserGoals(): Flow<List<NutritionGoalResponse>> = flow {
         httpClient
             .get(GoalsResource())
-            .body<List<NutritionGoalsResponse>>()
+            .body<List<NutritionGoalResponse>>()
             .also { emit(it) }
+    }
+
+    fun updateUserGoal(goal: NutritionGoal): Flow<NutritionGoal> = flow {
+        httpClient
+            .patch(GoalsResource()) {
+                setBody(goal.toPayload())
+            }
+            .body<Unit>()
+            .also {
+                emit(goal)
+            }
     }
 
     fun removeIntake(intake: Intake): Flow<Unit> = flow {
